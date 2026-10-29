@@ -1,21 +1,24 @@
 package gui;
 
 import engine.Automaton;
+import gui.automaton_display.AutomatonDisplayer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AutomatonController extends JFrame {
-	private final Automaton automaton;
+	private Automaton automaton;
 
 	private boolean currentlyPlaying = false;
 
 	private double ticksPerSecond = 8;
 
-	public AutomatonController(Automaton automaton) {
+	public void setAutomaton(Automaton automaton) {
 		this.automaton = automaton;
+	}
 
+	public AutomatonController(AutomatonDisplayer displayer) {
 		setTitle("Controls");
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
