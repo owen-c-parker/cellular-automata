@@ -10,10 +10,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 
+import static javax.swing.text.html.CSS.Attribute.BORDER_COLOR;
+
 class DisplayerPanel extends JPanel {
-	static final double ZOOM_AMOUNT = .1;
-	static final double MIN_SCALE = 5;
-	static final double MAX_SCALE = 100;
+	private static final double ZOOM_AMOUNT = .1;
+	private static final double MIN_SCALE = 5;
+	private static final double MAX_SCALE = 100;
+	private static final Color BORDER_COLOR = Color.BLACK;
 
 	private final AutomatonDisplayer automatonDisplayer;
 	private double cellScale;
@@ -23,45 +26,6 @@ class DisplayerPanel extends JPanel {
 	private MouseEvent lastMouseEvent = null;
 	private MouseEvent mostRecentMove = null;
 	private MouseEvent lastClickedPlace = null;
-
-	public OrderedPair fromPixelSpaceToCellSpace(OrderedPair pixelSpace) {
-		return pixelSpace
-				.subtract((int) this.scrollX, (int) this.scrollY)
-				.divide(this.cellScale);
-	}
-
-	public OrderedPair fromCellSpaceToPixelSpace(OrderedPair cellSpace) {
-		return cellSpace
-				.scale(this.cellScale)
-				.add((int) this.scrollX, (int) this.scrollY);
-	}
-
-	public void placeCellAtClickedLocation(MouseEvent event) {
-		OrderedPair location = new OrderedPair(event.getX(), event.getY());
-		OrderedPair cellLocation = fromPixelSpaceToCellSpace(location);
-
-		if (this.lastClickedPlace != null) {
-			OrderedPair lastClickedCellLocation = fromPixelSpaceToCellSpace(new OrderedPair(this.lastClickedPlace.getX(), this.lastClickedPlace.getY()));
-
-			OrderedPair difference = lastClickedCellLocation.subtract(cellLocation);
-
-			if (Math.abs(difference.x()) > Math.abs(difference.y())) {
-				cellLocation = new OrderedPair(cellLocation.x(), lastClickedCellLocation.y());
-			} else {
-				cellLocation = new OrderedPair(lastClickedCellLocation.x(), cellLocation.y());
-			}
-		}
-
-
-		State stateToPaint = null;
-		if (SwingUtilities.isLeftMouseButton(event))
-			stateToPaint = this.automatonDisplayer.currentPaintedState;
-		if (SwingUtilities.isRightMouseButton(event))
-			stateToPaint = this.automatonDisplayer.automaton.getDefaultState();
-		if (stateToPaint == null) return;
-
-		this.automatonDisplayer.automaton.setCellAt(cellLocation, stateToPaint);
-	}
 
 	public DisplayerPanel(AutomatonDisplayer automatonDisplayer, double cellScale) {
 		this.automatonDisplayer = automatonDisplayer;
@@ -131,6 +95,45 @@ class DisplayerPanel extends JPanel {
 
 	}
 
+	public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
+		return screenSpace
+				.subtract((int) this.scrollX, (int) this.scrollY)
+				.divide(this.cellScale);
+	}
+
+	public OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {
+		return cellSpace
+				.scale(this.cellScale)
+				.add((int) this.scrollX, (int) this.scrollY);
+	}
+
+	public void placeCellAtClickedLocation(MouseEvent event) {
+		OrderedPair location = new OrderedPair(event.getX(), event.getY());
+		OrderedPair cellLocation = fromScreenSpaceToCellSpace(location);
+
+		if (this.lastClickedPlace != null) {
+			OrderedPair lastClickedCellLocation = fromScreenSpaceToCellSpace(new OrderedPair(this.lastClickedPlace.getX(), this.lastClickedPlace.getY()));
+
+			OrderedPair difference = lastClickedCellLocation.subtract(cellLocation);
+
+			if (Math.abs(difference.x()) > Math.abs(difference.y())) {
+				cellLocation = new OrderedPair(cellLocation.x(), lastClickedCellLocation.y());
+			} else {
+				cellLocation = new OrderedPair(lastClickedCellLocation.x(), cellLocation.y());
+			}
+		}
+
+
+		State stateToPaint = null;
+		if (SwingUtilities.isLeftMouseButton(event))
+			stateToPaint = this.automatonDisplayer.currentPaintedState;
+		if (SwingUtilities.isRightMouseButton(event))
+			stateToPaint = this.automatonDisplayer.automaton.getDefaultState();
+		if (stateToPaint == null) return;
+
+		this.automatonDisplayer.automaton.setCellAt(cellLocation, stateToPaint);
+	}
+
 	private void dragScroll(MouseEvent event) {
 		if (!SwingUtilities.isMiddleMouseButton(event)) return;
 
@@ -148,26 +151,51 @@ class DisplayerPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		fillBackgroundWithDefaultCellColor(g);
+		drawAllCells(g);
+		drawGridlines(g);
+	}
 
+	private void drawGridlines(Graphics g) {
+		OrderedPair screenSizeInPixels = getScreenSizeInPixels();
+		g.setColor(BORDER_COLOR);
+		for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
+			g.drawLine((int) x, 0, (int) x, screenSizeInPixels.y());
+		for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
+			g.drawLine(0, (int) y, screenSizeInPixels.x(), (int) y);
+	}
 
-		Dimension dimension = getSize();
-
-		OrderedPair screenSizeInPixels = new OrderedPair(dimension.width, dimension.height);
-
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, screenSizeInPixels.x(), screenSizeInPixels.y());
-
-		OrderedPair screenSizeInCells = screenSizeInPixels.divide(this.cellScale);
-
+	private void drawAllCells(Graphics g) {
 		OrderedPair scrollAsCells = new OrderedPair((int) -this.scrollX, (int) -this.scrollY).divide(this.cellScale);
-
+		OrderedPair screenSizeInCells = getScreenSizeInPixels().divide(this.cellScale);
 		for (int y = scrollAsCells.y() - 1; y <= scrollAsCells.y() + screenSizeInCells.y() + 1; y++) {
 			for (int x = scrollAsCells.x() - 1; x <= scrollAsCells.x() + screenSizeInCells.x() + 1; x++) {
-				State cell = this.automatonDisplayer.automaton.getCellAt(new OrderedPair(x, y));
-				g.setColor(cell.getColor());
-				OrderedPair pixelLocation = fromCellSpaceToPixelSpace(new OrderedPair(x, y));
-				g.fillRect(pixelLocation.x(), pixelLocation.y(), (int) (this.cellScale * .95), (int) (this.cellScale * .95));
+				drawCellAt(g, new OrderedPair(x, y));
 			}
 		}
+	}
+
+	private OrderedPair getScreenSizeInPixels() {
+		Dimension dimension = getSize();
+		return new OrderedPair(dimension.width, dimension.height);
+	}
+
+	private void fillBackgroundWithDefaultCellColor(Graphics g) {
+		OrderedPair screenSizeInPixels = getScreenSizeInPixels();
+		g.setColor(this.automatonDisplayer.automaton.getDefaultState().getColor());
+		g.fillRect(0, 0, screenSizeInPixels.x(), screenSizeInPixels.y());
+	}
+
+	private void drawCellAt(Graphics g, OrderedPair location) {
+		State state = this.automatonDisplayer.automaton.getCellAt(location);
+		if (isDefaultState(state)) return;
+		g.setColor(state.getColor());
+		OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
+		int cellScaleInt = (int) this.cellScale;
+		g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellScaleInt, cellScaleInt);
+	}
+
+	private boolean isDefaultState(State state) {
+		return state.equals(this.automatonDisplayer.automaton.getDefaultState());
 	}
 }
