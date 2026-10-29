@@ -1,7 +1,7 @@
-package gui.automatonDisplay;
+package gui.automaton_display;
 
-import gui.automatonDisplay.menuOptions.PaintSelector;
-import gui.automatonDisplay.menuOptions.ToolSelector;
+import gui.automaton_display.menu_options.PaintSelector;
+import gui.automaton_display.menu_options.ToolSelector;
 
 import javax.swing.*;
 

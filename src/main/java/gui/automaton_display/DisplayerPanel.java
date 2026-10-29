@@ -1,4 +1,4 @@
-package gui.automatonDisplay;
+package gui.automaton_display;
 
 import engine.OrderedPair;
 import engine.State;

@@ -1,4 +1,4 @@
-package gui.automatonDisplay.menuOptions.toolOptions;
+package gui.automaton_display.menu_options.tool_options;
 
 import engine.Automaton;
 
