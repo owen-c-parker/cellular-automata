@@ -38,9 +38,9 @@ public class Launcher extends JFrame {
 	}
 
 	private void launch(Automaton automaton) {
-		new AutomatonDisplayer(automaton, 16);
+		AutomatonDisplayer displayer = new AutomatonDisplayer(automaton, 16);
 		new AutomatonController(automaton);
-		new StatsDisplayer(automaton);
+		new StatsDisplayer(automaton, displayer);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}

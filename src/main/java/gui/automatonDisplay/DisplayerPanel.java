@@ -13,6 +13,7 @@ import java.awt.event.MouseWheelEvent;
 class DisplayerPanel extends JPanel {
 	private static final double ZOOM_AMOUNT = .1;
 	private static final double MIN_SCALE = 5;
+	private static final double SCALE_TO_STOP_DRAWING_GRIDLINES = 8;
 	private static final double MAX_SCALE = 100;
 	private static final Color BORDER_COLOR = Color.BLACK;
 
@@ -151,16 +152,18 @@ class DisplayerPanel extends JPanel {
 		super.paintComponent(g);
 		fillBackgroundWithDefaultCellColor(g);
 		drawAllCells(g);
-		drawGridlines(g);
+		if (this.cellScale > SCALE_TO_STOP_DRAWING_GRIDLINES)
+			drawGridlines(g);
+		this.automatonDisplayer.drawCallbacks.forEach(Runnable::run);
 	}
 
 	private void drawGridlines(Graphics g) {
 		OrderedPair screenSizeInPixels = getScreenSizeInPixels();
 		g.setColor(BORDER_COLOR);
 		for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
-			g.drawLine((int) x, 0, (int) x, screenSizeInPixels.y());
+			g.fillRect((int) x - 1, 0, 3, screenSizeInPixels.y());
 		for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
-			g.drawLine(0, (int) y, screenSizeInPixels.x(), (int) y);
+			g.fillRect(0, (int) y - 1, screenSizeInPixels.x(), 3);
 	}
 
 	private void drawAllCells(Graphics g) {
@@ -189,11 +192,15 @@ class DisplayerPanel extends JPanel {
 		if (isDefaultState(state)) return;
 		g.setColor(state.getColor());
 		OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
-		int cellScaleInt = (int) this.cellScale;
-		g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellScaleInt, cellScaleInt);
+		int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
+		g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
 	}
 
 	private boolean isDefaultState(State state) {
 		return state.equals(this.automatonDisplayer.automaton.getDefaultState());
+	}
+
+	public double getCellScale() {
+		return this.cellScale;
 	}
 }
