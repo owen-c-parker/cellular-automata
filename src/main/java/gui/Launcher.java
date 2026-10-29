@@ -1,10 +1,10 @@
 package gui;
 
-import automata.KnightCGOL;
-import engine.Automaton;
 import automata.CGOL;
+import automata.KnightCGOL;
 import automata.Rule110;
 import automata.WireWorld;
+import engine.Automaton;
 import gui.automatonDisplay.AutomatonDisplayer;
 
 import javax.swing.*;
@@ -20,6 +20,7 @@ public class Launcher extends JFrame {
 		getContentPane().add(automatonJComboBox);
 		getContentPane().add(generateLaunchButton(automatonJComboBox));
 
+		setTitle("Cellular Automaton Launcher");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(200, 150);
 		setLocationRelativeTo(null);

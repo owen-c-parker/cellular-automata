@@ -17,12 +17,11 @@ public class AutomatonController extends JFrame {
 	public AutomatonController(Automaton automaton) {
 		this.automaton = automaton;
 
+		setTitle("Controls");
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//setSize(400, 100);
 
 		this.setContentPane(new AutomatonControllerContent());
-		//setLayout(new BorderLayout());
 		setSize(350, 100);
 		setVisible(true);
 

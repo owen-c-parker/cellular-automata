@@ -28,6 +28,8 @@ public class AutomatonDisplayer extends JFrame {
 
 		this.currentPaintedState = selectable.size() > 1 ? selectable.get(1) : selectable.getFirst();
 
+		setTitle(automaton.getDisplayableName());
+
 		this.setJMenuBar(new DisplayerMenuBar(this));
 		this.displayerPanel = new DisplayerPanel(this, cellScale);
 		this.setContentPane(this.displayerPanel);
