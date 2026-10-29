@@ -49,4 +49,9 @@ public abstract class Automaton {
 	public int getActiveCellCount() {
 		return this.board.cells.size();
 	}
+
+	public void clear() {
+		this.board = new Board(getDefaultState());
+		updateAllListeners();
+	}
 }

@@ -24,7 +24,7 @@ public class StatsDisplayer extends JFrame {
 		public void updateStats() {
 			int activeCellCount = StatsDisplayer.this.automaton.getActiveCellCount();
 			this.cellCountLabel.setText(String.format("Active cells: %d", activeCellCount));
-			this.zoomLevelLabel.setText(String.format("Zoom level: %.2f", StatsDisplayer.this.displayer.getCellScale()));
+			this.zoomLevelLabel.setText(String.format("Zoom level: %.2f", StatsDisplayer.this.displayer.getDisplayerPanel().getCellScale()));
 		}
 	}
 

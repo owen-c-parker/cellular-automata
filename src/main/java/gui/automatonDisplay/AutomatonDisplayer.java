@@ -7,49 +7,18 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Set;
 
 public class AutomatonDisplayer extends JFrame {
-	final Automaton automaton;
+	public final Automaton automaton;
 	private final DisplayerPanel displayerPanel;
 
-	State currentPaintedState;
-
-	public double getCellScale() {
-		return this.displayerPanel.getCellScale();
-	}
+	public State currentPaintedState;
 
 	final Set<Runnable> drawCallbacks = new HashSet<>();
 
 	public void registerRedrawListener(Runnable callback) {
 		this.drawCallbacks.add(callback);
-	}
-
-	private class DisplayerMenuBar extends JMenuBar {
-		public DisplayerMenuBar() {
-			JMenu paintSelector = new JMenu("Paint");
-
-			ButtonGroup paintSelectorButtonGroup = new ButtonGroup();
-			int index = 0;
-			for (State state : AutomatonDisplayer.this.automaton.getSelectableForPainting()) {
-				JRadioButtonMenuItem button = new JRadioButtonMenuItem(state.getDisplayableName());
-				button.setForeground(getBrightness(state.getColor()) > .5 ? Color.BLACK : Color.WHITE);
-				button.setBackground(state.getColor());
-				button.addActionListener(_ -> AutomatonDisplayer.this.currentPaintedState = state);
-				paintSelectorButtonGroup.add(button);
-				if (index == 1)
-					paintSelectorButtonGroup.setSelected(button.getModel(), true);
-				paintSelector.add(button);
-				index++;
-			}
-
-			this.add(paintSelector);
-		}
-
-		private double getBrightness(Color color) {
-			return ((color.getRed() + color.getGreen() + color.getBlue()) / 3.0) / 256.0;
-		}
 	}
 
 	public AutomatonDisplayer(Automaton automaton, int cellScale) {
@@ -59,7 +28,7 @@ public class AutomatonDisplayer extends JFrame {
 
 		this.currentPaintedState = selectable.size() > 1 ? selectable.get(1) : selectable.getFirst();
 
-		this.setJMenuBar(new DisplayerMenuBar());
+		this.setJMenuBar(new DisplayerMenuBar(this));
 		this.displayerPanel = new DisplayerPanel(this, cellScale);
 		this.setContentPane(this.displayerPanel);
 
@@ -70,5 +39,9 @@ public class AutomatonDisplayer extends JFrame {
 
 		repaint();
 		automaton.registerUpdateListener(this::repaint);
+	}
+
+	public DisplayerPanel getDisplayerPanel() {
+		return this.displayerPanel;
 	}
 }

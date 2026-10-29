@@ -9,10 +9,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.util.Collection;
+import java.util.LinkedList;
 
-class DisplayerPanel extends JPanel {
+public class DisplayerPanel extends JPanel {
 	private static final double ZOOM_AMOUNT = .1;
-	private static final double MIN_SCALE = 5;
+	private static final double MIN_SCALE = 1;
 	private static final double SCALE_TO_STOP_DRAWING_GRIDLINES = 8;
 	private static final double MAX_SCALE = 100;
 	private static final Color BORDER_COLOR = Color.BLACK;
@@ -167,13 +169,8 @@ class DisplayerPanel extends JPanel {
 	}
 
 	private void drawAllCells(Graphics g) {
-		OrderedPair scrollAsCells = new OrderedPair((int) -this.scrollX, (int) -this.scrollY).divide(this.cellScale);
-		OrderedPair screenSizeInCells = getScreenSizeInPixels().divide(this.cellScale);
-		for (int y = scrollAsCells.y() - 1; y <= scrollAsCells.y() + screenSizeInCells.y() + 1; y++) {
-			for (int x = scrollAsCells.x() - 1; x <= scrollAsCells.x() + screenSizeInCells.x() + 1; x++) {
-				drawCellAt(g, new OrderedPair(x, y));
-			}
-		}
+		for (OrderedPair location : getCellLocationsOnScreen())
+			drawCellAt(g, location);
 	}
 
 	private OrderedPair getScreenSizeInPixels() {
@@ -202,5 +199,19 @@ class DisplayerPanel extends JPanel {
 
 	public double getCellScale() {
 		return this.cellScale;
+	}
+
+	public Collection<OrderedPair> getCellLocationsOnScreen() {
+		OrderedPair scrollAsCells = new OrderedPair((int) -this.scrollX, (int) -this.scrollY).divide(this.cellScale);
+		OrderedPair screenSizeInCells = getScreenSizeInPixels().divide(this.cellScale);
+
+		Collection<OrderedPair> locations = new LinkedList<>();
+		for (int y = scrollAsCells.y() - 1; y <= scrollAsCells.y() + screenSizeInCells.y() + 1; y++) {
+			for (int x = scrollAsCells.x() - 1; x <= scrollAsCells.x() + screenSizeInCells.x() + 1; x++) {
+				locations.add(new OrderedPair(x, y));
+			}
+		}
+
+		return locations;
 	}
 }
