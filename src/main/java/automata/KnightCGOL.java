@@ -5,7 +5,6 @@ import engine.Board;
 import engine.OrderedPair;
 import engine.State;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 

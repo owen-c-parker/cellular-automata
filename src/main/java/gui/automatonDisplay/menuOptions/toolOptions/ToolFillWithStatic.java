@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.function.Function;
 

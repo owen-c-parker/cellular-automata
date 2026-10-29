@@ -3,10 +3,9 @@ package gui.automatonDisplay;
 import engine.Automaton;
 import engine.State;
 
+import javax.swing.*;
 import java.util.HashSet;
 import java.util.List;
-
-import javax.swing.*;
 import java.util.Set;
 
 public class AutomatonDisplayer extends JFrame {

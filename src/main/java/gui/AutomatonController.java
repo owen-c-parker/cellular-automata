@@ -3,7 +3,6 @@ package gui;
 import engine.Automaton;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -41,7 +40,7 @@ public class AutomatonController extends JFrame {
 	private class AutomatonControllerContent extends JMenuBar {
 		public AutomatonControllerContent() {
 			JButton playPauseButton = new JButton("▶");
-			playPauseButton.addActionListener(e -> {
+			playPauseButton.addActionListener(_ -> {
 				if (!AutomatonController.this.currentlyPlaying) {
 					playPauseButton.setText("⏸");
 					AutomatonController.this.currentlyPlaying = true;
