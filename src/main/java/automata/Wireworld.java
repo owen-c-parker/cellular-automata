@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
-public class WireWorld extends Automaton {
+public class Wireworld extends Automaton {
 	private static final State NOTHING = new State(Color.DARK_GRAY, "Empty") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {

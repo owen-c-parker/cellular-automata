@@ -3,7 +3,7 @@ package gui;
 import automata.CGOL;
 import automata.KnightCGOL;
 import automata.Rule110;
-import automata.WireWorld;
+import automata.Wireworld;
 import engine.Automaton;
 import gui.automaton_display.AutomatonDisplayer;
 
@@ -51,7 +51,7 @@ public class Launcher extends JFrame {
 		Automaton[] automata = {
 				new CGOL(),
 				new KnightCGOL(),
-				new WireWorld(),
+				new Wireworld(),
 				new Rule110()
 		};
 
