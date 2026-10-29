@@ -5,11 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Automaton {
-	private Board board;
-
-	protected Automaton(State defaultState) {
-		this.board = new Board(defaultState);
-	}
+	private Board board = new Board(getDefaultState());
 
 	public abstract String getDisplayableName();
 
@@ -39,9 +35,7 @@ public abstract class Automaton {
 
 	public abstract List<State> getSelectableForPainting();
 
-	public final State getDefaultState() {
-		return this.board.getDefaultState();
-	}
+	public abstract State getDefaultState();
 
 	public final State getCellAt(OrderedPair orderedPair) {
 		return this.board.getCellAt(orderedPair);

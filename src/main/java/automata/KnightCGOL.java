@@ -56,10 +56,6 @@ public class KnightCGOL extends Automaton {
 		}
 	};
 
-	public KnightCGOL() {
-		super(DEAD);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "Knight CGOL";
@@ -71,5 +67,10 @@ public class KnightCGOL extends Automaton {
 				DEAD,
 				ALIVE
 		);
+	}
+
+	@Override
+	public State getDefaultState() {
+		return DEAD;
 	}
 }

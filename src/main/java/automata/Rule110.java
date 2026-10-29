@@ -48,10 +48,6 @@ public class Rule110 extends Automaton {
 		}
 	};
 
-	public Rule110() {
-		super(ZERO);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "Rule 110";
@@ -63,5 +59,10 @@ public class Rule110 extends Automaton {
 				ZERO,
 				ONE
 		);
+	}
+
+	@Override
+	public State getDefaultState() {
+		return ZERO;
 	}
 }

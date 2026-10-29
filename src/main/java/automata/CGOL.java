@@ -61,10 +61,6 @@ public class CGOL extends Automaton {
 		}
 	};
 
-	public CGOL() {
-		super(DEAD);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "Conway's Game of Life";
@@ -73,5 +69,10 @@ public class CGOL extends Automaton {
 	@Override
 	public List<State> getSelectableForPainting() {
 		return List.of(DEAD, ALIVE);
+	}
+
+	@Override
+	public State getDefaultState() {
+		return DEAD;
 	}
 }

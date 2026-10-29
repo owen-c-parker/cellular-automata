@@ -84,10 +84,6 @@ public class WireWorld extends Automaton {
 		}
 	};
 
-	public WireWorld() {
-		super(NOTHING);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "WireWorld";
@@ -101,5 +97,10 @@ public class WireWorld extends Automaton {
 				HEAD,
 				TAIL
 		);
+	}
+
+	@Override
+	public State getDefaultState() {
+		return NOTHING;
 	}
 }
