@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class ToolFillWithStatic extends JMenu {
+public class ToolFillWithNoise extends JMenu {
 
 	private final Automaton automaton;
 	private final AutomatonDisplayer displayer;
@@ -28,8 +28,8 @@ public class ToolFillWithStatic extends JMenu {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Random random = new Random();
-			for (OrderedPair location : ToolFillWithStatic.this.displayer.getDisplayerPanel().getCellLocationsOnScreen()) {
-				ToolFillWithStatic.this.automaton.setCellAt(location, this.stateChooser.apply(random));
+			for (OrderedPair location : ToolFillWithNoise.this.displayer.getDisplayerPanel().getCellLocationsOnScreen()) {
+				ToolFillWithNoise.this.automaton.setCellAt(location, this.stateChooser.apply(random));
 			}
 		}
 	}
@@ -38,7 +38,7 @@ public class ToolFillWithStatic extends JMenu {
 		public JustCurrentState() {
 			super("Only selected cell state");
 
-			addActionListener(new ShufflingListener(r -> r.nextBoolean() ? ToolFillWithStatic.this.automaton.getDefaultState() : ToolFillWithStatic.this.displayer.currentPaintedState));
+			addActionListener(new ShufflingListener(r -> r.nextBoolean() ? ToolFillWithNoise.this.automaton.getDefaultState() : ToolFillWithNoise.this.displayer.currentPaintedState));
 		}
 	}
 
@@ -47,16 +47,16 @@ public class ToolFillWithStatic extends JMenu {
 			super("Use all available cell states");
 
 			addActionListener(new ShufflingListener(r -> {
-				List<State> selectable = ToolFillWithStatic.this.automaton.getSelectableForPainting();
+				List<State> selectable = ToolFillWithNoise.this.automaton.getSelectableForPainting();
 				return selectable.get(r.nextInt(selectable.size()));
 			}));
 		}
 	}
 
-	public ToolFillWithStatic(Automaton automaton, AutomatonDisplayer displayer) {
+	public ToolFillWithNoise(Automaton automaton, AutomatonDisplayer displayer) {
 		this.automaton = automaton;
 		this.displayer = displayer;
-		super("Fill with static");
+		super("Noise");
 		add(new JustCurrentState());
 		add(new AllStates());
 	}
