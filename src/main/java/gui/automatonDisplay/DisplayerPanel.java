@@ -10,8 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 
-import static javax.swing.text.html.CSS.Attribute.BORDER_COLOR;
-
 class DisplayerPanel extends JPanel {
 	private static final double ZOOM_AMOUNT = .1;
 	private static final double MIN_SCALE = 5;

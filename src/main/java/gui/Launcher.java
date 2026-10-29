@@ -1,5 +1,6 @@
 package gui;
 
+import automata.KnightCGOL;
 import engine.Automaton;
 import automata.CGOL;
 import automata.Rule110;
@@ -48,6 +49,7 @@ public class Launcher extends JFrame {
 
 		Automaton[] automata = {
 				new CGOL(),
+				new KnightCGOL(),
 				new WireWorld(),
 				new Rule110()
 		};
