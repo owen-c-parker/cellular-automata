@@ -4,6 +4,7 @@ import engine.Automaton;
 import automata.CGOL;
 import automata.Rule110;
 import automata.WireWorld;
+import gui.automatonDisplay.AutomatonDisplayer;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
