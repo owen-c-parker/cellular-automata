@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CGOL extends Automaton {
-	public static final State DEAD = new State() {
+	public static final State DEAD = new State(Color.DARK_GRAY, "Dead") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			Collection<State> states = board.getNeighborsOf(Board.MOORE_NEIGHBORHOOD, location);
@@ -24,19 +24,9 @@ public class CGOL extends Automaton {
 				return ALIVE;
 			return DEAD;
 		}
-
-		@Override
-		public Color getColor() {
-			return Color.DARK_GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Dead";
-		}
 	};
 
-	public static final State ALIVE = new State() {
+	public static final State ALIVE = new State(Color.LIGHT_GRAY, "Alive") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			Collection<State> states = board.getNeighborsOf(Board.MOORE_NEIGHBORHOOD, location);
@@ -48,16 +38,6 @@ public class CGOL extends Automaton {
 			if (aliveCount == 2 || aliveCount == 3)
 				return ALIVE;
 			return DEAD;
-		}
-
-		@Override
-		public Color getColor() {
-			return Color.LIGHT_GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Alive";
 		}
 	};
 

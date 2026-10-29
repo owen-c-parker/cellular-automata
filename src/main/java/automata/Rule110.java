@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.List;
 
 public class Rule110 extends Automaton {
-	private static final State ZERO = new State() {
+	private static final State ZERO = new State(Color.LIGHT_GRAY, "Zero") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			int integer =
@@ -19,32 +19,12 @@ public class Rule110 extends Automaton {
 
 			return (List.of(1, 2, 3, 5, 6).contains(integer)) ? ONE : ZERO;
 		}
-
-		@Override
-		public Color getColor() {
-			return Color.LIGHT_GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Zero";
-		}
 	};
 
-	private static final State ONE = new State() {
+	private static final State ONE = new State(Color.DARK_GRAY, "One") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return ONE;
-		}
-
-		@Override
-		public Color getColor() {
-			return Color.DARK_GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "One";
 		}
 	};
 

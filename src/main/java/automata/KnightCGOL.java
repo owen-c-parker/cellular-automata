@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class KnightCGOL extends Automaton {
-	private static final State DEAD = new State() {
+	private static final State DEAD = new State(CGOL.DEAD.getColor(), CGOL.DEAD.getDisplayableName()) {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			Collection<State> neighbors = board.getNeighborsOf(Board.KNIGHT_NEIGHBORHOOD, location);
@@ -21,19 +21,9 @@ public class KnightCGOL extends Automaton {
 			}
 			return livingCount == 3 ? ALIVE : DEAD;
 		}
-
-		@Override
-		public Color getColor() {
-			return CGOL.DEAD.getColor();
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return CGOL.DEAD.getDisplayableName();
-		}
 	};
 
-	private static final State ALIVE = new State() {
+	private static final State ALIVE = new State(CGOL.ALIVE.getColor(), CGOL.ALIVE.getDisplayableName()) {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			Collection<State> neighbors = board.getNeighborsOf(Board.KNIGHT_NEIGHBORHOOD, location);
@@ -43,16 +33,6 @@ public class KnightCGOL extends Automaton {
 					livingCount++;
 			}
 			return (livingCount == 3 || livingCount == 2) ? ALIVE : DEAD;
-		}
-
-		@Override
-		public Color getColor() {
-			return CGOL.ALIVE.getColor();
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return CGOL.ALIVE.getDisplayableName();
 		}
 	};
 

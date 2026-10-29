@@ -10,24 +10,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class WireWorld extends Automaton {
-	private static final State NOTHING = new State() {
+	private static final State NOTHING = new State(Color.DARK_GRAY, "Empty") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return NOTHING;
 		}
-
-		@Override
-		public Color getColor() {
-			return Color.DARK_GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Empty";
-		}
 	};
 
-	private static final State WIRE = new State() {
+	private static final State WIRE = new State(Color.LIGHT_GRAY, "Wire") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			Collection<State> states = board.getNeighborsOf(Board.MOORE_NEIGHBORHOOD, location);
@@ -38,49 +28,19 @@ public class WireWorld extends Automaton {
 			}
 			return numberOfHeads == 1 || numberOfHeads == 2 ? HEAD : WIRE;
 		}
-
-		@Override
-		public Color getColor() {
-			return Color.LIGHT_GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Wire";
-		}
 	};
 
-	private static final State HEAD = new State() {
+	private static final State HEAD = new State(Color.RED, "Electron head") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return TAIL;
 		}
-
-		@Override
-		public Color getColor() {
-			return Color.RED;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Spark head";
-		}
 	};
 
-	private static final State TAIL = new State() {
+	private static final State TAIL = new State(Color.GRAY, "Electron tail") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return WIRE;
-		}
-
-		@Override
-		public Color getColor() {
-			return Color.GRAY;
-		}
-
-		@Override
-		public String getDisplayableName() {
-			return "Spark tail";
 		}
 	};
 
