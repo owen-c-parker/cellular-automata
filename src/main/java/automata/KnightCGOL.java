@@ -35,6 +35,10 @@ public class KnightCGOL extends Automaton {
 		}
 	};
 
+	public KnightCGOL() {
+		super(Board.KNIGHT_NEIGHBORHOOD);
+	}
+
 	@Override
 	public String getDisplayableName() {
 		return "Knight CGOL";

@@ -41,6 +41,10 @@ public class CGOL extends Automaton {
 		}
 	};
 
+	public CGOL() {
+		super(Board.MOORE_NEIGHBORHOOD);
+	}
+
 	@Override
 	public String getDisplayableName() {
 		return "Conway's Game of Life";

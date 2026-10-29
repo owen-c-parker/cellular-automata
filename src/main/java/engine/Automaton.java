@@ -1,11 +1,15 @@
 package engine;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Automaton {
 	private Board board = new Board(getDefaultState());
+	private final Neighborhood wakeUpNeighborhood;
+
+	protected Automaton(Neighborhood wakeUpNeighborhood) {
+		this.wakeUpNeighborhood = wakeUpNeighborhood;
+	}
 
 	public abstract String getDisplayableName();
 
@@ -18,8 +22,12 @@ public abstract class Automaton {
 		updateAllListeners();
 	}
 
-	protected Collection<OrderedPair> getWakeUpNeighborhood() {
-		return Board.MOORE_NEIGHBORHOOD;
+	/**
+	 * Used by the lazy evaluation algorithm
+	 * @return Neighborhood to wake default cells around non-empty cells
+	 */
+	protected Neighborhood getWakeUpNeighborhood() {
+		return this.wakeUpNeighborhood;
 	}
 
 	public final void setCellAt(OrderedPair location, State state) {

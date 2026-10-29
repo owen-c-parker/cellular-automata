@@ -28,6 +28,10 @@ public class Rule110 extends Automaton {
 		}
 	};
 
+	public Rule110() {
+		super(Board.MOORE_NEIGHBORHOOD);
+	}
+
 	@Override
 	public String getDisplayableName() {
 		return "Rule 110";

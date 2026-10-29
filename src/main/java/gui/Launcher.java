@@ -11,6 +11,9 @@ import javax.swing.*;
 import java.awt.event.WindowEvent;
 
 public class Launcher extends JFrame {
+
+	void main() {}
+
 	public Launcher() {
 
 		setContentPane(new JPanel());

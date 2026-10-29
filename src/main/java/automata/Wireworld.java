@@ -44,6 +44,10 @@ public class Wireworld extends Automaton {
 		}
 	};
 
+	public Wireworld() {
+		super(Board.MOORE_NEIGHBORHOOD);
+	}
+
 	@Override
 	public String getDisplayableName() {
 		return "WireWorld";
