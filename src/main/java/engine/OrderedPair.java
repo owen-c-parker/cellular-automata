@@ -2,6 +2,10 @@ package engine;
 
 public record OrderedPair(int x, int y) {
 
+	public OrderedPair negate() {
+		return new OrderedPair(-x(), -y());
+	}
+
 	public OrderedPair add(int x, int y) {
 		return new OrderedPair(x() + x, y() + y);
 	}
