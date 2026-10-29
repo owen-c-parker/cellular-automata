@@ -30,7 +30,7 @@ public class WireWorld extends Automaton {
 	private static final State WIRE = new State() {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
-			Collection<State> states = board.getMooreNeighborsOf(location);
+			Collection<State> states = board.getNeighborsOf(Board.MOORE_NEIGHBORHOOD, location);
 			int numberOfHeads = 0;
 			for (State state : states) {
 				if (state.equals(HEAD))

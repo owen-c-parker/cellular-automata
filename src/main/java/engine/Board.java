@@ -54,20 +54,19 @@ public class Board {
 			NORTH, SOUTH, EAST, WEST
 	);
 
+	public static final Collection<OrderedPair> KNIGHT_NEIGHBORHOOD = List.of(
+			NORTH.add(NORTH_EAST), NORTH.add(NORTH_WEST),
+			EAST.add(NORTH_EAST) , EAST.add(SOUTH_EAST),
+			WEST.add(NORTH_WEST) , WEST.add(SOUTH_WEST),
+			SOUTH.add(SOUTH_EAST), SOUTH.add(SOUTH_WEST)
+	);
+
 	public Collection<State> getNeighborsOf(Collection<OrderedPair> neighborhood, OrderedPair location) {
 		return neighborhood
 				.stream()
 				.map(location::add)
 				.map(this::getCellAt)
 				.toList();
-	}
-
-	public Collection<State> getMooreNeighborsOf(OrderedPair location) {
-		return getNeighborsOf(MOORE_NEIGHBORHOOD, location);
-	}
-
-	public Collection<State> getVonNeumannNeighborsOf(OrderedPair location) {
-		return getNeighborsOf(VON_NEUMANN_NEIGHBORHOOD, location);
 	}
 
 	public State getDefaultState() {
