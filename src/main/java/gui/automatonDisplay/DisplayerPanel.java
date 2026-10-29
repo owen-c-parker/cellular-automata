@@ -191,6 +191,7 @@ public class DisplayerPanel extends JPanel {
 		OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
 		int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
 		g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
+		state.customDraw(g.create(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize));
 	}
 
 	private boolean isDefaultState(State state) {

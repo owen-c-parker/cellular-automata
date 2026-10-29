@@ -20,4 +20,11 @@ public abstract class State {
 	public final String getDisplayableName() {
 		return this.name;
 	}
+
+	/**
+	 * Override this method to draw additional graphics over the cell. The origin is the top left of the cell, and the
+	 * clipping bounds are bound to the cell itself
+	 * @param g Graphics context
+	 */
+	public void customDraw(Graphics g) {}
 }
