@@ -6,14 +6,22 @@ import gui.automaton_display.AutomatonDisplayer;
 import javax.swing.*;
 
 public class StatsDisplayer extends JFrame {
-	private final Automaton automaton;
+	private Automaton automaton;
 	private final AutomatonDisplayer displayer;
 
-	public StatsDisplayer(Automaton automaton, AutomatonDisplayer displayer) {
+	private final StatsPanel statsPanel;
+
+	public void setAutomaton(Automaton automaton) {
 		this.automaton = automaton;
+		automaton.registerUpdateListener(this.statsPanel::updateStats);
+		this.statsPanel.updateStats();
+	}
+
+	public StatsDisplayer(AutomatonDisplayer displayer) {
 		this.displayer = displayer;
 
-		setContentPane(new StatsPanel());
+		this.statsPanel = new StatsPanel();
+		setContentPane(this.statsPanel);
 
 		setTitle("Stats");
 
@@ -32,9 +40,7 @@ public class StatsDisplayer extends JFrame {
 		public StatsPanel() {
 			add(this.cellCountLabel);
 			add(this.zoomLevelLabel);
-			StatsDisplayer.this.automaton.registerUpdateListener(this::updateStats);
 			StatsDisplayer.this.displayer.registerRedrawListener(this::updateStats);
-			updateStats();
 		}
 		public void updateStats() {
 			int activeCellCount = StatsDisplayer.this.automaton.getActiveCellCount();

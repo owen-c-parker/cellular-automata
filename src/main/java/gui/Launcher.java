@@ -9,8 +9,19 @@ import gui.automaton_display.AutomatonDisplayer;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
+import java.util.Collection;
+import java.util.List;
 
 public class Launcher {
+
+	public static Collection<Class<? extends Automaton>> getAvailableAutomatonClasses() {
+		return List.of(
+				CGOL.class,
+				KnightCGOL.class,
+				Rule110.class,
+				Wireworld.class
+		);
+	}
 
 	void main() {
 		launch();
@@ -18,8 +29,7 @@ public class Launcher {
 
 	private void launch() {
 		Automaton automaton = new CGOL();
-		AutomatonDisplayer displayer = new AutomatonDisplayer(automaton, 16);
-		new AutomatonController(automaton);
-		new StatsDisplayer(automaton, displayer);
+		AutomatonDisplayer displayer = new AutomatonDisplayer();
+		displayer.setAutomaton(automaton);
 	}
 }

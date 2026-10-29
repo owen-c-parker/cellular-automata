@@ -17,10 +17,11 @@ public class DisplayerPanel extends JPanel {
 	private static final double MIN_SCALE = 1;
 	private static final double SCALE_TO_STOP_DRAWING_GRIDLINES = 8;
 	private static final double MAX_SCALE = 100;
+	private static final double DEFAULT_CELL_SCALE = 16;
 	private static final Color BORDER_COLOR = Color.BLACK;
 
 	private final AutomatonDisplayer automatonDisplayer;
-	private double cellScale;
+	private double cellScale = DEFAULT_CELL_SCALE;
 	private double scrollX = 0;
 	private double scrollY = 0;
 
@@ -28,9 +29,8 @@ public class DisplayerPanel extends JPanel {
 	private MouseEvent mostRecentMove = null;
 	private MouseEvent lastClickedPlace = null;
 
-	public DisplayerPanel(AutomatonDisplayer automatonDisplayer, double cellScale) {
+	public DisplayerPanel(AutomatonDisplayer automatonDisplayer) {
 		this.automatonDisplayer = automatonDisplayer;
-		this.cellScale = cellScale;
 
 		// Click
 		this.addMouseListener(new MouseInputAdapter() {
