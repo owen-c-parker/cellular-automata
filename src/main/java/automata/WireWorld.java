@@ -98,7 +98,8 @@ public class WireWorld extends Automaton {
 		return List.of(
 				NOTHING,
 				WIRE,
-				HEAD
+				HEAD,
+				TAIL
 		);
 	}
 }
