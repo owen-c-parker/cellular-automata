@@ -4,14 +4,16 @@ import java.util.*;
 
 import static engine.OrderedPair.*;
 
-public class Board {
+public final class Board {
 	private static final int THREAD_COUNT = 32;
-	HashMap<OrderedPair, State> cells = new HashMap<>();
+	Map<OrderedPair, State> cells = new HashMap<>();
+	Set<Agent> agents = new HashSet<>();
 	private final State defaultState;
 
 	public Board(State defaultState) {
 		this.defaultState = defaultState;
 	}
+
 
 	public State getCellAt(OrderedPair location) {
 		return this.cells.getOrDefault(location, this.defaultState);

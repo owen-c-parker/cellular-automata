@@ -17,7 +17,8 @@ public class Launcher {
 				KnightCGOL.class,
 				Rule110.class,
 				Wireworld.class,
-				BriansBrain.class
+				BriansBrain.class,
+				LangtonsAnt.class
 		);
 	}
 

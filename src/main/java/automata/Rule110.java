@@ -35,7 +35,7 @@ public class Rule110 extends Automaton {
 	}
 
 	@Override
-	public List<State> getSelectableForPainting() {
+	public List<State> getSelectableCellStates() {
 		return List.of(
 				ZERO,
 				ONE

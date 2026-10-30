@@ -47,7 +47,7 @@ public class AutomatonDisplayer extends JFrame {
 	}
 
 	public void setAutomaton(Automaton automaton) {
-		List<State> selectable = automaton.getSelectableForPainting();
+		List<State> selectable = automaton.getSelectableCellStates();
 		this.currentPaintedState = selectable.size() > 1 ? selectable.get(1) : selectable.getFirst();
 		setTitle(automaton.getDisplayableName());
 

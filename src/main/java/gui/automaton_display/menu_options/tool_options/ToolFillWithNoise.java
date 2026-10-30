@@ -1,6 +1,5 @@
 package gui.automaton_display.menu_options.tool_options;
 
-import engine.Automaton;
 import engine.OrderedPair;
 import engine.State;
 import gui.automaton_display.AutomatonDisplayer;
@@ -46,7 +45,7 @@ public class ToolFillWithNoise extends JMenu {
 			super("Use all available cell states");
 
 			addActionListener(new ShufflingListener(r -> {
-				List<State> selectable = ToolFillWithNoise.this.displayer.automaton.getSelectableForPainting();
+				List<State> selectable = ToolFillWithNoise.this.displayer.automaton.getSelectableCellStates();
 				return selectable.get(r.nextInt(selectable.size()));
 			}));
 		}

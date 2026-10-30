@@ -51,7 +51,7 @@ public class Wireworld extends Automaton {
 	}
 
 	@Override
-	public List<State> getSelectableForPainting() {
+	public List<State> getSelectableCellStates() {
 		return List.of(
 				NOTHING,
 				WIRE,

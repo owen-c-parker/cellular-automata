@@ -42,7 +42,7 @@ public class KnightCGOL extends Automaton {
 	}
 
 	@Override
-	public List<State> getSelectableForPainting() {
+	public List<State> getSelectableCellStates() {
 		return List.of(
 				DEAD,
 				ALIVE

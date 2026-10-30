@@ -33,6 +33,7 @@ public class Neighborhood {
 			WEST.add(NORTH_WEST) , WEST.add(SOUTH_WEST),
 			SOUTH.add(SOUTH_EAST), SOUTH.add(SOUTH_WEST)
 	);
+	public static final Neighborhood EMPTY = new Neighborhood();
 
 	private final Collection<OrderedPair> orderedPairs;
 

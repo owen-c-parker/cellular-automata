@@ -43,7 +43,7 @@ public class BriansBrain extends Automaton {
 	}
 
 	@Override
-	public List<State> getSelectableForPainting() {
+	public List<State> getSelectableCellStates() {
 		return List.of(
 				OFF,
 				DYING,

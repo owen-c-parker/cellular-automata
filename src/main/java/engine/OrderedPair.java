@@ -44,4 +44,12 @@ public record OrderedPair(int x, int y) {
 	public static final OrderedPair SOUTH_EAST = SOUTH.add(EAST);
 
 	public static final OrderedPair SOUTH_WEST = SOUTH.add(WEST);
+
+	public OrderedPair rotateRight() {
+		return new OrderedPair(-y(), x());
+	}
+
+	public OrderedPair rotateLeft() {
+		return new OrderedPair(y(), -x());
+	}
 }

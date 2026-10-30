@@ -1,11 +1,20 @@
 package engine;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public abstract class Automaton {
 	private Board board = new Board(getDefaultState());
 	private final Neighborhood wakeUpNeighborhood;
+
+	Set<Agent> agents = new HashSet<>();
+
+	public final boolean addAgent(Agent agent) {
+		return this.agents.add(agent);
+	}
+
+	public final boolean removeAgent(Agent agent) {
+		return this.agents.remove(agent);
+	}
 
 	protected Automaton(Neighborhood wakeUpNeighborhood) {
 		this.wakeUpNeighborhood = wakeUpNeighborhood;
@@ -19,7 +28,12 @@ public abstract class Automaton {
 
 	public final void step() {
 		this.board = this.board.getUpdatedBoard(getWakeUpNeighborhood());
+		stepAllAgents();
 		updateAllListeners();
+	}
+
+	private void stepAllAgents() {
+		this.agents.forEach(agent -> agent.step(this.board));
 	}
 
 	/**
@@ -41,7 +55,10 @@ public abstract class Automaton {
 		this.updateListeners.add(runnable);
 	}
 
-	public abstract List<State> getSelectableForPainting();
+	public abstract List<State> getSelectableCellStates();
+	public List<AgentBehavior> getSelectableAgentBehaviors() {
+		return new ArrayList<>();
+	}
 
 	public abstract State getDefaultState();
 
@@ -54,11 +71,11 @@ public abstract class Automaton {
 		return getDisplayableName();
 	}
 
-	public int getActiveCellCount() {
+	public final int getActiveCellCount() {
 		return this.board.cells.size();
 	}
 
-	public void clear() {
+	public final void clear() {
 		this.board = new Board(getDefaultState());
 		updateAllListeners();
 	}
