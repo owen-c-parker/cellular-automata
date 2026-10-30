@@ -8,9 +8,9 @@ import gui.automaton_display.menu_options.tool_options.ToolFillWithNoise;
 import javax.swing.*;
 
 public class ToolSelector extends JMenu {
-	public ToolSelector(Automaton automaton, AutomatonDisplayer displayer) {
+	public ToolSelector(AutomatonDisplayer displayer) {
 		super("Tools");
-		add(new ToolFillWithNoise(automaton, displayer));
-		add(new ToolClear(automaton));
+		add(new ToolFillWithNoise(displayer));
+		add(new ToolClear(displayer));
 	}
 }

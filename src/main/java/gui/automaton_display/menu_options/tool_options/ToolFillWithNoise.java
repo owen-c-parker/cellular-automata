@@ -14,7 +14,6 @@ import java.util.function.Function;
 
 public class ToolFillWithNoise extends JMenu {
 
-	private final Automaton automaton;
 	private final AutomatonDisplayer displayer;
 
 	private class ShufflingListener implements ActionListener {
@@ -29,7 +28,7 @@ public class ToolFillWithNoise extends JMenu {
 		public void actionPerformed(ActionEvent e) {
 			Random random = new Random();
 			for (OrderedPair location : ToolFillWithNoise.this.displayer.getDisplayerPanel().getCellLocationsOnScreen()) {
-				ToolFillWithNoise.this.automaton.setCellAt(location, this.stateChooser.apply(random));
+				ToolFillWithNoise.this.displayer.automaton.setCellAt(location, this.stateChooser.apply(random));
 			}
 		}
 	}
@@ -38,7 +37,7 @@ public class ToolFillWithNoise extends JMenu {
 		public JustCurrentState() {
 			super("Only selected cell state");
 
-			addActionListener(new ShufflingListener(r -> r.nextBoolean() ? ToolFillWithNoise.this.automaton.getDefaultState() : ToolFillWithNoise.this.displayer.currentPaintedState));
+			addActionListener(new ShufflingListener(r -> r.nextBoolean() ? ToolFillWithNoise.this.displayer.automaton.getDefaultState() : ToolFillWithNoise.this.displayer.currentPaintedState));
 		}
 	}
 
@@ -47,14 +46,13 @@ public class ToolFillWithNoise extends JMenu {
 			super("Use all available cell states");
 
 			addActionListener(new ShufflingListener(r -> {
-				List<State> selectable = ToolFillWithNoise.this.automaton.getSelectableForPainting();
+				List<State> selectable = ToolFillWithNoise.this.displayer.automaton.getSelectableForPainting();
 				return selectable.get(r.nextInt(selectable.size()));
 			}));
 		}
 	}
 
-	public ToolFillWithNoise(Automaton automaton, AutomatonDisplayer displayer) {
-		this.automaton = automaton;
+	public ToolFillWithNoise(AutomatonDisplayer displayer) {
 		this.displayer = displayer;
 		super("Noise");
 		add(new JustCurrentState());

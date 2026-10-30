@@ -18,7 +18,7 @@ public class DisplayerMenuBar extends JMenuBar {
 
 		this.add(new FileSelector(automatonDisplayer));
 		this.add(this.paintSelector);
-		this.add(new ToolSelector(automatonDisplayer.automaton, automatonDisplayer));
+		this.add(new ToolSelector(automatonDisplayer));
 	}
 
 	public void setPaintButtons(List<State> selectable) {
