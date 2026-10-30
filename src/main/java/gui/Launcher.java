@@ -1,9 +1,6 @@
 package gui;
 
-import automata.CGOL;
-import automata.KnightCGOL;
-import automata.Rule110;
-import automata.Wireworld;
+import automata.*;
 import engine.Automaton;
 import gui.automaton_display.AutomatonDisplayer;
 
@@ -19,7 +16,8 @@ public class Launcher {
 				CGOL.class,
 				KnightCGOL.class,
 				Rule110.class,
-				Wireworld.class
+				Wireworld.class,
+				BriansBrain.class
 		);
 	}
 
