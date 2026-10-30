@@ -1,9 +1,6 @@
 package automata;
 
-import engine.Automaton;
-import engine.Board;
-import engine.OrderedPair;
-import engine.State;
+import engine.*;
 
 import java.awt.*;
 import java.util.Collection;
@@ -20,7 +17,7 @@ public class Wireworld extends Automaton {
 	private static final State WIRE = new State(Color.LIGHT_GRAY, "Wire") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
-			Collection<State> states = board.getNeighborsOf(Board.MOORE_NEIGHBORHOOD, location);
+			Collection<State> states = board.getNeighborsOf(Neighborhood.MOORE_NEIGHBORHOOD, location);
 			int numberOfHeads = 0;
 			for (State state : states) {
 				if (state.equals(HEAD))
@@ -45,7 +42,7 @@ public class Wireworld extends Automaton {
 	};
 
 	public Wireworld() {
-		super(Board.MOORE_NEIGHBORHOOD);
+		super(Neighborhood.MOORE_NEIGHBORHOOD);
 	}
 
 	@Override

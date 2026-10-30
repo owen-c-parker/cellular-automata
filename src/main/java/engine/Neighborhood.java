@@ -5,10 +5,35 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static engine.OrderedPair.*;
+import static engine.OrderedPair.EAST;
+import static engine.OrderedPair.NORTH;
+import static engine.OrderedPair.NORTH_EAST;
+import static engine.OrderedPair.NORTH_WEST;
+import static engine.OrderedPair.SOUTH;
+import static engine.OrderedPair.SOUTH_EAST;
+import static engine.OrderedPair.SOUTH_WEST;
+import static engine.OrderedPair.WEST;
+
 /**
  * A collection of ordered pairs representing a neighborhood around a cell
  */
 public class Neighborhood {
+	public static final Neighborhood MOORE_NEIGHBORHOOD = new Neighborhood(
+			NORTH, SOUTH, EAST, WEST, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST
+			);
+
+	public static final Neighborhood VON_NEUMANN_NEIGHBORHOOD = new Neighborhood(
+			NORTH, SOUTH, EAST, WEST
+	);
+
+	public static final Neighborhood KNIGHT_NEIGHBORHOOD = new Neighborhood(
+			NORTH.add(NORTH_EAST), NORTH.add(NORTH_WEST),
+			EAST.add(NORTH_EAST) , EAST.add(SOUTH_EAST),
+			WEST.add(NORTH_WEST) , WEST.add(SOUTH_WEST),
+			SOUTH.add(SOUTH_EAST), SOUTH.add(SOUTH_WEST)
+	);
+
 	private final Collection<OrderedPair> orderedPairs;
 
 	public Neighborhood(OrderedPair... orderedPairs) {

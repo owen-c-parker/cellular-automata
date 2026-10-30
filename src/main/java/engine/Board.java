@@ -47,21 +47,6 @@ public class Board {
 		return updatedBoard;
 	}
 
-	public static final Neighborhood MOORE_NEIGHBORHOOD = new Neighborhood(
-			NORTH, SOUTH, EAST, WEST, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST
-	);
-
-	public static final Neighborhood VON_NEUMANN_NEIGHBORHOOD = new Neighborhood(
-			NORTH, SOUTH, EAST, WEST
-	);
-
-	public static final Neighborhood KNIGHT_NEIGHBORHOOD = new Neighborhood(
-			NORTH.add(NORTH_EAST), NORTH.add(NORTH_WEST),
-			EAST.add(NORTH_EAST) , EAST.add(SOUTH_EAST),
-			WEST.add(NORTH_WEST) , WEST.add(SOUTH_WEST),
-			SOUTH.add(SOUTH_EAST), SOUTH.add(SOUTH_WEST)
-	);
-
 	public Collection<State> getNeighborsOf(Neighborhood neighborhood, OrderedPair location) {
 		return neighborhood
 				.getAll()

@@ -1,9 +1,6 @@
 package automata;
 
-import engine.Automaton;
-import engine.Board;
-import engine.OrderedPair;
-import engine.State;
+import engine.*;
 
 import java.awt.*;
 import java.util.List;
@@ -29,7 +26,7 @@ public class Rule110 extends Automaton {
 	};
 
 	public Rule110() {
-		super(Board.MOORE_NEIGHBORHOOD);
+		super(Neighborhood.MOORE_NEIGHBORHOOD);
 	}
 
 	@Override

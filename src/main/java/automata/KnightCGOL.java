@@ -1,9 +1,6 @@
 package automata;
 
-import engine.Automaton;
-import engine.Board;
-import engine.OrderedPair;
-import engine.State;
+import engine.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +9,7 @@ public class KnightCGOL extends Automaton {
 	private static final State DEAD = new State(CGOL.DEAD.getColor(), CGOL.DEAD.getDisplayableName()) {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
-			Collection<State> neighbors = board.getNeighborsOf(Board.KNIGHT_NEIGHBORHOOD, location);
+			Collection<State> neighbors = board.getNeighborsOf(Neighborhood.KNIGHT_NEIGHBORHOOD, location);
 			int livingCount = 0;
 			for (State neighbor : neighbors) {
 				if (neighbor.equals(ALIVE))
@@ -25,7 +22,7 @@ public class KnightCGOL extends Automaton {
 	private static final State ALIVE = new State(CGOL.ALIVE.getColor(), CGOL.ALIVE.getDisplayableName()) {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
-			Collection<State> neighbors = board.getNeighborsOf(Board.KNIGHT_NEIGHBORHOOD, location);
+			Collection<State> neighbors = board.getNeighborsOf(Neighborhood.KNIGHT_NEIGHBORHOOD, location);
 			int livingCount = 0;
 			for (State neighbor : neighbors) {
 				if (neighbor.equals(ALIVE))
@@ -36,7 +33,7 @@ public class KnightCGOL extends Automaton {
 	};
 
 	public KnightCGOL() {
-		super(Board.KNIGHT_NEIGHBORHOOD);
+		super(Neighborhood.KNIGHT_NEIGHBORHOOD);
 	}
 
 	@Override
