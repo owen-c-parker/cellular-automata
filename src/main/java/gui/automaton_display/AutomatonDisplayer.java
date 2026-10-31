@@ -1,6 +1,7 @@
 package gui.automaton_display;
 
 import engine.Automaton;
+import engine.CursorPlaceable;
 import engine.State;
 import gui.AutomatonController;
 import gui.StatsDisplayer;
@@ -17,7 +18,7 @@ public class AutomatonDisplayer extends JFrame {
 	public Automaton automaton;
 	private final DisplayerPanel displayerPanel;
 
-	public State currentPaintedState;
+	public CursorPlaceable selectedForPlacing;
 
 	final Set<Runnable> drawCallbacks = new HashSet<>();
 
@@ -47,11 +48,11 @@ public class AutomatonDisplayer extends JFrame {
 	}
 
 	public void setAutomaton(Automaton automaton) {
-		List<State> selectable = automaton.getSelectableCellStates();
-		this.currentPaintedState = selectable.size() > 1 ? selectable.get(1) : selectable.getFirst();
+		List<State> selectableStates = automaton.getSelectableCellStates();
+		this.selectedForPlacing = selectableStates.size() > 1 ? selectableStates.get(1) : selectableStates.getFirst();
 		setTitle(automaton.getDisplayableName());
 
-		this.menuBar.setPaintButtons(selectable);
+		this.menuBar.setPaintButtons(selectableStates, automaton.getSelectableAgentBehaviors());
 
 		this.controller.setAutomaton(automaton);
 		this.stats.setAutomaton(automaton);

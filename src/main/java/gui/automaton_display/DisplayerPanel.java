@@ -1,6 +1,7 @@
 package gui.automaton_display;
 
 import engine.Agent;
+import engine.AgentBehavior;
 import engine.OrderedPair;
 import engine.State;
 
@@ -48,6 +49,7 @@ public class DisplayerPanel extends JPanel {
 				if (e.isShiftDown())
 					DisplayerPanel.this.lastClickedPlace = e;
 				placeCellAtClickedLocation(e);
+                placeAgentAtClickedLocation(e);
 			}
 		});
 
@@ -97,7 +99,16 @@ public class DisplayerPanel extends JPanel {
 
 	}
 
-	public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
+    private void placeAgentAtClickedLocation(MouseEvent e) {
+        if (!(this.automatonDisplayer.selectedForPlacing instanceof AgentBehavior agentBehavior))
+            return;
+
+        OrderedPair cellSpacePosition = fromScreenSpaceToCellSpace(new OrderedPair(e.getX(), e.getY()));
+
+        this.automatonDisplayer.automaton.addAgent(new Agent(cellSpacePosition, agentBehavior));
+    }
+
+    public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
 		return screenSpace
 				.subtract((int) this.scrollX, (int) this.scrollY)
 				.divide(this.cellScale);
@@ -110,7 +121,11 @@ public class DisplayerPanel extends JPanel {
 	}
 
 	public void placeCellAtClickedLocation(MouseEvent event) {
-		OrderedPair location = new OrderedPair(event.getX(), event.getY());
+        if (!(this.automatonDisplayer.selectedForPlacing instanceof State state))
+            return;
+
+
+        OrderedPair location = new OrderedPair(event.getX(), event.getY());
 		OrderedPair cellLocation = fromScreenSpaceToCellSpace(location);
 
 		if (this.lastClickedPlace != null) {
@@ -128,7 +143,7 @@ public class DisplayerPanel extends JPanel {
 
 		State stateToPaint = null;
 		if (SwingUtilities.isLeftMouseButton(event))
-			stateToPaint = this.automatonDisplayer.currentPaintedState;
+			stateToPaint = state;
 		if (SwingUtilities.isRightMouseButton(event))
 			stateToPaint = this.automatonDisplayer.automaton.getDefaultState();
 		if (stateToPaint == null) return;

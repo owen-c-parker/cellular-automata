@@ -8,7 +8,12 @@ import java.util.List;
 public class LangtonsAnt extends Automaton {
 
 	private static final AgentBehavior ANT = new AgentBehavior() {
-		private OrderedPair direction = OrderedPair.EAST;
+        @Override
+        public String getDisplayableName() {
+            return "Ant";
+        }
+
+        private OrderedPair direction = OrderedPair.EAST;
 
 		@Override
 		public OrderedPair step(Board board, OrderedPair location) {

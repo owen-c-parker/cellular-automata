@@ -2,7 +2,7 @@ package engine;
 
 import java.awt.*;
 
-public abstract class State {
+public abstract class State implements CursorPlaceable {
 	private final String name;
 	private final Color color;
 

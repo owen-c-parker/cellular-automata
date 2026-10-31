@@ -2,7 +2,7 @@ package engine;
 
 import java.awt.*;
 
-public interface AgentBehavior {
+public interface AgentBehavior extends CursorPlaceable, HasDisplayableName {
 	/**
 	 * @param board The current board
 	 * @param location Where the agent is

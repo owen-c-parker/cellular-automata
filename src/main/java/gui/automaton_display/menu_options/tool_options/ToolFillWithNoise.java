@@ -32,14 +32,6 @@ public class ToolFillWithNoise extends JMenu {
 		}
 	}
 
-	private class JustCurrentState extends JMenuItem {
-		public JustCurrentState() {
-			super("Only selected cell state");
-
-			addActionListener(new ShufflingListener(r -> r.nextBoolean() ? ToolFillWithNoise.this.displayer.automaton.getDefaultState() : ToolFillWithNoise.this.displayer.currentPaintedState));
-		}
-	}
-
 	private class AllStates extends JMenuItem {
 		public AllStates() {
 			super("Use all available cell states");
@@ -54,7 +46,6 @@ public class ToolFillWithNoise extends JMenu {
 	public ToolFillWithNoise(AutomatonDisplayer displayer) {
 		this.displayer = displayer;
 		super("Noise");
-		add(new JustCurrentState());
 		add(new AllStates());
 	}
 }
