@@ -69,7 +69,7 @@ public class LangtonsAnt extends Automaton {
 	}
 
 	@Override
-	public List<AgentFactory> getSelectableAgentBehaviors() {
+	public List<AgentFactory> getSelectableAgentFactories() {
 		return List.of(
 			ANT
 		);

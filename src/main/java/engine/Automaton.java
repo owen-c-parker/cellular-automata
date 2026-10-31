@@ -2,7 +2,7 @@ package engine;
 
 import java.util.*;
 
-public abstract class Automaton {
+public abstract class Automaton implements HasDisplayableName {
 	private Board board = new Board(getDefaultState());
 	private final Neighborhood wakeUpNeighborhood;
 
@@ -19,8 +19,6 @@ public abstract class Automaton {
 	protected Automaton(Neighborhood wakeUpNeighborhood) {
 		this.wakeUpNeighborhood = wakeUpNeighborhood;
 	}
-
-	public abstract String getDisplayableName();
 
 	private void updateAllListeners() {
 		this.updateListeners.forEach(Runnable::run);
@@ -56,7 +54,7 @@ public abstract class Automaton {
 	}
 
 	public abstract List<State> getSelectableCellStates();
-	public List<AgentFactory> getSelectableAgentBehaviors() {
+	public List<AgentFactory> getSelectableAgentFactories() {
 		return new ArrayList<>();
 	}
 

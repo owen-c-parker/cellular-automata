@@ -53,7 +53,7 @@ public class AutomatonDisplayer extends JFrame {
         this.selectedForPlacing = selectableStates.size() > 1 ? selectableStates.get(1) : selectableStates.getFirst();
         setTitle(automaton.getDisplayableName());
 
-        this.menuBar.setPaintButtons(selectableStates, automaton.getSelectableAgentBehaviors());
+        this.menuBar.setPaintButtons(selectableStates, automaton.getSelectableAgentFactories());
 
         this.controller.setAutomaton(automaton);
         this.stats.setAutomaton(automaton);
