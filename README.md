@@ -22,6 +22,7 @@ This is a program for simulating [cellular automata](https://en.wikipedia.org/wi
  - [Brian's Brain](/src/main/java/automata/BriansBrain.java) ([Wikipedia](https://en.wikipedia.org/wiki/Brian's_Brain))
  - [Knight CGOL](/src/main/java/automata/KnightCGOL.java)
    - Like Conway's Game of Life, but the neighborhood is like how a knight in Chess moves
+ - [Langton's Ant](/src/main/java/automata/LangtonsAnt.java) ([Wikipedia](https://en.wikipedia.org/wiki/langton's_ant))
 
 # Highlights
 
