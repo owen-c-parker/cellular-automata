@@ -20,7 +20,20 @@ public class LangtonsAnt extends Automaton {
 			board.setCellAt(location, board.getCellAt(location).equals(ON) ? OFF : ON);
 			return location.add(this.direction);
 		}
-	};
+
+        @Override
+        public void customDraw(Graphics g) {
+            g.setColor(Color.RED);
+
+            Rectangle bounds = g.getClipBounds();
+
+            OrderedPair center = new OrderedPair(bounds.width / 2, bounds.height / 2);
+
+            OrderedPair endOfLine = center.add(this.direction.scale(center.x()));
+
+            g.drawLine(center.x(), center.y(), endOfLine.x(), endOfLine.y());
+        }
+    };
 
 	private static final State OFF = new State(Color.DARK_GRAY, "Off") {
 		@Override

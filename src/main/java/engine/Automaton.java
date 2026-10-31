@@ -79,4 +79,8 @@ public abstract class Automaton {
 		this.board = new Board(getDefaultState());
 		updateAllListeners();
 	}
+
+    public Collection<Agent> getAgents() {
+        return Collections.unmodifiableCollection(this.agents);
+    }
 }

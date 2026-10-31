@@ -1,5 +1,6 @@
 package gui.automaton_display;
 
+import engine.Agent;
 import engine.OrderedPair;
 import engine.State;
 
@@ -154,12 +155,19 @@ public class DisplayerPanel extends JPanel {
 		super.paintComponent(g);
 		fillBackgroundWithDefaultCellColor(g);
 		drawAllCells(g);
+        drawAllAgents(g);
 		if (this.cellScale >= SCALE_TO_STOP_DRAWING_GRIDLINES)
 			drawGridlines(g);
 		this.automatonDisplayer.drawCallbacks.forEach(Runnable::run);
 	}
 
-	private void drawGridlines(Graphics g) {
+    private void drawAllAgents(Graphics g) {
+        Collection<Agent> agents = this.automatonDisplayer.automaton.getAgents();
+        for (Agent agent : agents)
+            agent.draw(g.create((int) (agent.getPosition().x() * this.cellScale + this.scrollX), (int) (agent.getPosition().y() * this.cellScale + this.scrollY), (int) this.cellScale, (int) this.cellScale));
+    }
+
+    private void drawGridlines(Graphics g) {
 		OrderedPair screenSizeInPixels = getScreenSizeInPixels();
 		g.setColor(BORDER_COLOR);
 		for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)

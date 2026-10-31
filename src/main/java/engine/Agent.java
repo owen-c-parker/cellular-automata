@@ -1,5 +1,7 @@
 package engine;
 
+import java.awt.*;
+
 /**
  * An agent is a stateful object that has a position
  */
@@ -15,4 +17,12 @@ public final class Agent {
 	public void step(Board board) {
 		this.position = this.behavior.step(board, this.position);
 	}
+
+    public void draw(Graphics g) {
+        this.behavior.customDraw(g);
+    }
+
+    public OrderedPair getPosition() {
+        return this.position;
+    }
 }
