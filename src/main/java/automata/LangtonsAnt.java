@@ -4,39 +4,49 @@ import engine.*;
 
 import java.awt.*;
 import java.util.List;
+import java.util.OptionalDouble;
 
 public class LangtonsAnt extends Automaton {
 
-	private static final AgentBehavior ANT = new AgentBehavior() {
+	private static final AgentFactory ANT = new AgentFactory() {
         @Override
         public String getDisplayableName() {
             return "Ant";
         }
 
-        private OrderedPair direction = OrderedPair.EAST;
-
-		@Override
-		public OrderedPair step(Board board, OrderedPair location) {
-			if (board.getCellAt(location).equals(OFF))
-				this.direction = this.direction.rotateLeft();
-			else
-				this.direction = this.direction.rotateRight();
-
-			board.setCellAt(location, board.getCellAt(location).equals(ON) ? OFF : ON);
-			return location.add(this.direction);
-		}
-
         @Override
-        public void customDraw(Graphics g) {
-            g.setColor(Color.RED);
+        public Agent buildAgent(OrderedPair position) {
+            return new Agent(position) {
+                private OrderedPair direction = OrderedPair.EAST;
 
-            Rectangle bounds = g.getClipBounds();
+                @Override
+                public void step(Board board) {
 
-            OrderedPair center = new OrderedPair(bounds.width / 2, bounds.height / 2);
+                    OrderedPair location = getPosition();
 
-            OrderedPair endOfLine = center.add(this.direction.scale(center.x()));
+                    if (board.getCellAt(location).equals(OFF))
+                        this.direction = this.direction.rotateLeft();
+                    else
+                        this.direction = this.direction.rotateRight();
 
-            g.drawLine(center.x(), center.y(), endOfLine.x(), endOfLine.y());
+                    board.setCellAt(location, board.getCellAt(location).equals(ON) ? OFF : ON);
+
+                    setPosition(location.add(this.direction));
+                }
+
+                @Override
+                public void draw(Graphics g) {
+                    g.setColor(Color.RED);
+
+                    Rectangle bounds = g.getClipBounds();
+
+                    OrderedPair center = new OrderedPair(bounds.width / 2, bounds.height / 2);
+
+                    OrderedPair endOfLine = center.add(this.direction.scale(center.x()));
+
+                    g.drawLine(center.x(), center.y(), endOfLine.x(), endOfLine.y());
+                }
+            };
         }
     };
 
@@ -56,11 +66,10 @@ public class LangtonsAnt extends Automaton {
 
 	public LangtonsAnt() {
 		super(Neighborhood.EMPTY);
-		this.addAgent(new Agent(new OrderedPair(0, 0), ANT));
 	}
 
 	@Override
-	public List<AgentBehavior> getSelectableAgentBehaviors() {
+	public List<AgentFactory> getSelectableAgentBehaviors() {
 		return List.of(
 			ANT
 		);

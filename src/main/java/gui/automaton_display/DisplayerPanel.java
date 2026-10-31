@@ -1,7 +1,7 @@
 package gui.automaton_display;
 
 import engine.Agent;
-import engine.AgentBehavior;
+import engine.AgentFactory;
 import engine.OrderedPair;
 import engine.State;
 
@@ -100,12 +100,17 @@ public class DisplayerPanel extends JPanel {
 	}
 
     private void placeAgentAtClickedLocation(MouseEvent e) {
-        if (!(this.automatonDisplayer.selectedForPlacing instanceof AgentBehavior agentBehavior))
+        if (!(this.automatonDisplayer.selectedForPlacing instanceof AgentFactory agentFactory))
+            return;
+
+        if (!SwingUtilities.isLeftMouseButton(e))
             return;
 
         OrderedPair cellSpacePosition = fromScreenSpaceToCellSpace(new OrderedPair(e.getX(), e.getY()));
 
-        this.automatonDisplayer.automaton.addAgent(new Agent(cellSpacePosition, agentBehavior));
+        this.automatonDisplayer.automaton.addAgent(agentFactory.buildAgent(cellSpacePosition));
+
+        repaint();
     }
 
     public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {

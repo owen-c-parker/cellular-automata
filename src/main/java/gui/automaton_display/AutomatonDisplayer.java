@@ -28,7 +28,7 @@ public class AutomatonDisplayer extends JFrame {
 
 	public AutomatonDisplayer() {
 
-		this.controller = new AutomatonController(this);
+		this.controller = new AutomatonController();
 		this.stats = new StatsDisplayer(this);
 
 		this.menuBar = new DisplayerMenuBar(this);
@@ -48,18 +48,18 @@ public class AutomatonDisplayer extends JFrame {
 	}
 
 	public void setAutomaton(Automaton automaton) {
-		List<State> selectableStates = automaton.getSelectableCellStates();
-		this.selectedForPlacing = selectableStates.size() > 1 ? selectableStates.get(1) : selectableStates.getFirst();
-		setTitle(automaton.getDisplayableName());
+        this.automaton = automaton;
+        List<State> selectableStates = automaton.getSelectableCellStates();
+        this.selectedForPlacing = selectableStates.size() > 1 ? selectableStates.get(1) : selectableStates.getFirst();
+        setTitle(automaton.getDisplayableName());
 
-		this.menuBar.setPaintButtons(selectableStates, automaton.getSelectableAgentBehaviors());
+        this.menuBar.setPaintButtons(selectableStates, automaton.getSelectableAgentBehaviors());
 
-		this.controller.setAutomaton(automaton);
-		this.stats.setAutomaton(automaton);
+        this.controller.setAutomaton(automaton);
+        this.stats.setAutomaton(automaton);
 
-		repaint();
+        repaint();
 
-		automaton.registerUpdateListener(this::repaint);
-		this.automaton = automaton;
+        automaton.registerUpdateListener(this::repaint);
 	}
 }

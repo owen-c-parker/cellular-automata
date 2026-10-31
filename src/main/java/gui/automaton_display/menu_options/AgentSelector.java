@@ -1,12 +1,9 @@
 package gui.automaton_display.menu_options;
 
-import engine.AgentBehavior;
-import engine.State;
-import gui.automaton_display.AutomatonDisplayer;
+import engine.AgentFactory;
 import gui.automaton_display.DisplayerMenuBar;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class AgentSelector extends JMenu {
@@ -14,9 +11,9 @@ public class AgentSelector extends JMenu {
         super("Agents");
     }
 
-    public void setPaintButtons(ButtonGroup buttonGroup, List<AgentBehavior> selectable, DisplayerMenuBar menuBar) {
+    public void setPaintButtons(ButtonGroup buttonGroup, List<AgentFactory> selectable, DisplayerMenuBar menuBar) {
         removeAll();
-        for (AgentBehavior behavior : selectable) {
+        for (AgentFactory behavior : selectable) {
             JRadioButtonMenuItem button = new JRadioButtonMenuItem(behavior.getDisplayableName());
             button.addActionListener(_ -> menuBar.automatonDisplayer.selectedForPlacing = behavior);
             buttonGroup.add(button);

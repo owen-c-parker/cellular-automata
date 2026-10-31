@@ -5,21 +5,22 @@ import java.awt.*;
 /**
  * An agent is a stateful object that has a position
  */
-public final class Agent {
+public abstract class Agent {
 	private OrderedPair position;
-	private final AgentBehavior behavior;
 
-	public Agent(OrderedPair position, AgentBehavior behavior) {
+	public Agent(OrderedPair position) {
 		this.position = position;
-		this.behavior = behavior;
 	}
 
-	public void step(Board board) {
-		this.position = this.behavior.step(board, this.position);
-	}
+	public abstract void step(Board board);
 
     public void draw(Graphics g) {
-        this.behavior.customDraw(g);
+        g.setColor(Color.RED);
+        g.fillArc(0, 0, g.getClipBounds().width, g.getClipBounds().height, 0, 360);
+    }
+
+    protected void setPosition(OrderedPair position) {
+        this.position = position;
     }
 
     public OrderedPair getPosition() {

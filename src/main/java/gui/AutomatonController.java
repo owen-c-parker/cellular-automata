@@ -1,40 +1,42 @@
 package gui;
 
 import engine.Automaton;
-import gui.automaton_display.AutomatonDisplayer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AutomatonController extends JFrame {
 	private Automaton automaton;
 
 	private boolean currentlyPlaying = false;
 
-	private double ticksPerSecond = 8;
+	private double ticksPerMillisecond = 8;
 
 	public void setAutomaton(Automaton automaton) {
 		this.automaton = automaton;
 	}
 
-	public AutomatonController(AutomatonDisplayer displayer) {
+	public AutomatonController() {
 		setTitle("Controls");
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		this.setContentPane(new AutomatonControllerContent());
-		setSize(350, 100);
+		setSize(600, 150);
 		setVisible(true);
 
-		AtomicInteger intervalsWaited = new AtomicInteger();
-		Timer timer = new Timer(10, _ -> {
-			if (intervalsWaited.get() >= 100 / this.ticksPerSecond && this.currentlyPlaying) {
-				intervalsWaited.set(0);
-				automaton.step();
-			}
-			intervalsWaited.getAndIncrement();
-		});
+        AtomicReference<Double> queuedTicks = new AtomicReference<>((double) 0);
+		Timer timer = new Timer(1, _ -> {
+            if (!this.currentlyPlaying)
+                return;
+
+            queuedTicks.updateAndGet(v -> v + this.ticksPerMillisecond);
+            while (queuedTicks.get() > 1) {
+                queuedTicks.updateAndGet(v -> v - 1);
+                this.automaton.step();
+            }
+        });
 
 		timer.setRepeats(true);
 		timer.start();
@@ -62,11 +64,11 @@ public class AutomatonController extends JFrame {
 
 			JSlider speedSlider = new JSlider();
 			speedSlider.setMinimum(-3);
-			speedSlider.setMaximum(20);
+			speedSlider.setMaximum(40);
 			ChangeListener changeListener = _ -> {
 				double speedValue = Math.pow(Math.sqrt(2), speedSlider.getValue());
 				speedLabel.setText(String.format("%.2f steps/s", speedValue));
-				AutomatonController.this.ticksPerSecond = speedValue;
+				AutomatonController.this.ticksPerMillisecond = speedValue / 1000;
 			};
 			changeListener.stateChanged(null);
 			speedSlider.addChangeListener(changeListener);

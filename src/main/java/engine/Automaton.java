@@ -56,7 +56,7 @@ public abstract class Automaton {
 	}
 
 	public abstract List<State> getSelectableCellStates();
-	public List<AgentBehavior> getSelectableAgentBehaviors() {
+	public List<AgentFactory> getSelectableAgentBehaviors() {
 		return new ArrayList<>();
 	}
 
