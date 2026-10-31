@@ -2,10 +2,8 @@ package gui;
 
 import automata.*;
 import engine.Automaton;
-import gui.automaton_display.AutomatonDisplayer;
+import gui.OLD.automaton_display.AutomatonDisplayer;
 
-import javax.swing.*;
-import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.List;
 

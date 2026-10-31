@@ -1,4 +1,4 @@
-package gui;
+package gui.OLD;
 
 import engine.Automaton;
 

@@ -1,7 +1,7 @@
-package gui.automaton_display.menu_options;
+package gui.OLD.automaton_display.menu_options;
 
-import gui.automaton_display.AutomatonDisplayer;
-import gui.automaton_display.menu_options.file_options.FileNew;
+import gui.OLD.automaton_display.AutomatonDisplayer;
+import gui.OLD.automaton_display.menu_options.file_options.FileNew;
 
 import javax.swing.*;
 

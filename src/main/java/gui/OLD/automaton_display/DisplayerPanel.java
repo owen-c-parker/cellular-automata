@@ -1,4 +1,4 @@
-package gui.automaton_display;
+package gui.OLD.automaton_display;
 
 import engine.Agent;
 import engine.AgentFactory;

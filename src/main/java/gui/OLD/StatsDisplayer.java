@@ -1,7 +1,7 @@
-package gui;
+package gui.OLD;
 
 import engine.Automaton;
-import gui.automaton_display.AutomatonDisplayer;
+import gui.OLD.automaton_display.AutomatonDisplayer;
 
 import javax.swing.*;
 

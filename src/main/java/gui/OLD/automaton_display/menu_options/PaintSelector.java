@@ -1,7 +1,7 @@
-package gui.automaton_display.menu_options;
+package gui.OLD.automaton_display.menu_options;
 
 import engine.State;
-import gui.automaton_display.DisplayerMenuBar;
+import gui.OLD.automaton_display.DisplayerMenuBar;
 
 import javax.swing.*;
 import java.awt.*;

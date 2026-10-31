@@ -1,11 +1,11 @@
-package gui.automaton_display;
+package gui.OLD.automaton_display;
 
 import engine.AgentFactory;
 import engine.State;
-import gui.automaton_display.menu_options.AgentSelector;
-import gui.automaton_display.menu_options.FileSelector;
-import gui.automaton_display.menu_options.PaintSelector;
-import gui.automaton_display.menu_options.ToolSelector;
+import gui.OLD.automaton_display.menu_options.AgentSelector;
+import gui.OLD.automaton_display.menu_options.FileSelector;
+import gui.OLD.automaton_display.menu_options.PaintSelector;
+import gui.OLD.automaton_display.menu_options.ToolSelector;
 
 import javax.swing.*;
 import java.util.List;

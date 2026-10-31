@@ -1,8 +1,8 @@
-package gui.automaton_display.menu_options.file_options;
+package gui.OLD.automaton_display.menu_options.file_options;
 
 import engine.Automaton;
 import gui.Launcher;
-import gui.automaton_display.AutomatonDisplayer;
+import gui.OLD.automaton_display.AutomatonDisplayer;
 
 import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;

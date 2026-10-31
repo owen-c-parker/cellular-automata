@@ -1,10 +1,10 @@
-package gui.automaton_display;
+package gui.OLD.automaton_display;
 
 import engine.Automaton;
 import engine.CursorPlaceable;
 import engine.State;
-import gui.AutomatonController;
-import gui.StatsDisplayer;
+import gui.OLD.AutomatonController;
+import gui.OLD.StatsDisplayer;
 
 import javax.swing.*;
 import java.util.HashSet;

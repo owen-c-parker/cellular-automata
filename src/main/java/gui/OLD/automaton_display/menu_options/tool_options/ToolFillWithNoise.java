@@ -1,8 +1,8 @@
-package gui.automaton_display.menu_options.tool_options;
+package gui.OLD.automaton_display.menu_options.tool_options;
 
 import engine.OrderedPair;
 import engine.State;
-import gui.automaton_display.AutomatonDisplayer;
+import gui.OLD.automaton_display.AutomatonDisplayer;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
