@@ -3,15 +3,15 @@ package gui;
 import javax.swing.*;
 
 public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
-    public final AutomatonReference automatonReference;
+    public final GuiReference guiReference;
     private COMPONENT_TYPE component;
-    public AccessorComponent(AutomatonReference automatonReference, COMPONENT_TYPE component) {
+    public AccessorComponent(GuiReference guiReference, COMPONENT_TYPE component) {
         this.component = component;
-        this(automatonReference);
+        this(guiReference);
     }
 
-    public AccessorComponent(AutomatonReference automatonReference) {
-        this.automatonReference = automatonReference;
+    public AccessorComponent(GuiReference guiReference) {
+        this.guiReference = guiReference;
     }
 
     public void setComponent(COMPONENT_TYPE component) {

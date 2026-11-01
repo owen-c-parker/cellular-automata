@@ -8,6 +8,18 @@ public abstract class Automaton implements HasDisplayableName {
 
 	Set<Agent> agents = new HashSet<>();
 
+    public CursorPlaceable getSelectedByDefault() {
+        List<State> states = getSelectableCellStates();
+        List<AgentFactory> agentFactories = getSelectableAgentFactories();
+        if (states.size() > 1)
+            return states.get(1);
+        if (!states.isEmpty())
+            return states.getFirst();
+        if (!agentFactories.isEmpty())
+            return agentFactories.getFirst();
+        return null;
+    }
+
 	public final boolean addAgent(Agent agent) {
 		return this.agents.add(agent);
 	}

@@ -25,8 +25,6 @@ public class Launcher {
 	}
 
 	private void launch() {
-		Automaton automaton = new CGOL();
-		AutomatonDisplayer displayer = new AutomatonDisplayer();
-		displayer.setAutomaton(automaton);
+        new AutomatonWindow();
 	}
 }

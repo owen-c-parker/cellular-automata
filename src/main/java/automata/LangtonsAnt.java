@@ -50,7 +50,12 @@ public class LangtonsAnt extends Automaton {
         }
     };
 
-	private static final State OFF = new State(Color.DARK_GRAY, "Off") {
+    @Override
+    public CursorPlaceable getSelectedByDefault() {
+        return ANT;
+    }
+
+    private static final State OFF = new State(Color.DARK_GRAY, "Off") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return OFF;
