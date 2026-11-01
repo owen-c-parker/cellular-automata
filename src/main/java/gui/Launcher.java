@@ -1,21 +1,18 @@
 package gui;
 
 import automata.*;
+import automaton_factories.CGOLFactory;
 import engine.Automaton;
+import engine.AutomatonFactory;
 
 import java.util.Collection;
 import java.util.List;
 
 public class Launcher {
 
-	public static Collection<Class<? extends Automaton>> getAvailableAutomatonClasses() {
+	public static Collection<AutomatonFactory> getAvailableAutomatonClasses() {
 		return List.of(
-				CGOL.class,
-				KnightCGOL.class,
-				Rule110.class,
-				Wireworld.class,
-				BriansBrain.class,
-				LangtonsAnt.class
+				new CGOLFactory()
 		);
 	}
 
