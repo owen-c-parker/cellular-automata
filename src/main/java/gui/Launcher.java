@@ -2,7 +2,6 @@ package gui;
 
 import automata.*;
 import engine.Automaton;
-import gui.OLD.automaton_display.AutomatonDisplayer;
 
 import java.util.Collection;
 import java.util.List;

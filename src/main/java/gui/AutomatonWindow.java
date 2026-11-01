@@ -1,7 +1,6 @@
 package gui;
 
 import automata.CGOL;
-import gui.OLD.StatsDisplayer;
 import gui.control.Controls;
 import gui.grid.GridDisplay;
 import gui.menu_bar.AutomatonMenuBar;
