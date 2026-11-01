@@ -1,4 +1,4 @@
 package engine;
 
-public interface CursorPlaceable {
+public interface CursorPlaceable extends HasDisplayableName {
 }
