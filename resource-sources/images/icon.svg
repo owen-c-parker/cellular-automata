@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733333"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e94, 2025-05-08)"
+   sodipodi:docname="icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.552143"
+     inkscape:cx="140.77311"
+     inkscape:cy="131.43119"
+     inkscape:window-width="1536"
+     inkscape:window-height="796"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#Grid1"
+       preserveAspectRatio="xMidYMid"
+       id="pattern6"
+       patternTransform="matrix(0.67288319,0.19294613,-0.19294613,0.67288319,0,0)"
+       x="-1"
+       y="-10" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="20"
+       height="20"
+       preserveAspectRatio="xMidYMid"
+       id="Grid1"
+       x="0"
+       y="0"
+       style="fill:#000000"
+       inkscape:label="Regular grid"
+       inkscape:collect="always"
+       inkscape:isstock="true">
+      <g
+         id="g63950-5">
+        <rect
+           style="fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+           id="rect62492-2"
+           width="1"
+           height="20"
+           x="9.5"
+           y="0" />
+        <rect
+           style="fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none"
+           id="rect63583-4"
+           width="1"
+           height="20"
+           x="-10.5"
+           y="0"
+           transform="rotate(-90)" />
+      </g>
+    </pattern>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath24">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.999999;stroke-linecap:butt;stroke-linejoin:bevel;paint-order:stroke markers fill;stop-color:#000000"
+         id="rect24"
+         width="44.999748"
+         height="77.937294"
+         x="251.53429"
+         y="222.73541" />
+    </clipPath>
+  </defs>
+  <rect
+     style="fill:#3d372a;fill-opacity:1;stroke-width:0.07"
+     id="rect6"
+     width="67.73333"
+     height="67.73333"
+     x="0"
+     y="0"
+     ry="16.183456"
+     inkscape:label="Background" />
+  <path
+     style="fill:#f8fed0;fill-opacity:1;stroke-width:0.07"
+     d="M 32.936383,9.4620534 46.366001,13.296133 42.701043,26.634882 56.039789,30.640768 52.246982,44.14998 48.349889,57.540736 7.9553572,46.01451 11.868503,32.558479 38.661829,40.228795 42.50927,26.826652 29.131974,22.95452 Z"
+     id="path6"
+     inkscape:label="Glider" />
+  <rect
+     style="fill:url(#pattern6);fill-opacity:1;stroke-width:0.07"
+     id="rect2"
+     width="67.73333"
+     height="67.73333"
+     x="0"
+     y="0"
+     ry="16.183456"
+     inkscape:label="Grid" />
+  <path
+     id="rect1"
+     style="fill:#15100d;stroke-width:0.07;fill-opacity:1"
+     d="M 16.193844 0 C 7.2223632 -1.2533184e-15 0 7.2223632 0 16.193844 L 0 51.53949 C -1.2533184e-15 60.51097 7.2223632 67.733333 16.193844 67.733333 L 51.53949 67.733333 C 60.51097 67.733333 67.733333 60.51097 67.733333 51.53949 L 67.733333 16.193844 C 67.733333 7.2223632 60.51097 0 51.53949 0 L 16.193844 0 z M 18.66346 4.7325277 L 49.069873 4.7325277 C 56.787632 4.7325277 63.000806 10.945701 63.000806 18.66346 L 63.000806 49.069873 C 63.000806 56.787632 56.787632 63.000806 49.069873 63.000806 L 18.66346 63.000806 C 10.945701 63.000806 4.7325277 56.787632 4.7325277 49.069873 L 4.7325277 18.66346 C 4.7325277 10.945701 10.945701 4.7325277 18.66346 4.7325277 z "
+     inkscape:label="Border" />
+</svg>

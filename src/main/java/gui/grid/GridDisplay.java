@@ -9,6 +9,7 @@ import gui.AccessorComponent;
 import gui.GuiReference;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -39,6 +40,8 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private class GridDisplayPanel extends JPanel {
         public GridDisplayPanel() {
             setSize(800, 800);
+
+			setBorder(new LineBorder(GridDisplay.this.guiReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
 
             GridDisplay.this.guiReference.repaintEvent.add(() -> {
                 revalidate();
