@@ -58,9 +58,9 @@ public abstract class Automaton implements HasDisplayableName {
 		this.updateListeners.add(runnable);
 	}
 
-	public abstract List<State> getSelectableCellStates();
+	public List<State> getSelectableCellStates() {return List.of();};
 	public List<AgentFactory> getSelectableAgentFactories() {
-		return new ArrayList<>();
+		return List.of();
 	}
 
 	public abstract State getDefaultState();
