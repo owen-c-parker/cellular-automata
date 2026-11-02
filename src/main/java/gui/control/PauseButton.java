@@ -4,7 +4,6 @@ import gui.AccessorComponent;
 import gui.GuiReference;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class PauseButton extends AccessorComponent<JButton> {
     public PauseButton(GuiReference guiReference) {

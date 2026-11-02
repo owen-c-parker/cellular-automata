@@ -4,7 +4,6 @@ import engine.*;
 
 import java.awt.*;
 import java.util.List;
-import java.util.OptionalDouble;
 
 public class LangtonsAnt extends Automaton {
 
@@ -55,7 +54,12 @@ public class LangtonsAnt extends Automaton {
         return ANT;
     }
 
-    private static final State OFF = new State(Color.DARK_GRAY, "Off") {
+	@Override
+	protected Neighborhood getWakeUpNeighborhood() {
+		return Neighborhood.EMPTY;
+	}
+
+	private static final State OFF = new State(Color.DARK_GRAY, "Off") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return OFF;
@@ -68,10 +72,6 @@ public class LangtonsAnt extends Automaton {
 			return ON;
 		}
 	};
-
-	public LangtonsAnt() {
-		super(Neighborhood.EMPTY);
-	}
 
 	@Override
 	public List<AgentFactory> getSelectableAgentFactories() {

@@ -5,7 +5,6 @@ import gui.GuiReference;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
-
 import java.awt.*;
 
 public class SpeedController extends AccessorComponent<JPanel> {

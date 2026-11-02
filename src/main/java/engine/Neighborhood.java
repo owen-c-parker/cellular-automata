@@ -6,14 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import static engine.OrderedPair.*;
-import static engine.OrderedPair.EAST;
-import static engine.OrderedPair.NORTH;
-import static engine.OrderedPair.NORTH_EAST;
-import static engine.OrderedPair.NORTH_WEST;
-import static engine.OrderedPair.SOUTH;
-import static engine.OrderedPair.SOUTH_EAST;
-import static engine.OrderedPair.SOUTH_WEST;
-import static engine.OrderedPair.WEST;
 
 /**
  * A collection of ordered pairs representing a neighborhood around a cell

@@ -1,7 +1,6 @@
 package gui.menu_bar.place;
 
 import engine.CursorPlaceable;
-import engine.State;
 import gui.AccessorComponent;
 import gui.GuiReference;
 

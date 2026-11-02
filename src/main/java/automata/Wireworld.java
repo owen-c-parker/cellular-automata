@@ -41,13 +41,14 @@ public class Wireworld extends Automaton {
 		}
 	};
 
-	public Wireworld() {
-		super(Neighborhood.MOORE_NEIGHBORHOOD);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "WireWorld";
+	}
+
+	@Override
+	protected Neighborhood getWakeUpNeighborhood() {
+		return Neighborhood.MOORE_NEIGHBORHOOD;
 	}
 
 	@Override

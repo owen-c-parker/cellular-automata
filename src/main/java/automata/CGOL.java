@@ -1,59 +1,20 @@
 package automata;
 
-import engine.*;
-
-import java.awt.*;
-import java.util.Collection;
 import java.util.List;
 
-public class CGOL extends Automaton {
-	public static final State DEAD = new State(Color.DARK_GRAY, "Dead") {
-		@Override
-		public State getNewState(Board board, OrderedPair location) {
-			Collection<State> states = board.getNeighborsOf(Neighborhood.MOORE_NEIGHBORHOOD, location);
+public class CGOL extends Lifelike {
+	@Override
+	protected List<Integer> getBirthNumbers() {
+		return List.of(3);
+	}
 
-			int aliveCount = 0;
-			for (State state : states) {
-				if (state.equals(ALIVE))
-					aliveCount++;
-			}
-			if (aliveCount == 3)
-				return ALIVE;
-			return DEAD;
-		}
-	};
-
-	public static final State ALIVE = new State(Color.LIGHT_GRAY, "Alive") {
-		@Override
-		public State getNewState(Board board, OrderedPair location) {
-			Collection<State> states = board.getNeighborsOf(Neighborhood.MOORE_NEIGHBORHOOD, location);
-			int aliveCount = 0;
-			for (State state : states) {
-				if (state.equals(ALIVE))
-					aliveCount++;
-			}
-			if (aliveCount == 2 || aliveCount == 3)
-				return ALIVE;
-			return DEAD;
-		}
-	};
-
-	public CGOL() {
-		super(Neighborhood.MOORE_NEIGHBORHOOD);
+	@Override
+	protected List<Integer> getSurviveNumbers() {
+		return List.of(2, 3);
 	}
 
 	@Override
 	public String getDisplayableName() {
 		return "Conway's Game of Life";
-	}
-
-	@Override
-	public List<State> getSelectableCellStates() {
-		return List.of(DEAD, ALIVE);
-	}
-
-	@Override
-	public State getDefaultState() {
-		return DEAD;
 	}
 }

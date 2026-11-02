@@ -1,6 +1,5 @@
 package gui;
 
-import automata.CGOL;
 import gui.control.Controls;
 import gui.grid.GridDisplay;
 import gui.menu_bar.AutomatonMenuBar;
@@ -12,7 +11,7 @@ import java.awt.*;
 public class AutomatonWindow extends JFrame {
     public AutomatonWindow() {
         GuiReference guiReference = new GuiReference();
-        guiReference.setAutomaton(new CGOL());
+        guiReference.setAutomaton(Launcher.getAvailableAutomatonClasses().getFirst().buildAutomaton());
 
         setContentPane(new JPanel(new BorderLayout()));
 

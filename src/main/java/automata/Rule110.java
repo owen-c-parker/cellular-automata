@@ -25,13 +25,14 @@ public class Rule110 extends Automaton {
 		}
 	};
 
-	public Rule110() {
-		super(Neighborhood.MOORE_NEIGHBORHOOD);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "Rule 110";
+	}
+
+	@Override
+	protected Neighborhood getWakeUpNeighborhood() {
+		return Neighborhood.MOORE_NEIGHBORHOOD;
 	}
 
 	@Override

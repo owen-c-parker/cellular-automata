@@ -4,7 +4,6 @@ import engine.OrderedPair;
 import engine.State;
 import gui.GuiReference;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 

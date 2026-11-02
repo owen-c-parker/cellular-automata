@@ -2,8 +2,6 @@ package engine;
 
 import java.util.*;
 
-import static engine.OrderedPair.*;
-
 public final class Board {
 	private static final int THREAD_COUNT = 32;
 	Map<OrderedPair, State> cells = new HashMap<>();

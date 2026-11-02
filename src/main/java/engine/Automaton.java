@@ -4,7 +4,6 @@ import java.util.*;
 
 public abstract class Automaton implements HasDisplayableName {
 	private Board board = new Board(getDefaultState());
-	private final Neighborhood wakeUpNeighborhood;
 
 	Set<Agent> agents = new HashSet<>();
 
@@ -28,10 +27,6 @@ public abstract class Automaton implements HasDisplayableName {
 		return this.agents.remove(agent);
 	}
 
-	protected Automaton(Neighborhood wakeUpNeighborhood) {
-		this.wakeUpNeighborhood = wakeUpNeighborhood;
-	}
-
 	private void updateAllListeners() {
 		this.updateListeners.forEach(Runnable::run);
 	}
@@ -50,9 +45,7 @@ public abstract class Automaton implements HasDisplayableName {
 	 * Used by the lazy evaluation algorithm
 	 * @return Neighborhood to wake default cells around non-empty cells
 	 */
-	protected Neighborhood getWakeUpNeighborhood() {
-		return this.wakeUpNeighborhood;
-	}
+	protected abstract Neighborhood getWakeUpNeighborhood();
 
 	public final void setCellAt(OrderedPair location, State state) {
 		this.board.setCellAt(location, state);
@@ -87,6 +80,7 @@ public abstract class Automaton implements HasDisplayableName {
 
 	public final void clear() {
 		this.board = new Board(getDefaultState());
+		this.agents = new HashSet<>();
 		updateAllListeners();
 	}
 

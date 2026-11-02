@@ -33,13 +33,14 @@ public class BriansBrain extends Automaton {
 		}
 	};
 
-	public BriansBrain() {
-		super(Neighborhood.MOORE_NEIGHBORHOOD);
-	}
-
 	@Override
 	public String getDisplayableName() {
 		return "Brian's Brain";
+	}
+
+	@Override
+	protected Neighborhood getWakeUpNeighborhood() {
+		return Neighborhood.MOORE_NEIGHBORHOOD;
 	}
 
 	@Override
