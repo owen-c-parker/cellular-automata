@@ -1,5 +1,7 @@
 package gui;
 
+import engine.colors.ColorPalette;
+
 import javax.swing.*;
 
 public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
@@ -8,10 +10,12 @@ public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
     public AccessorComponent(GuiReference guiReference, COMPONENT_TYPE component) {
         this.component = component;
         this(guiReference);
-    }
+	}
 
     public AccessorComponent(GuiReference guiReference) {
         this.guiReference = guiReference;
+		if (getComponent() instanceof JButton)
+			getComponent().setForeground(guiReference.getColorPalette().getColor(ColorPalette.Slot.BACKGROUND));
     }
 
     public void setComponent(COMPONENT_TYPE component) {

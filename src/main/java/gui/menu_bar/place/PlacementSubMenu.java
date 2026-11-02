@@ -28,7 +28,7 @@ public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
 
     private void addMenuItem(CursorPlaceable placeable) {
         JMenuItem menuItem = new JRadioButtonMenuItem(placeable.getDisplayableName());
-        getComponent().add(menuItem);
+		getComponent().add(menuItem);
 
         if (placeable instanceof State state)
             colorMenuItem(menuItem, state);
@@ -40,10 +40,11 @@ public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
     }
 
     private void colorMenuItem(JMenuItem menuItem, State state) {
-        Color color = state.getColor();
+        Color color = state.getColorEvaluator().getColor(this.guiReference.getColorPalette());
         int brightness = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
 
         menuItem.setBackground(color);
         menuItem.setForeground(brightness > 128 ? Color.DARK_GRAY : Color.LIGHT_GRAY);
+		menuItem.setOpaque(true);
     }
 }

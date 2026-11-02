@@ -1,6 +1,7 @@
 package automata;
 
 import engine.*;
+import engine.colors.ColorPalette;
 
 import java.awt.*;
 import java.util.List;
@@ -59,14 +60,14 @@ public class LangtonsAnt extends Automaton {
 		return Neighborhood.EMPTY;
 	}
 
-	private static final State OFF = new State(Color.DARK_GRAY, "Off") {
+	private static final State OFF = new State(ColorPalette.Slot.BACKGROUND, "Off") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return OFF;
 		}
 	};
 
-	private static final State ON = new State(Color.LIGHT_GRAY, "On") {
+	private static final State ON = new State(ColorPalette.Slot.FOREGROUND, "On") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return ON;

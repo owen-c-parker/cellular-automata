@@ -1,8 +1,8 @@
 package automata;
 
 import engine.*;
+import engine.colors.ColorPalette;
 
-import java.awt.*;
 import java.util.List;
 
 public abstract class Lifelike extends Automaton {
@@ -24,7 +24,7 @@ public abstract class Lifelike extends Automaton {
 
 	private State getOnState() {
 		if (this.ON == null)
-			this.ON = new State(Color.LIGHT_GRAY, "Alive") {
+			this.ON = new State(ColorPalette.Slot.FOREGROUND, "Alive") {
 				@Override
 				public State getNewState(Board board, OrderedPair location) {
 					return getSurviveNumbers().contains(countAliveNeighbors(board, location)) ? getOnState() : getOffState();
@@ -35,7 +35,7 @@ public abstract class Lifelike extends Automaton {
 
 	private State getOffState() {
 		if (this.OFF == null)
-			this.OFF = new State(Color.DARK_GRAY, "Dead") {
+			this.OFF = new State(ColorPalette.Slot.BACKGROUND, "Dead") {
 				@Override
 				public State getNewState(Board board, OrderedPair location) {
 					return getBirthNumbers().contains(countAliveNeighbors(board, location)) ? getOnState() : getOffState();

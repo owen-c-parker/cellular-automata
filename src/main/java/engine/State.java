@@ -1,19 +1,32 @@
 package engine;
 
+import engine.colors.ColorEvaluator;
+import engine.colors.ColorPalette;
+import engine.colors.PaletteColor;
+import engine.colors.StaticColor;
+
 import java.awt.*;
 
 public abstract class State implements CursorPlaceable, HasDisplayableName {
 	private final String name;
-	private final Color color;
+	private final ColorEvaluator color;
 
-	public State(Color color, String name) {
+	public State(ColorEvaluator color, String name) {
 		this.color = color;
 		this.name = name;
 	}
 
+	public State(Color color, String name) {
+		this(new StaticColor(color), name);
+	}
+
+	public State(ColorPalette.Slot slot, String name) {
+		this(new PaletteColor(slot), name);
+	}
+
 	public abstract State getNewState(Board board, OrderedPair location);
 
-	public final Color getColor() {
+	public final ColorEvaluator getColorEvaluator() {
 		return this.color;
 	}
 

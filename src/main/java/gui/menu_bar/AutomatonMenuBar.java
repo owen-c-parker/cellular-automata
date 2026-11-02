@@ -3,6 +3,7 @@ package gui.menu_bar;
 import gui.AccessorComponent;
 import gui.GuiReference;
 import gui.menu_bar.file.FileMenu;
+import gui.menu_bar.palettes.PaletteMenu;
 import gui.menu_bar.place.PlaceMenu;
 import gui.menu_bar.tools.ToolsMenu;
 
@@ -16,5 +17,6 @@ public class AutomatonMenuBar extends AccessorComponent<JMenuBar> {
         getComponent().add(new FileMenu(guiReference).getComponent());
         getComponent().add(new PlaceMenu(guiReference).getComponent());
         getComponent().add(new ToolsMenu(guiReference).getComponent());
+		getComponent().add(new PaletteMenu(guiReference).getComponent());
     }
 }

@@ -1,20 +1,20 @@
 package automata;
 
 import engine.*;
+import engine.colors.ColorPalette;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
 public class Wireworld extends Automaton {
-	private static final State NOTHING = new State(Color.DARK_GRAY, "Empty") {
+	private static final State NOTHING = new State(ColorPalette.Slot.BACKGROUND, "Empty") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return NOTHING;
 		}
 	};
 
-	private static final State WIRE = new State(Color.LIGHT_GRAY, "Wire") {
+	private static final State WIRE = new State(ColorPalette.Slot.FOREGROUND, "Wire") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			Collection<State> states = board.getNeighborsOf(Neighborhood.MOORE_NEIGHBORHOOD, location);
@@ -27,14 +27,14 @@ public class Wireworld extends Automaton {
 		}
 	};
 
-	private static final State HEAD = new State(Color.RED, "Electron head") {
+	private static final State HEAD = new State(ColorPalette.Slot.ACTIVE_1, "Electron head") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return TAIL;
 		}
 	};
 
-	private static final State TAIL = new State(Color.GRAY, "Electron tail") {
+	private static final State TAIL = new State(ColorPalette.Slot.DISSIPATING_1, "Electron tail") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return WIRE;

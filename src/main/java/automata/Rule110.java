@@ -1,12 +1,12 @@
 package automata;
 
 import engine.*;
+import engine.colors.ColorPalette;
 
-import java.awt.*;
 import java.util.List;
 
 public class Rule110 extends Automaton {
-	private static final State ZERO = new State(Color.LIGHT_GRAY, "Zero") {
+	private static final State ZERO = new State(ColorPalette.Slot.BACKGROUND, "Zero") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			int integer =
@@ -18,7 +18,7 @@ public class Rule110 extends Automaton {
 		}
 	};
 
-	private static final State ONE = new State(Color.DARK_GRAY, "One") {
+	private static final State ONE = new State(ColorPalette.Slot.FOREGROUND, "One") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return ONE;

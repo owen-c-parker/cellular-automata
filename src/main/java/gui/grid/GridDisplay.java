@@ -4,6 +4,7 @@ import engine.Agent;
 import engine.AgentFactory;
 import engine.OrderedPair;
 import engine.State;
+import engine.colors.ColorPalette;
 import gui.AccessorComponent;
 import gui.GuiReference;
 
@@ -22,7 +23,6 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double SCALE_TO_STOP_DRAWING_GRIDLINES = 20;
     private static final double MAX_SCALE = 100;
     private static final double DEFAULT_CELL_SCALE = 20;
-    private static final Color BORDER_COLOR = Color.BLACK;
 
     private double cellScale = DEFAULT_CELL_SCALE;
     private double scrollX = 0;
@@ -194,7 +194,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
     private void drawGridlines(Graphics g) {
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
-        g.setColor(BORDER_COLOR);
+        g.setColor(this.guiReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
         for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
             g.fillRect((int) x - 1, 0, 3, screenSizeInPixels.y());
         for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
@@ -215,7 +215,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private void drawCellAt(Graphics g, OrderedPair location) {
         State state = this.guiReference.getAutomaton().getCellAt(location);
         if (isDefaultState(state)) return;
-        g.setColor(state.getColor());
+        g.setColor(state.getColorEvaluator().getColor(this.guiReference.getColorPalette()));
         OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
         int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
         g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
@@ -254,7 +254,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
     private void fillBackgroundWithDefaultCellColor(Graphics g) {
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
-        g.setColor(this.guiReference.getAutomaton().getDefaultState().getColor());
+        g.setColor(this.guiReference.getAutomaton().getDefaultState().getColorEvaluator().getColor(this.guiReference.getColorPalette()));
         g.fillRect(0, 0, screenSizeInPixels.x(), screenSizeInPixels.y());
     }
 

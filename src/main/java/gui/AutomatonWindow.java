@@ -1,5 +1,6 @@
 package gui;
 
+import engine.colors.ColorPalette;
 import gui.control.Controls;
 import gui.grid.GridDisplay;
 import gui.menu_bar.AutomatonMenuBar;
@@ -11,7 +12,16 @@ import java.awt.*;
 public class AutomatonWindow extends JFrame {
     public AutomatonWindow() {
         GuiReference guiReference = new GuiReference();
-        guiReference.setAutomaton(Launcher.getAvailableAutomatonClasses().getFirst().buildAutomaton());
+
+		guiReference.setColorPalette(ColorPalette.DefaultPaletteEntry.DARK_MODE.getPalette());
+
+		guiReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
+
+		guiReference.newAutomatonEvent.add(() -> {
+			setTitle(String.format("Automaton Simulator - %s", guiReference.getAutomaton().getDisplayableName()));
+		});
+
+		guiReference.setAutomaton(Launcher.getAvailableAutomatonClasses().getFirst().buildAutomaton());
 
         setContentPane(new JPanel(new BorderLayout()));
 

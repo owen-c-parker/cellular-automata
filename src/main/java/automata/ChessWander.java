@@ -1,8 +1,8 @@
 package automata;
 
 import engine.*;
+import engine.colors.ColorPalette;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -46,7 +46,7 @@ public class ChessWander extends Automaton {
 
 	@Override
 	public State getDefaultState() {
-		return new State(Color.DARK_GRAY, "Nothing") {
+		return new State(ColorPalette.Slot.BACKGROUND, "Nothing") {
 			@Override
 			public State getNewState(Board board, OrderedPair location) {
 				return this;

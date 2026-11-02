@@ -1,27 +1,27 @@
 package automata;
 
 import engine.*;
+import engine.colors.ColorPalette;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
 public class BriansBrain extends Automaton {
-	private static final State ON = new State(Color.LIGHT_GRAY, "On") {
+	private static final State ON = new State(ColorPalette.Slot.FOREGROUND, "On") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return DYING;
 		}
 	};
 
-	private static final State DYING = new State(Color.GRAY, "Dying") {
+	private static final State DYING = new State(ColorPalette.Slot.MIDDLE, "Dying") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			return OFF;
 		}
 	};
 
-	private static final State OFF = new State(Color.DARK_GRAY, "Off") {
+	private static final State OFF = new State(ColorPalette.Slot.BACKGROUND, "Off") {
 		@Override
 		public State getNewState(Board board, OrderedPair location) {
 			int onCount = 0;
@@ -50,6 +50,11 @@ public class BriansBrain extends Automaton {
 				DYING,
 				ON
 		);
+	}
+
+	@Override
+	public CursorPlaceable getSelectedByDefault() {
+		return ON;
 	}
 
 	@Override

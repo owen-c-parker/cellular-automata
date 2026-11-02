@@ -2,7 +2,13 @@ package gui;
 
 import engine.Automaton;
 import engine.CursorPlaceable;
+import engine.colors.ColorEvaluator;
+import engine.colors.ColorPalette;
 import gui.grid.GridDisplay;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
 
 public class GuiReference {
     public boolean currentlyPlaying = false;
@@ -14,8 +20,9 @@ public class GuiReference {
     public final EventNotifier speedChangeEvent = new EventNotifier();
     public final EventNotifier repaintEvent = new EventNotifier();
     public final EventNotifier newAutomatonEvent = new EventNotifier();
+	public final EventNotifier newColorPaletteEvent = new EventNotifier();
 
-    public Automaton getAutomaton() {
+	public Automaton getAutomaton() {
         return this.automaton;
     }
 
@@ -29,4 +36,24 @@ public class GuiReference {
         this.automaton.step();
         this.repaintEvent.fire();
     }
+
+	private ColorPalette colorPalette;
+
+	public void setColorPalette(ColorPalette colorPalette) {
+		this.colorPalette = colorPalette;
+
+		UIManager.put("control", colorPalette.getColor(ColorPalette.Slot.BACKGROUND));
+		UIManager.put("text", colorPalette.getColor(ColorPalette.Slot.FOREGROUND));
+		UIManager.put("nimbusBase", colorPalette.getColor(ColorPalette.Slot.MIDDLE));
+
+		UIManager.put("info", colorPalette.getColor(ColorPalette.Slot.ACTIVE_1).brighter());
+		UIManager.put("nimbusInfoBlue", colorPalette.getColor(ColorPalette.Slot.ACTIVE_2).brighter());
+
+		this.newColorPaletteEvent.fire();
+		this.repaintEvent.fire();
+	}
+
+	public ColorPalette getColorPalette() {
+		return this.colorPalette;
+	}
 }
