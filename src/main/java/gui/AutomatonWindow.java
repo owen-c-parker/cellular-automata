@@ -19,30 +19,10 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class AutomatonWindow extends JFrame {
-	private final static LinkedList<Image> ICONS = new LinkedList<>();
-
-	private static Image getImage(String path) throws IOException {
-		URL url = AutomatonWindow.class.getResource(path);
-		if (url == null)
-			throw new FileNotFoundException();
-		return ImageIO.read(url);
-	}
-
-	static {
-		for (String path : new String[] {"/icon64.png", "/icon32.png", "/icon16.png"}) {
-			try {
-				ICONS.add(getImage(path));
-			} catch (IOException e) {
-				System.err.printf("Couldn't find image %s\n", path);
-			}
-		}
-	}
+public class AutomatonWindow extends GenericWindow {
 
 	public AutomatonWindow() {
         GuiReference guiReference = new GuiReference();
-
-		setIconImages(ICONS);
 
 		guiReference.setColorPalette(ColorPalette.DefaultPaletteEntry.DARK_MODE.getPalette());
 

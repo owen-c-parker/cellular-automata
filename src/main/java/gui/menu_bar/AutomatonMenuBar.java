@@ -2,6 +2,8 @@ package gui.menu_bar;
 
 import gui.AccessorComponent;
 import gui.GuiReference;
+import gui.menu_bar.about.AboutMenu;
+import gui.menu_bar.about.LicenseInfoWindow;
 import gui.menu_bar.file.FileMenu;
 import gui.menu_bar.palettes.PaletteMenu;
 import gui.menu_bar.place.PlaceMenu;
@@ -18,5 +20,6 @@ public class AutomatonMenuBar extends AccessorComponent<JMenuBar> {
         getComponent().add(new PlaceMenu(guiReference).getComponent());
         getComponent().add(new ToolsMenu(guiReference).getComponent());
 		getComponent().add(new PaletteMenu(guiReference).getComponent());
+		getComponent().add(new AboutMenu(guiReference).getComponent());
     }
 }
