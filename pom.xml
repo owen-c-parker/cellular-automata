@@ -37,7 +37,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.6.4</version>
                 <configuration>
-                    <mainClass>gui.Launcher</mainClass>
+                    <mainClass>owenparker.gui.Launcher</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -49,7 +49,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>gui.Launcher</mainClass>
+                            <mainClass>owenparker.gui.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

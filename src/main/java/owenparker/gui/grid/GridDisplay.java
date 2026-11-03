@@ -1,0 +1,268 @@
+package owenparker.gui.grid;
+
+import owenparker.engine.Agent;
+import owenparker.engine.AgentFactory;
+import owenparker.engine.OrderedPair;
+import owenparker.engine.State;
+import owenparker.engine.colors.ColorPalette;
+import owenparker.gui.AccessorComponent;
+import owenparker.gui.GuiReference;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.util.Collection;
+import java.util.LinkedList;
+
+public class GridDisplay extends AccessorComponent<JPanel> {
+    private static final double ZOOM_AMOUNT = .1;
+    private static final double MIN_SCALE = 1;
+    private static final double SCALE_TO_STOP_DRAWING_GRIDLINES = 20;
+    private static final double MAX_SCALE = 100;
+    private static final double DEFAULT_CELL_SCALE = 20;
+
+    private double cellScale = DEFAULT_CELL_SCALE;
+    private double scrollX = 0;
+    private double scrollY = 0;
+
+    private MouseEvent lastMouseEvent = null;
+    private MouseEvent shiftClickStartPlace = null;
+    private MouseEvent mostRecentMove = null;
+
+    public double getCellScale() {
+        return this.cellScale;
+    }
+
+    private class GridDisplayPanel extends JPanel {
+        public GridDisplayPanel() {
+            setSize(800, 800);
+
+			setBorder(new LineBorder(GridDisplay.this.guiReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
+
+            GridDisplay.this.guiReference.repaintEvent.add(() -> {
+                revalidate();
+                repaint();
+            });
+
+            addMouseListener(new MouseInputAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    GridDisplay.this.lastMouseEvent = null;
+                    GridDisplay.this.shiftClickStartPlace = null;
+                    GridDisplay.this.guiReference.repaintEvent.fire();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mouseClicked(e);
+                    if (e.isShiftDown())
+                        GridDisplay.this.shiftClickStartPlace = e;
+                    placeCellAtClickedLocation(e);
+                    placeAgentAtClickedLocation(e);
+                    GridDisplay.this.guiReference.repaintEvent.fire();
+                }
+            });
+
+            addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    super.mouseMoved(e);
+                    GridDisplay.this.mostRecentMove = e;
+                    GridDisplay.this.guiReference.repaintEvent.fire();
+                }
+
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    super.mouseDragged(e);
+                    placeCellAtClickedLocation(e);
+                    dragScroll(e);
+                    GridDisplay.this.lastMouseEvent = e;
+                    GridDisplay.this.guiReference.repaintEvent.fire();
+                }
+            });
+
+            addMouseWheelListener(new MouseInputAdapter() {
+                @Override
+                public void mouseWheelMoved(MouseWheelEvent e) {
+                    super.mouseWheelMoved(e);
+                    performZoom(e);
+                    GridDisplay.this.guiReference.repaintEvent.fire();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            fillBackgroundWithDefaultCellColor(g);
+            drawAllCells(g);
+            drawAllAgents(g);
+            if (GridDisplay.this.cellScale >= SCALE_TO_STOP_DRAWING_GRIDLINES)
+                drawGridlines(g);
+        }
+    }
+
+    public GridDisplay(GuiReference guiReference) {
+        super(guiReference);
+        setComponent(new GridDisplayPanel());
+        guiReference.gridDisplay = this;
+    }
+
+    private void performZoom(MouseWheelEvent event) {
+        double modifier = 1 + -ZOOM_AMOUNT * event.getPreciseWheelRotation();
+
+        double tentativeNewScale = this.cellScale * modifier;
+
+        if (tentativeNewScale < MIN_SCALE || tentativeNewScale > MAX_SCALE)
+            return;
+
+        OrderedPair mousePosOnScreen = new OrderedPair(this.mostRecentMove.getX(), this.mostRecentMove.getY());
+
+        int width = getComponent().getWidth();
+        int height = getComponent().getHeight();
+
+        this.scrollX = this.scrollX * modifier - ((double) mousePosOnScreen.x() / width * (width * modifier - width));
+        this.scrollY = this.scrollY * modifier - ((double) mousePosOnScreen.y() / height * (height * modifier - height));
+
+        this.cellScale = tentativeNewScale;
+    }
+
+    private void dragScroll(MouseEvent event) {
+        if (!SwingUtilities.isMiddleMouseButton(event)) return;
+
+        if (this.lastMouseEvent == null) return;
+
+        OrderedPair offset = new OrderedPair(event.getX(), event.getY())
+                .subtract(this.lastMouseEvent.getX(), this.lastMouseEvent.getY());
+
+        this.scrollX += offset.x();
+        this.scrollY += offset.y();
+    }
+
+    private void placeAgentAtClickedLocation(MouseEvent event) {
+        if (!(this.guiReference.selectedForPlacement instanceof AgentFactory agentFactory))
+            return;
+
+        if (SwingUtilities.isLeftMouseButton(event)) {
+            OrderedPair cellSpacePosition = fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY()));
+
+            this.guiReference.getAutomaton().addAgent(agentFactory.buildAgent(cellSpacePosition));
+        }
+
+        if (SwingUtilities.isRightMouseButton(event)) {
+            Agent agentToDelete = null;
+            for (Agent agent : this.guiReference.getAutomaton().getAgents())
+                if (agent.getPosition().equals(fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY()))))
+                    agentToDelete = agent;
+            this.guiReference.getAutomaton().removeAgent(agentToDelete);
+        }
+
+    }
+
+    private void placeCellAtClickedLocation(MouseEvent event) {
+        if (!(this.guiReference.selectedForPlacement instanceof State state))
+            return;
+
+
+        OrderedPair location = new OrderedPair(event.getX(), event.getY());
+        OrderedPair cellLocation = fromScreenSpaceToCellSpace(location);
+
+        if (this.shiftClickStartPlace != null) {
+            OrderedPair lastClickedCellLocation = fromScreenSpaceToCellSpace(new OrderedPair(this.shiftClickStartPlace.getX(), this.shiftClickStartPlace.getY()));
+
+            OrderedPair difference = lastClickedCellLocation.subtract(cellLocation);
+
+            if (Math.abs(difference.x()) > Math.abs(difference.y())) {
+                cellLocation = new OrderedPair(cellLocation.x(), lastClickedCellLocation.y());
+            } else {
+                cellLocation = new OrderedPair(lastClickedCellLocation.x(), cellLocation.y());
+            }
+        }
+
+
+        State stateToPaint = null;
+        if (SwingUtilities.isLeftMouseButton(event))
+            stateToPaint = state;
+        if (SwingUtilities.isRightMouseButton(event))
+            stateToPaint = this.guiReference.getAutomaton().getDefaultState();
+        if (stateToPaint == null) return;
+
+        this.guiReference.getAutomaton().setCellAt(cellLocation, stateToPaint);
+    }
+
+    private void drawGridlines(Graphics g) {
+        OrderedPair screenSizeInPixels = getScreenSizeInPixels();
+        g.setColor(this.guiReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
+        for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
+            g.fillRect((int) x - 1, 0, 3, screenSizeInPixels.y());
+        for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
+            g.fillRect(0, (int) y - 1, screenSizeInPixels.x(), 3);
+    }
+
+    private void drawAllAgents(Graphics g) {
+        Collection<Agent> agents = this.guiReference.getAutomaton().getAgents();
+        for (Agent agent : agents)
+            agent.draw(g.create((int) (agent.getPosition().x() * this.cellScale + this.scrollX), (int) (agent.getPosition().y() * this.cellScale + this.scrollY), (int) this.cellScale, (int) this.cellScale));
+    }
+
+    private void drawAllCells(Graphics g) {
+        for (OrderedPair location : getCellLocationsOnScreen())
+            drawCellAt(g, location);
+    }
+
+    private void drawCellAt(Graphics g, OrderedPair location) {
+        State state = this.guiReference.getAutomaton().getCellAt(location);
+        if (isDefaultState(state)) return;
+        g.setColor(state.getColorEvaluator().getColor(this.guiReference.getColorPalette()));
+        OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
+        int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
+        g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
+        state.customDraw(g.create(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize));
+    }
+
+    private OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {
+        return cellSpace
+                .scale(this.cellScale)
+                .add((int) this.scrollX, (int) this.scrollY);
+    }
+
+    public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
+        return screenSpace
+                .subtract((int) this.scrollX, (int) this.scrollY)
+                .divide(this.cellScale);
+    }
+
+    private boolean isDefaultState(State state) {
+        return this.guiReference.getAutomaton().getDefaultState().equals(state);
+    }
+
+    public Collection<OrderedPair> getCellLocationsOnScreen() {
+        OrderedPair scrollAsCells = new OrderedPair((int) -this.scrollX, (int) -this.scrollY).divide(this.cellScale);
+        OrderedPair screenSizeInCells = getScreenSizeInPixels().divide(this.cellScale);
+
+        Collection<OrderedPair> locations = new LinkedList<>();
+        for (int y = scrollAsCells.y() - 1; y <= scrollAsCells.y() + screenSizeInCells.y() + 1; y++) {
+            for (int x = scrollAsCells.x() - 1; x <= scrollAsCells.x() + screenSizeInCells.x() + 1; x++) {
+                locations.add(new OrderedPair(x, y));
+            }
+        }
+
+        return locations;
+    }
+
+    private void fillBackgroundWithDefaultCellColor(Graphics g) {
+        OrderedPair screenSizeInPixels = getScreenSizeInPixels();
+        g.setColor(this.guiReference.getAutomaton().getDefaultState().getColorEvaluator().getColor(this.guiReference.getColorPalette()));
+        g.fillRect(0, 0, screenSizeInPixels.x(), screenSizeInPixels.y());
+    }
+
+    private OrderedPair getScreenSizeInPixels() {
+        Dimension dimension = getComponent().getSize();
+        return new OrderedPair(dimension.width, dimension.height);
+    }
+}
