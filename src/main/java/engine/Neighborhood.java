@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import static engine.OrderedPair.*;
 /**
  * A collection of ordered pairs representing a neighborhood around a cell
  */
-public class Neighborhood {
+public class Neighborhood implements Serializable {
 	public static final Neighborhood MOORE_NEIGHBORHOOD = new Neighborhood(
 			NORTH, SOUTH, EAST, WEST, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST
 			);

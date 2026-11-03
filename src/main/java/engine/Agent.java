@@ -1,11 +1,12 @@
 package engine;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * An agent is a stateful object that has a position
  */
-public abstract class Agent {
+public abstract class Agent implements Serializable {
 	private OrderedPair position;
 
 	public Agent(OrderedPair position) {

@@ -3,11 +3,12 @@ package engine.colors;
 import engine.HasDisplayableName;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Map;
 
 import static java.awt.Color.*;
 
-public class ColorPalette implements HasDisplayableName {
+public class ColorPalette implements HasDisplayableName, Serializable {
 
 	private final String name;
 

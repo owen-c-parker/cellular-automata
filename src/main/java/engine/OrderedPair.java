@@ -1,6 +1,8 @@
 package engine;
 
-public record OrderedPair(int x, int y) {
+import java.io.Serializable;
+
+public record OrderedPair(int x, int y) implements Serializable {
 
 	public OrderedPair negate() {
 		return new OrderedPair(-x(), -y());

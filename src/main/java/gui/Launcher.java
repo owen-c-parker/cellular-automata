@@ -5,6 +5,7 @@ import engine.AutomatonFactory;
 import engine.colors.ColorPalette;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,12 +31,23 @@ public class Launcher {
 		return palettes;
 	}
 
+	public static void errorWindow(Exception e) {
+		GenericWindow errorWindow = new GenericWindow();
+		errorWindow.setTitle(String.format("Error - %s", e.getClass().getSimpleName()));
+		errorWindow.getContentPane().add(new JScrollPane(new JLabel(String.format("<html>%s</html>", e))));
+		errorWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		errorWindow.setSize(screen.width / 2, screen.height / 2);
+		errorWindow.setLocationRelativeTo(null);
+		errorWindow.setVisible(true);
+	}
+
 	void main() {
 		launch();
 	}
 
 	private void launch() {
-		setLookAndFeel();
+		//setLookAndFeel();
 		new AutomatonWindow();
 	}
 

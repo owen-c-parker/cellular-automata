@@ -6,8 +6,9 @@ import engine.colors.PaletteColor;
 import engine.colors.StaticColor;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class State implements CursorPlaceable, HasDisplayableName {
+public abstract class State implements CursorPlaceable, HasDisplayableName, Serializable {
 	private final String name;
 	private final ColorEvaluator color;
 

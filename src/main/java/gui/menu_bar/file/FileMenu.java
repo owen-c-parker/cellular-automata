@@ -10,5 +10,7 @@ public class FileMenu extends AccessorComponent<JMenu> {
         super(guiReference, new JMenu("File"));
 
         getComponent().add(new NewFileMenu(guiReference).getComponent());
+		getComponent().add(new SaveMenu(guiReference).getComponent());
+		getComponent().add(new LoadMenu(guiReference).getComponent());
     }
 }

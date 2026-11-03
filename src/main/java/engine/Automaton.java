@@ -1,8 +1,9 @@
 package engine;
 
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class Automaton implements HasDisplayableName {
+public abstract class Automaton implements HasDisplayableName, Serializable {
 	private Board board = new Board(getDefaultState());
 
 	Set<Agent> agents = new HashSet<>();

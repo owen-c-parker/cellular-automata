@@ -1,11 +1,10 @@
 package engine;
 
+import java.io.Serializable;
 import java.util.*;
 
-public final class Board {
-	private static final int THREAD_COUNT = 32;
+public final class Board implements Serializable {
 	Map<OrderedPair, State> cells = new HashMap<>();
-	Set<Agent> agents = new HashSet<>();
 	private final State defaultState;
 
 	public Board(State defaultState) {
