@@ -21,7 +21,7 @@ public class ImageHelper {
 
 	public static Image readImage(String path) {
 		try {
-			URL url = AutomatonWindow.class.getClassLoader().getResource(path);
+			URL url = AutomatonWindow.class.getResource(path);
 			if (url == null)
 				throw new FileNotFoundException();
 			return ImageIO.read(url);
