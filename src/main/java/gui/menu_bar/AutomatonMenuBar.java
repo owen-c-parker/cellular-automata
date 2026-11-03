@@ -19,6 +19,6 @@ public class AutomatonMenuBar extends AccessorComponent<JMenuBar> {
         getComponent().add(new PlaceMenu(guiReference).getComponent());
         getComponent().add(new ToolsMenu(guiReference).getComponent());
 		getComponent().add(new PaletteMenu(guiReference).getComponent());
-		getComponent().add(new AboutMenu(guiReference).getComponent());
+		//getComponent().add(new AboutMenu(guiReference).getComponent());
     }
 }
