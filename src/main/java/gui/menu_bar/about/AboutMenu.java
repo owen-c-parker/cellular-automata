@@ -10,12 +10,7 @@ public class AboutMenu extends AccessorComponent<JMenu> {
 		super(guiReference, new JMenu("About"));
 
 		JMenuItem licenseInfoButton = new JMenuItem("License information");
-		licenseInfoButton.addActionListener(_ -> {
-			new LicenseInfoWindow(guiReference);
-		});
+		licenseInfoButton.addActionListener(_ -> new LicenseInfoWindow());
 		getComponent().add(licenseInfoButton);
-
-
-		getComponent().add(new JMenuItem("About author"));
 	}
 }

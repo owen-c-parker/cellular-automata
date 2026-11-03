@@ -3,7 +3,6 @@ package gui.menu_bar;
 import gui.AccessorComponent;
 import gui.GuiReference;
 import gui.menu_bar.about.AboutMenu;
-import gui.menu_bar.about.LicenseInfoWindow;
 import gui.menu_bar.file.FileMenu;
 import gui.menu_bar.palettes.PaletteMenu;
 import gui.menu_bar.place.PlaceMenu;

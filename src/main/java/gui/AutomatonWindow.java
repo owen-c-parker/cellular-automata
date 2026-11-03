@@ -6,18 +6,8 @@ import gui.grid.GridDisplay;
 import gui.menu_bar.AutomatonMenuBar;
 import gui.stats.StatsPanel;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.Objects;
 
 public class AutomatonWindow extends GenericWindow {
 
@@ -28,9 +18,7 @@ public class AutomatonWindow extends GenericWindow {
 
 		guiReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
 
-		guiReference.newAutomatonEvent.add(() -> {
-			setTitle(String.format("Automaton Simulator - %s", guiReference.getAutomaton().getDisplayableName()));
-		});
+		guiReference.newAutomatonEvent.add(() -> setTitle(String.format("Automaton Simulator - %s", guiReference.getAutomaton().getDisplayableName())));
 
 		guiReference.setAutomaton(Launcher.getAvailableAutomatonClasses().getFirst().buildAutomaton());
 

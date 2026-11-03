@@ -2,13 +2,10 @@ package gui;
 
 import engine.Automaton;
 import engine.CursorPlaceable;
-import engine.colors.ColorEvaluator;
 import engine.colors.ColorPalette;
 import gui.grid.GridDisplay;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 
 public class GuiReference {
     public boolean currentlyPlaying = false;

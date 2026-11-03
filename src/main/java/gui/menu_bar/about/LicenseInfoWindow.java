@@ -1,18 +1,15 @@
 package gui.menu_bar.about;
 
 import gui.GenericWindow;
-import gui.GuiReference;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class LicenseInfoWindow extends GenericWindow {
-	public LicenseInfoWindow(GuiReference guiReference) {
+	public LicenseInfoWindow() {
 		setTitle("License Information");
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
