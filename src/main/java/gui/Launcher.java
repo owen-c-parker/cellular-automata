@@ -12,6 +12,9 @@ import java.util.List;
 
 public class Launcher {
 
+	public static final String APP_NAME = "Cellular Automaton Simulator";
+	public static final String APP_NAME_NO_SPACES = "CellularAutomatonSimulator";
+
 	public static List<AutomatonFactory> getAvailableAutomatonClasses() {
 		return List.of(
 				new CGOLFactory(),
@@ -48,7 +51,6 @@ public class Launcher {
 
 	private void launch() {
 		//setLookAndFeel();
-		System.out.println(System.getenv("GDK_SCALE"));
 		new AutomatonWindow();
 	}
 

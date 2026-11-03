@@ -1,6 +1,7 @@
 package gui.menu_bar.file;
 
 import gui.AccessorComponent;
+import gui.FileManagement;
 import gui.GuiReference;
 import gui.Launcher;
 
@@ -17,13 +18,16 @@ public class SaveMenu extends AccessorComponent<JMenuItem> {
 
 		getComponent().addActionListener(_ -> {
 			AutomatonFileChooser fileChooser = new AutomatonFileChooser(guiReference, "Save automaton state");
+			fileChooser.getComponent().setSelectedFile(new File(".automaton"));
+			fileChooser.getComponent().showSaveDialog(getComponent());
 			File fileToWriteTo = fileChooser.getComponent().getSelectedFile();
-			if (fileToWriteTo == null)
+			if (fileToWriteTo == null) {
+				Launcher.errorWindow(new RuntimeException("No file selected"));
 				return;
+			}
 			try {
-				fileChooser.getComponent().showSaveDialog(getComponent());
 				new ObjectOutputStream(new FileOutputStream(fileToWriteTo)).writeObject(guiReference.getAutomaton());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Launcher.errorWindow(e);
 			}
 		});

@@ -2,6 +2,7 @@ package gui.menu_bar.file;
 
 import engine.Automaton;
 import gui.AccessorComponent;
+import gui.FileManagement;
 import gui.GuiReference;
 import gui.Launcher;
 
@@ -19,12 +20,14 @@ public class LoadMenu extends AccessorComponent<JMenuItem> {
 			AutomatonFileChooser fileChooser = new AutomatonFileChooser(guiReference, "Load automaton state");
 			fileChooser.getComponent().showOpenDialog(getComponent());
 			File fileToRead = fileChooser.getComponent().getSelectedFile();
-			if (fileToRead == null)
+			if (fileToRead == null) {
+				Launcher.errorWindow(new RuntimeException("No file selected"));
 				return;
+			}
 			try {
 				Automaton automaton = (Automaton) new ObjectInputStream(new FileInputStream(fileToRead)).readObject();
 				guiReference.setAutomaton(automaton);
-			} catch (IOException | ClassNotFoundException e) {
+			} catch (Exception e) {
 				Launcher.errorWindow(e);
 			}
 		});
