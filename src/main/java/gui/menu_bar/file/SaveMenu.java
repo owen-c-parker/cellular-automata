@@ -19,7 +19,10 @@ public class SaveMenu extends AccessorComponent<JMenuItem> {
 		getComponent().addActionListener(_ -> {
 			AutomatonFileChooser fileChooser = new AutomatonFileChooser(guiReference, "Save automaton state");
 			fileChooser.getComponent().setSelectedFile(new File(".automaton"));
-			fileChooser.getComponent().showSaveDialog(getComponent());
+			int result = fileChooser.getComponent().showSaveDialog(getComponent());
+			if (result != JFileChooser.APPROVE_OPTION)
+				return;
+
 			File fileToWriteTo = fileChooser.getComponent().getSelectedFile();
 			if (fileToWriteTo == null) {
 				Launcher.errorWindow(new RuntimeException("No file selected"));
