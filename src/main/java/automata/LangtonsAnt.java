@@ -8,6 +8,8 @@ import java.util.List;
 
 public class LangtonsAnt extends Automaton {
 
+	private static final Image ANT_IMAGE = ImageHelper.readImage("/images/ant.png");
+
 	private static final AgentFactory ANT = new AgentFactory() {
         @Override
         public String getDisplayableName() {
@@ -36,15 +38,11 @@ public class LangtonsAnt extends Automaton {
 
                 @Override
                 public void draw(Graphics g) {
-                    g.setColor(Color.RED);
-
-                    Rectangle bounds = g.getClipBounds();
-
-                    OrderedPair center = new OrderedPair(bounds.width / 2, bounds.height / 2);
-
-                    OrderedPair endOfLine = center.add(this.direction.scale(center.x()));
-
-                    g.drawLine(center.x(), center.y(), endOfLine.x(), endOfLine.y());
+					if ((g instanceof Graphics2D g2d) && ANT_IMAGE != null) {
+						ImageHelper.drawImageToFillGraphicsContext(g2d, ANT_IMAGE, this.direction.getAngle());
+						return;
+					}
+					super.draw(g);
                 }
             };
         }

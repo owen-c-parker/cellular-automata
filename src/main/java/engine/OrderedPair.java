@@ -52,4 +52,8 @@ public record OrderedPair(int x, int y) {
 	public OrderedPair rotateLeft() {
 		return new OrderedPair(y(), -x());
 	}
+
+	public double getAngle() {
+		return Math.atan2(y(), x());
+	}
 }
