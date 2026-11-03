@@ -16,11 +16,12 @@ public class SaveMenu extends AccessorComponent<JMenuItem> {
 		super(guiReference, new JMenuItem("Save state"));
 
 		getComponent().addActionListener(_ -> {
+			AutomatonFileChooser fileChooser = new AutomatonFileChooser(guiReference, "Save automaton state");
+			File fileToWriteTo = fileChooser.getComponent().getSelectedFile();
+			if (fileToWriteTo == null)
+				return;
 			try {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Save state of automaton");
-				fileChooser.showSaveDialog(getComponent());
-				File fileToWriteTo = fileChooser.getSelectedFile();
+				fileChooser.getComponent().showSaveDialog(getComponent());
 				new ObjectOutputStream(new FileOutputStream(fileToWriteTo)).writeObject(guiReference.getAutomaton());
 			} catch (IOException e) {
 				Launcher.errorWindow(e);

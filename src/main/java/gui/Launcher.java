@@ -48,6 +48,7 @@ public class Launcher {
 
 	private void launch() {
 		//setLookAndFeel();
+		System.out.println(System.getenv("GDK_SCALE"));
 		new AutomatonWindow();
 	}
 

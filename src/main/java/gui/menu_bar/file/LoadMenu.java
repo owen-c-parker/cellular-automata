@@ -16,9 +16,11 @@ public class LoadMenu extends AccessorComponent<JMenuItem> {
 		super(guiReference, new JMenuItem("Load state"));
 
 		getComponent().addActionListener(_ -> {
-			JFileChooser fileChooser = new JFileChooser("Load automaton state");
-			fileChooser.showOpenDialog(getComponent());
-			File fileToRead = fileChooser.getSelectedFile();
+			AutomatonFileChooser fileChooser = new AutomatonFileChooser(guiReference, "Load automaton state");
+			fileChooser.getComponent().showOpenDialog(getComponent());
+			File fileToRead = fileChooser.getComponent().getSelectedFile();
+			if (fileToRead == null)
+				return;
 			try {
 				Automaton automaton = (Automaton) new ObjectInputStream(new FileInputStream(fileToRead)).readObject();
 				guiReference.setAutomaton(automaton);

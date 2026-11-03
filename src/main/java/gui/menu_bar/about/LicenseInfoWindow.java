@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class LicenseInfoWindow extends GenericWindow {
 	public LicenseInfoWindow() {
@@ -14,13 +16,22 @@ public class LicenseInfoWindow extends GenericWindow {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
 		String license;
-		try (FileReader reader = new FileReader(new File(Objects.requireNonNull(getClass().getResource("/LICENSE")).toURI()))) {
-			license = reader.readAllAsString().replaceAll("\n", "<br>");
+		try (Scanner scanner = new Scanner(Objects.requireNonNull(getClass().getResourceAsStream("/LICENSE")))) {
+			StringBuilder licenseStringBuilder = new StringBuilder();
+			scanner.useDelimiter("\n");
+			while (scanner.hasNext()) {
+				licenseStringBuilder
+						.append(scanner.next())
+						.append("<br>");
+			}
+
+			license = String.format("<html>%s</html>", licenseStringBuilder.toString().replaceAll("\n", "<br>"));
+
 		} catch (Exception e) {
 			license = String.format("Failed to find LICENSE file:\n%s\n", e);
 		}
 
-		JLabel licenseText = new JLabel(String.format("<html>%s</html>", license));
+		JLabel licenseText = new JLabel(license);
 
 		JScrollPane scrollPane = new JScrollPane(licenseText);
 		getContentPane().add(scrollPane);
