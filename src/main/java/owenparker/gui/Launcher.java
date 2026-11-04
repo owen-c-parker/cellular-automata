@@ -1,6 +1,6 @@
 package owenparker.gui;
 
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 import owenparker.plugins.DefaultPlugin;
 import owenparker.plugins.Plugin;
 import owenparker.plugins.PluginLoader;
@@ -17,7 +17,7 @@ public class Launcher {
 
 	public static void errorWindow(Exception e) {
 		GenericWindow errorWindow = new GenericWindow();
-		errorWindow.setTitle(String.format(Language.currentLanguage.get(Language.Key.ERROR_WINDOW_TITLE), e.getClass().getSimpleName()));
+		errorWindow.setTitle(String.format(Language.getCurrentLanguage().get(Language.Key.ERROR_WINDOW_TITLE), e.getClass().getSimpleName()));
 		errorWindow.getContentPane().add(new JScrollPane(new JLabel(TextUtils.convertToHTML(e.toString()))));
 		errorWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -34,7 +34,7 @@ public class Launcher {
 		//setLookAndFeel();
 		installedPlugins.add(new DefaultPlugin());
 		PluginLoader.loadAvailablePlugins();
-		Language.currentLanguage = installedPlugins.getFirst().getLanguages().getFirst();
+		Language.forceCurrentLanguage(installedPlugins.getFirst().getLanguages().getFirst());
 		new AutomatonWindow();
 	}
 

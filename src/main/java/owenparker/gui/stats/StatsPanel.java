@@ -3,7 +3,7 @@ package owenparker.gui.stats;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.TextUtils;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 

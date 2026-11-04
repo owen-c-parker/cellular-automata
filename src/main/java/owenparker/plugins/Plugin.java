@@ -4,10 +4,8 @@ import owenparker.engine.AutomatonFactory;
 import owenparker.engine.HasDisplayableName;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.Launcher;
-import owenparker.lang.EnglishUnitedStates;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
-import java.util.Collection;
 import java.util.List;
 
 public abstract class Plugin implements HasDisplayableName {
@@ -32,6 +30,6 @@ public abstract class Plugin implements HasDisplayableName {
 	}
 
 	protected String translate(Language.Key key) {
-		return Language.currentLanguage.get(key);
+		return Language.getCurrentLanguage().get(key);
 	}
 }

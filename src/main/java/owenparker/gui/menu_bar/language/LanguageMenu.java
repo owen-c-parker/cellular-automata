@@ -3,7 +3,7 @@ package owenparker.gui.menu_bar.language;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.menu_bar.PluginResourceLister;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 import owenparker.plugins.Plugin;
 
 import javax.swing.*;

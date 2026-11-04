@@ -4,7 +4,7 @@ import owenparker.engine.Automaton;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.Launcher;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import java.io.File;

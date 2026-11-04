@@ -1,15 +1,24 @@
-package owenparker.lang;
+package owenparker.gui.lang;
 
 import owenparker.engine.HasDisplayableName;
+import owenparker.gui.GenericWindow;
 
 import java.util.Map;
 
 public abstract class Language implements HasDisplayableName {
 
-	public static Language currentLanguage;
+	private static Language currentLanguage;
+
+	public static Language getCurrentLanguage() {
+		return currentLanguage;
+	}
 
 	public static void changeLanguage(Language language) {
-		// TODO: Implement Language.changeLanguage()
+		forceCurrentLanguage(language);
+	}
+
+	public static void forceCurrentLanguage(Language language) {
+		currentLanguage = language;
 	}
 
 	public enum Key {

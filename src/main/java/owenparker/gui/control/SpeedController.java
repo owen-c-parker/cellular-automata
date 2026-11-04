@@ -2,7 +2,7 @@ package owenparker.gui.control;
 
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;

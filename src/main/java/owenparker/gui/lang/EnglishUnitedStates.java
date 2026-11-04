@@ -1,4 +1,4 @@
-package owenparker.lang;
+package owenparker.gui.lang;
 
 import java.util.Map;
 

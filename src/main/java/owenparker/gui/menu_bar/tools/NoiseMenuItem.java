@@ -3,7 +3,7 @@ package owenparker.gui.menu_bar.tools;
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
 import owenparker.gui.GlobalReference;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 import java.util.List;
 import java.util.Random;

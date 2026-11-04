@@ -3,10 +3,9 @@ package owenparker.plugins;
 import owenparker.automaton_factories.*;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.colors.ColorPalette;
-import owenparker.lang.EnglishUnitedStates;
-import owenparker.lang.Language;
+import owenparker.gui.lang.EnglishUnitedStates;
+import owenparker.gui.lang.Language;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

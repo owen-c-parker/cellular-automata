@@ -3,7 +3,7 @@ package owenparker.gui.menu_bar.file;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.FileManagement;
 import owenparker.gui.GlobalReference;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

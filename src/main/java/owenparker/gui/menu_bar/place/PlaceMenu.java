@@ -3,7 +3,7 @@ package owenparker.gui.menu_bar.place;
 import owenparker.engine.CursorPlaceable;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import java.util.Collection;

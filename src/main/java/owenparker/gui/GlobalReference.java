@@ -4,8 +4,6 @@ import owenparker.engine.Automaton;
 import owenparker.engine.CursorPlaceable;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.grid.GridDisplay;
-import owenparker.lang.EnglishUnitedStates;
-import owenparker.lang.Language;
 
 import javax.swing.*;
 

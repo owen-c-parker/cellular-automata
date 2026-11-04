@@ -1,7 +1,7 @@
 package owenparker.gui.menu_bar.tools;
 
 import owenparker.gui.GlobalReference;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 
 public class ClearMenuItem extends ToolMenuItem {
     public ClearMenuItem(GlobalReference globalReference) {

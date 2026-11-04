@@ -18,22 +18,27 @@ public class PluginResourceLister {
 				return;
 
 			menu.getComponent().add(new MenuHeader(menu.globalReference, plugin.getDisplayableName()).getComponent());
-			PluginResourceLister.pluginSublist(plugin, menu, onClick, resourcesGetter, buttonTypeGetter);
+			PluginResourceLister.generatePluginSublist(plugin, menu, onClick, resourcesGetter, buttonTypeGetter);
 		});
 	}
 
-	private static <T extends HasDisplayableName> void pluginSublist(Plugin plugin, AccessorComponent<JMenu> menu, Consumer<T> onClick, Function<Plugin, List<T>> resourcesGetter, Callable<AbstractButton> buttonTypeGetter) {
+	private static <T extends HasDisplayableName> void generatePluginSublist(
+			Plugin plugin,
+			AccessorComponent<JMenu> menu,
+			Consumer<T> onClick, Function<Plugin, List<T>> resourcesGetter,
+			Callable<AbstractButton> buttonTypeGetter
+	) {
 		List<T> resources = resourcesGetter.apply(plugin);
 		for (T resource : resources) {
 			try {
 				AbstractButton button = buttonTypeGetter.call();
 				button.setText(resource.getDisplayableName());
 				button.addActionListener(_ -> onClick.accept(resource));
+
+				menu.getComponent().add(button);
 			} catch (Exception e) {
 				Launcher.errorWindow(e);
 			}
-
-			menu.getComponent().add(new JMenuItem(resource.getDisplayableName()));
 		}
 	}
 }

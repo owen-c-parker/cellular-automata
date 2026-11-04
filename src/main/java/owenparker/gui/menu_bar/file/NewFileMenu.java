@@ -1,13 +1,9 @@
 package owenparker.gui.menu_bar.file;
 
-import owenparker.engine.Automaton;
-import owenparker.engine.AutomatonFactory;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.gui.Launcher;
-import owenparker.gui.menu_bar.MenuHeader;
 import owenparker.gui.menu_bar.PluginResourceLister;
-import owenparker.lang.Language;
+import owenparker.gui.lang.Language;
 import owenparker.plugins.Plugin;
 
 import javax.swing.*;
