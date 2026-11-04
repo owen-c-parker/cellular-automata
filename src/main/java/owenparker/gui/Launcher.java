@@ -47,7 +47,7 @@ public class Launcher {
 	public static void errorWindow(Exception e) {
 		GenericWindow errorWindow = new GenericWindow();
 		errorWindow.setTitle(String.format("Error - %s", e.getClass().getSimpleName()));
-		errorWindow.getContentPane().add(new JScrollPane(new JLabel(String.format("<html>%s</html>", e).replaceAll("\n", "<br>"))));
+		errorWindow.getContentPane().add(new JScrollPane(new JLabel(TextUtils.convertToHTML(e.toString()))));
 		errorWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		errorWindow.setSize(screen.width / 2, screen.height / 2);

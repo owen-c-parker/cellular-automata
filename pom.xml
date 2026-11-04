@@ -37,7 +37,12 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.6.4</version>
                 <configuration>
-                    <mainClass>owenparker.gui.Launcher</mainClass>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>owenparker.gui.Launcher</argument>
+                    </arguments>
                 </configuration>
             </plugin>
             <plugin>

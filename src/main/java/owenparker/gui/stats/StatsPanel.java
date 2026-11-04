@@ -2,6 +2,7 @@ package owenparker.gui.stats;
 
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GuiReference;
+import owenparker.gui.TextUtils;
 
 import javax.swing.*;
 
@@ -17,10 +18,10 @@ public class StatsPanel extends AccessorComponent<JPanel> {
     }
 
     private void update() {
-        this.textLabel.setText(String.format(
-                "<html>Active cells: %d<br>Zoom level: %.2f</html>",
+        this.textLabel.setText(TextUtils.convertToHTML(String.format(
+                "Active cells: %d\nZoom level: %.2f",
                 this.guiReference.getAutomaton().getActiveCellCount(),
                 this.guiReference.gridDisplay.getCellScale()
-        ));
+        )));
     }
 }

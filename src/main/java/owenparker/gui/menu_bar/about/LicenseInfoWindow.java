@@ -1,6 +1,7 @@
 package owenparker.gui.menu_bar.about;
 
 import owenparker.gui.GenericWindow;
+import owenparker.gui.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,10 +20,10 @@ public class LicenseInfoWindow extends GenericWindow {
 			while (scanner.hasNext()) {
 				licenseStringBuilder
 						.append(scanner.next())
-						.append("<br>");
+						.append("\n");
 			}
 
-			license = String.format("<html>%s</html>", licenseStringBuilder.toString().replaceAll("\n", "<br>"));
+			license = TextUtils.convertToHTML(licenseStringBuilder.toString());
 
 		} catch (Exception e) {
 			license = String.format("Failed to find LICENSE file:\n%s\n", e);
