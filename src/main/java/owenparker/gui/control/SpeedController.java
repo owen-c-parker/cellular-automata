@@ -1,7 +1,8 @@
 package owenparker.gui.control;
 
 import owenparker.gui.AccessorComponent;
-import owenparker.gui.GuiReference;
+import owenparker.gui.GlobalReference;
+import owenparker.lang.Language;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -30,8 +31,8 @@ public class SpeedController extends AccessorComponent<JPanel> {
             80000
     };
 
-    public SpeedController(GuiReference guiReference) {
-        super(guiReference, new JPanel());
+    public SpeedController(GlobalReference globalReference) {
+        super(globalReference, new JPanel());
 
         getComponent().add(createSlider());
         getComponent().add(createSpeedLabel());
@@ -41,15 +42,15 @@ public class SpeedController extends AccessorComponent<JPanel> {
         JLabel label = new JLabel();
         Font oldFont = label.getFont();
         label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, oldFont.getSize()));
-        this.guiReference.speedChangeEvent.add(() -> {
+        this.globalReference.speedChangeEvent.add(() -> {
 
             int longestSpeedStringLength = Math.max(
                     String.valueOf(this.speedValues[0]).length(),
                     String.valueOf(this.speedValues[this.speedValues.length - 1]).length()
             );
 
-            String speedString = String.valueOf(this.guiReference.ticksPerMillisecond * 1000);
-            label.setText(String.format("%" + longestSpeedStringLength + "s steps/s", speedString));
+            String speedString = String.valueOf(this.globalReference.ticksPerMillisecond * 1000);
+            label.setText(String.format("%" + longestSpeedStringLength + "s %s", speedString, translation(Language.Key.STEPS_PER_SECOND)));
         });
         return label;
     }
@@ -60,8 +61,8 @@ public class SpeedController extends AccessorComponent<JPanel> {
         speedSlider.setMaximum(this.speedValues.length - 1);
         ChangeListener changeListener = _ -> {
             double speedValue = this.speedValues[speedSlider.getValue()];
-            this.guiReference.ticksPerMillisecond = speedValue / 1000;
-            this.guiReference.speedChangeEvent.fire();
+            this.globalReference.ticksPerMillisecond = speedValue / 1000;
+            this.globalReference.speedChangeEvent.fire();
         };
         changeListener.stateChanged(null);
         speedSlider.addChangeListener(changeListener);

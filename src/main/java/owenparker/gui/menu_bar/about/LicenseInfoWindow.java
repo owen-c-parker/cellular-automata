@@ -2,6 +2,7 @@ package owenparker.gui.menu_bar.about;
 
 import owenparker.gui.GenericWindow;
 import owenparker.gui.TextUtils;
+import owenparker.lang.Language;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public class LicenseInfoWindow extends GenericWindow {
 	public LicenseInfoWindow() {
-		setTitle("License Information");
+		setTitle(Language.currentLanguage.get(Language.Key.LICENSE_MENU_OPTION));
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
 		String license;

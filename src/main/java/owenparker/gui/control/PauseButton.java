@@ -1,18 +1,18 @@
 package owenparker.gui.control;
 
 import owenparker.gui.AccessorComponent;
-import owenparker.gui.GuiReference;
+import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
 
 public class PauseButton extends AccessorComponent<JButton> {
-    public PauseButton(GuiReference guiReference) {
-        super(guiReference, new JButton());
+    public PauseButton(GlobalReference globalReference) {
+        super(globalReference, new JButton());
 
         pause();
 
         getComponent().addActionListener(_ -> {
-            if (guiReference.currentlyPlaying)
+            if (globalReference.currentlyPlaying)
                 pause();
             else
                 play();
@@ -22,12 +22,12 @@ public class PauseButton extends AccessorComponent<JButton> {
     private void pause() {
         getComponent().setText("▶");
         getComponent().setToolTipText("Start the simulation");
-        this.guiReference.currentlyPlaying = false;
+        this.globalReference.currentlyPlaying = false;
     }
 
     private void play() {
         getComponent().setText("⏸");
         getComponent().setToolTipText("Freeze the simulation");
-        this.guiReference.currentlyPlaying = true;
+        this.globalReference.currentlyPlaying = true;
     }
 }

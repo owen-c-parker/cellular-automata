@@ -4,13 +4,15 @@ import owenparker.engine.Automaton;
 import owenparker.engine.CursorPlaceable;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.grid.GridDisplay;
+import owenparker.lang.EnglishUnitedStates;
+import owenparker.lang.Language;
 
 import javax.swing.*;
 
-public class GuiReference {
+public class GlobalReference {
     public boolean currentlyPlaying = false;
     public double ticksPerMillisecond = 8.0 / 1000;
-    private Automaton automaton;
+	private Automaton automaton;
     public CursorPlaceable selectedForPlacement;
     public GridDisplay gridDisplay;
 

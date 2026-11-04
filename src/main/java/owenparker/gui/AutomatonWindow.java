@@ -1,10 +1,10 @@
 package owenparker.gui;
 
-import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.control.Controls;
 import owenparker.gui.grid.GridDisplay;
 import owenparker.gui.menu_bar.AutomatonMenuBar;
 import owenparker.gui.stats.StatsPanel;
+import owenparker.lang.Language;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,29 +12,29 @@ import java.awt.*;
 public class AutomatonWindow extends GenericWindow {
 
 	public AutomatonWindow() {
-        GuiReference guiReference = new GuiReference();
+        GlobalReference globalReference = new GlobalReference();
 
-		guiReference.setColorPalette(ColorPalette.DefaultPaletteEntry.DARK_MODE.getPalette());
+		globalReference.setColorPalette(Launcher.installedPlugins.getFirst().getColorPalettes().getFirst());
 
-		guiReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
+		globalReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
 
-		guiReference.newAutomatonEvent.add(() -> setTitle(String.format("Automaton Simulator - %s", guiReference.getAutomaton().getDisplayableName())));
+		globalReference.newAutomatonEvent.add(() -> setTitle(String.format("%s - %s", Language.currentLanguage.get(Language.Key.TITLE), globalReference.getAutomaton().getDisplayableName())));
 
-		guiReference.setAutomaton(Launcher.getAvailableAutomatonClasses().getFirst().buildAutomaton());
+		globalReference.setAutomaton(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst().buildAutomaton());
 
         setContentPane(new JPanel(new BorderLayout()));
 
-        Controls controls = new Controls(guiReference);
+        Controls controls = new Controls(globalReference);
         controls.getComponent().setPreferredSize(new Dimension(0, 50));
         getContentPane().add(controls.getComponent(), BorderLayout.SOUTH);
 
         JPanel topContainer = new JPanel(new BorderLayout());
-        topContainer.add(new GridDisplay(guiReference).getComponent(), BorderLayout.CENTER);
-        topContainer.add(new StatsPanel(guiReference).getComponent(), BorderLayout.EAST);
+        topContainer.add(new GridDisplay(globalReference).getComponent(), BorderLayout.CENTER);
+        topContainer.add(new StatsPanel(globalReference).getComponent(), BorderLayout.EAST);
 
         getContentPane().add(topContainer, BorderLayout.CENTER);
 
-        setJMenuBar(new AutomatonMenuBar(guiReference).getComponent());
+        setJMenuBar(new AutomatonMenuBar(globalReference).getComponent());
         setExtendedState(MAXIMIZED_BOTH);
 
         setSize(800, 800);

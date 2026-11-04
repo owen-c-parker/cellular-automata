@@ -3,7 +3,7 @@ package owenparker.gui.menu_bar.place;
 import owenparker.engine.CursorPlaceable;
 import owenparker.engine.State;
 import owenparker.gui.AccessorComponent;
-import owenparker.gui.GuiReference;
+import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +12,8 @@ import java.util.Collection;
 public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
     private final ButtonGroup selectedButtonGroup;
 
-    public PlacementSubMenu(GuiReference guiReference, String label, ButtonGroup selectedButtonGroup) {
-        super(guiReference, new JMenu(label));
+    public PlacementSubMenu(GlobalReference globalReference, String label, ButtonGroup selectedButtonGroup) {
+        super(globalReference, new JMenu(label));
         this.selectedButtonGroup = selectedButtonGroup;
         addMenuItems();
     }
@@ -33,14 +33,14 @@ public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
         if (placeable instanceof State state)
             colorMenuItem(menuItem, state);
 
-        menuItem.addActionListener(_ -> this.guiReference.selectedForPlacement = placeable);
+        menuItem.addActionListener(_ -> this.globalReference.selectedForPlacement = placeable);
         this.selectedButtonGroup.add(menuItem);
-        if (placeable.equals(this.guiReference.selectedForPlacement))
+        if (placeable.equals(this.globalReference.selectedForPlacement))
             this.selectedButtonGroup.setSelected(menuItem.getModel(), true);
     }
 
     private void colorMenuItem(JMenuItem menuItem, State state) {
-        Color color = state.getColorEvaluator().getColor(this.guiReference.getColorPalette());
+        Color color = state.getColorEvaluator().getColor(this.globalReference.getColorPalette());
         int brightness = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
 
         menuItem.setBackground(color);

@@ -1,21 +1,22 @@
 package owenparker.gui;
 
 import owenparker.engine.colors.ColorPalette;
+import owenparker.lang.Language;
 
 import javax.swing.*;
 
 public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
-    public final GuiReference guiReference;
+    public final GlobalReference globalReference;
     private COMPONENT_TYPE component;
-    public AccessorComponent(GuiReference guiReference, COMPONENT_TYPE component) {
+    public AccessorComponent(GlobalReference globalReference, COMPONENT_TYPE component) {
         this.component = component;
-        this(guiReference);
+        this(globalReference);
 	}
 
-    public AccessorComponent(GuiReference guiReference) {
-        this.guiReference = guiReference;
+    public AccessorComponent(GlobalReference globalReference) {
+        this.globalReference = globalReference;
 		if (getComponent() instanceof JButton)
-			getComponent().setForeground(guiReference.getColorPalette().getColor(ColorPalette.Slot.BACKGROUND));
+			getComponent().setForeground(globalReference.getColorPalette().getColor(ColorPalette.Slot.BACKGROUND));
     }
 
     public void setComponent(COMPONENT_TYPE component) {
@@ -25,4 +26,8 @@ public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
     public COMPONENT_TYPE getComponent() {
         return this.component;
     }
+
+	public static String translation(Language.Key key) {
+		return Language.currentLanguage.get(key);
+	}
 }

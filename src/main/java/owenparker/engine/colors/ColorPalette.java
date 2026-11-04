@@ -17,54 +17,6 @@ public class ColorPalette implements HasDisplayableName, Serializable {
 		return this.name;
 	}
 
-	public enum DefaultPaletteEntry {
-		DARK_MODE("Dark", Map.of()),
-		DARK_MODE_HIGH_CONTRAST("Dark (high contrast)", Map.of(
-				Slot.BACKGROUND, BLACK,
-				Slot.FOREGROUND, WHITE,
-				Slot.GRIDLINES, GRAY
-		)),
-		LIGHT_MODE("Light", Map.of(
-				Slot.BACKGROUND, LIGHT_GRAY,
-				Slot.FOREGROUND, DARK_GRAY,
-				Slot.GRIDLINES, GRAY
-		)),
-		LIGHT_MODE_HIGH_CONTRAST("Light (high contrast)", Map.of(
-				Slot.BACKGROUND, WHITE,
-				Slot.FOREGROUND, BLACK,
-				Slot.GRIDLINES, GRAY
-		)),
-		LIGHT_ROAST("Light Roast", Map.of(
-				Slot.BACKGROUND, decode("#cbaf76"),
-				Slot.MIDDLE, decode("#816E49"),
-				Slot.FOREGROUND, decode("#413725"),
-				Slot.ACTIVE_1, decode("#bd6c00"),
-				Slot.DISSIPATING_1, decode("#4b2c00"),
-				Slot.ACTIVE_2, decode("#00bd36"),
-				Slot.DISSIPATING_2, decode("#00651d")
-		)),
-		DARK_ROAST("Dark Roast", Map.of(
-				Slot.BACKGROUND, decode("#413725"),
-				Slot.MIDDLE, decode("#816E49"),
-				Slot.FOREGROUND, decode("#cbaf76"),
-				Slot.ACTIVE_1, decode("#bd6c00"),
-				Slot.DISSIPATING_1, decode("#4b2c00"),
-				Slot.ACTIVE_2, decode("#00bd36"),
-				Slot.DISSIPATING_2, decode("#00651d")
-		));
-
-		private final ColorPalette palette;
-
-		DefaultPaletteEntry(String name, Map<Slot, Color> map) {
-			this.palette = new ColorPalette(name, map);
-		}
-
-		public ColorPalette getPalette() {
-			return this.palette;
-		}
-	}
-
-
 	private final Map<Slot, Color> colorValues;
 
 	public ColorPalette(String name, Map<Slot, Color> colorValues) {

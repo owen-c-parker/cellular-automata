@@ -2,7 +2,8 @@ package owenparker.gui.menu_bar.place;
 
 import owenparker.engine.CursorPlaceable;
 import owenparker.gui.AccessorComponent;
-import owenparker.gui.GuiReference;
+import owenparker.gui.GlobalReference;
+import owenparker.lang.Language;
 
 import javax.swing.*;
 import java.util.Collection;
@@ -11,24 +12,24 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class PlaceMenu extends AccessorComponent<JMenu> {
-    public PlaceMenu(GuiReference guiReference) {
-        super(guiReference, new JMenu("Place"));
+    public PlaceMenu(GlobalReference globalReference) {
+        super(globalReference, new JMenu(translation(Language.Key.PLACEMENT_MENU_OPTION)));
 
-        guiReference.newAutomatonEvent.add(this::refreshSubMenus);
+        globalReference.newAutomatonEvent.add(this::refreshSubMenus);
         refreshSubMenus();
     }
 
     private void refreshSubMenus() {
         getComponent().removeAll();
         ButtonGroup selectedButtonGroup = new ButtonGroup();
-        addSubMenu("Cell", selectedButtonGroup, () -> Collections.unmodifiableList(this.guiReference.getAutomaton().getSelectableCellStates()));
-        addSubMenu("Agent", selectedButtonGroup, () -> Collections.unmodifiableList(this.guiReference.getAutomaton().getSelectableAgentFactories()));
+        addSubMenu(translation(Language.Key.CELL_MENU_OPTION), selectedButtonGroup, () -> Collections.unmodifiableList(this.globalReference.getAutomaton().getSelectableCellStates()));
+        addSubMenu(translation(Language.Key.AGENT_MENU_OPTION), selectedButtonGroup, () -> Collections.unmodifiableList(this.globalReference.getAutomaton().getSelectableAgentFactories()));
     }
 
     private void addSubMenu(String label, ButtonGroup selectedButtonGroup, Callable<List<CursorPlaceable>> getSelectables) {
         try {
             if (!getSelectables.call().isEmpty())
-                getComponent().add(new PlacementSubMenu(this.guiReference, label, selectedButtonGroup) {
+                getComponent().add(new PlacementSubMenu(this.globalReference, label, selectedButtonGroup) {
                     @Override
                     Collection<CursorPlaceable> getPlaceables() {
                         try {

@@ -2,27 +2,34 @@ package owenparker.gui.menu_bar.file;
 
 import owenparker.engine.AutomatonFactory;
 import owenparker.gui.AccessorComponent;
-import owenparker.gui.GuiReference;
+import owenparker.gui.GlobalReference;
 import owenparker.gui.Launcher;
+import owenparker.gui.menu_bar.MenuHeader;
+import owenparker.lang.Language;
+import owenparker.plugins.Plugin;
 
 import javax.swing.*;
 
 public class NewFileMenu extends AccessorComponent<JMenu> {
-    public NewFileMenu(GuiReference guiReference) {
-        super(guiReference, new JMenu("New"));
+    public NewFileMenu(GlobalReference globalReference) {
+        super(globalReference, new JMenu(translation(Language.Key.NEW_MENU_OPTION)));
 
-        generateMenuItems();
+		generateMenuItems();
     }
 
     private void generateMenuItems() {
-        for (AutomatonFactory factory : Launcher.getAvailableAutomatonClasses()) {
-            getComponent().add(generateMenuItem(factory));
-        }
+        Launcher.installedPlugins
+				.forEach(this::generateMenuItems);
     }
 
-    private JMenuItem generateMenuItem(AutomatonFactory factory) {
+	private void generateMenuItems(Plugin plugin) {
+		getComponent().add(new MenuHeader(this.globalReference, plugin.getDisplayableName()).getComponent());
+		plugin.getAutomatonFactories().forEach(this::generateMenuItem);
+	}
+
+    private void generateMenuItem(AutomatonFactory factory) {
         JMenuItem menuItem = new JMenuItem(factory.getDisplayableName());
-        menuItem.addActionListener(_ -> this.guiReference.setAutomaton(factory.buildAutomaton()));
-        return menuItem;
+        menuItem.addActionListener(_ -> this.globalReference.setAutomaton(factory.buildAutomaton()));
+        getComponent().add(menuItem);
     }
 }

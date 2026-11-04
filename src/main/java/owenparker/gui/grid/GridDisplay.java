@@ -6,7 +6,7 @@ import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.AccessorComponent;
-import owenparker.gui.GuiReference;
+import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -41,9 +41,9 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         public GridDisplayPanel() {
             setSize(800, 800);
 
-			setBorder(new LineBorder(GridDisplay.this.guiReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
+			setBorder(new LineBorder(GridDisplay.this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
 
-            GridDisplay.this.guiReference.repaintEvent.add(() -> {
+            GridDisplay.this.globalReference.repaintEvent.add(() -> {
                 revalidate();
                 repaint();
             });
@@ -54,7 +54,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                     super.mouseReleased(e);
                     GridDisplay.this.lastMouseEvent = null;
                     GridDisplay.this.shiftClickStartPlace = null;
-                    GridDisplay.this.guiReference.repaintEvent.fire();
+                    GridDisplay.this.globalReference.repaintEvent.fire();
                 }
 
                 @Override
@@ -64,7 +64,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                         GridDisplay.this.shiftClickStartPlace = e;
                     placeCellAtClickedLocation(e);
                     placeAgentAtClickedLocation(e);
-                    GridDisplay.this.guiReference.repaintEvent.fire();
+                    GridDisplay.this.globalReference.repaintEvent.fire();
                 }
             });
 
@@ -73,7 +73,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                 public void mouseMoved(MouseEvent e) {
                     super.mouseMoved(e);
                     GridDisplay.this.mostRecentMove = e;
-                    GridDisplay.this.guiReference.repaintEvent.fire();
+                    GridDisplay.this.globalReference.repaintEvent.fire();
                 }
 
                 @Override
@@ -82,7 +82,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                     placeCellAtClickedLocation(e);
                     dragScroll(e);
                     GridDisplay.this.lastMouseEvent = e;
-                    GridDisplay.this.guiReference.repaintEvent.fire();
+                    GridDisplay.this.globalReference.repaintEvent.fire();
                 }
             });
 
@@ -91,7 +91,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                 public void mouseWheelMoved(MouseWheelEvent e) {
                     super.mouseWheelMoved(e);
                     performZoom(e);
-                    GridDisplay.this.guiReference.repaintEvent.fire();
+                    GridDisplay.this.globalReference.repaintEvent.fire();
                 }
             });
         }
@@ -107,10 +107,10 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         }
     }
 
-    public GridDisplay(GuiReference guiReference) {
-        super(guiReference);
+    public GridDisplay(GlobalReference globalReference) {
+        super(globalReference);
         setComponent(new GridDisplayPanel());
-        guiReference.gridDisplay = this;
+        globalReference.gridDisplay = this;
     }
 
     private void performZoom(MouseWheelEvent event) {
@@ -145,27 +145,27 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private void placeAgentAtClickedLocation(MouseEvent event) {
-        if (!(this.guiReference.selectedForPlacement instanceof AgentFactory agentFactory))
+        if (!(this.globalReference.selectedForPlacement instanceof AgentFactory agentFactory))
             return;
 
         if (SwingUtilities.isLeftMouseButton(event)) {
             OrderedPair cellSpacePosition = fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY()));
 
-            this.guiReference.getAutomaton().addAgent(agentFactory.buildAgent(cellSpacePosition));
+            this.globalReference.getAutomaton().addAgent(agentFactory.buildAgent(cellSpacePosition));
         }
 
         if (SwingUtilities.isRightMouseButton(event)) {
             Agent agentToDelete = null;
-            for (Agent agent : this.guiReference.getAutomaton().getAgents())
+            for (Agent agent : this.globalReference.getAutomaton().getAgents())
                 if (agent.getPosition().equals(fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY()))))
                     agentToDelete = agent;
-            this.guiReference.getAutomaton().removeAgent(agentToDelete);
+            this.globalReference.getAutomaton().removeAgent(agentToDelete);
         }
 
     }
 
     private void placeCellAtClickedLocation(MouseEvent event) {
-        if (!(this.guiReference.selectedForPlacement instanceof State state))
+        if (!(this.globalReference.selectedForPlacement instanceof State state))
             return;
 
 
@@ -189,15 +189,15 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         if (SwingUtilities.isLeftMouseButton(event))
             stateToPaint = state;
         if (SwingUtilities.isRightMouseButton(event))
-            stateToPaint = this.guiReference.getAutomaton().getDefaultState();
+            stateToPaint = this.globalReference.getAutomaton().getDefaultState();
         if (stateToPaint == null) return;
 
-        this.guiReference.getAutomaton().setCellAt(cellLocation, stateToPaint);
+        this.globalReference.getAutomaton().setCellAt(cellLocation, stateToPaint);
     }
 
     private void drawGridlines(Graphics g) {
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
-        g.setColor(this.guiReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
+        g.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
         for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
             g.fillRect((int) x - 1, 0, 3, screenSizeInPixels.y());
         for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
@@ -205,7 +205,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private void drawAllAgents(Graphics g) {
-        Collection<Agent> agents = this.guiReference.getAutomaton().getAgents();
+        Collection<Agent> agents = this.globalReference.getAutomaton().getAgents();
         for (Agent agent : agents)
             agent.draw(g.create((int) (agent.getPosition().x() * this.cellScale + this.scrollX), (int) (agent.getPosition().y() * this.cellScale + this.scrollY), (int) this.cellScale, (int) this.cellScale));
     }
@@ -216,9 +216,9 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private void drawCellAt(Graphics g, OrderedPair location) {
-        State state = this.guiReference.getAutomaton().getCellAt(location);
+        State state = this.globalReference.getAutomaton().getCellAt(location);
         if (isDefaultState(state)) return;
-        g.setColor(state.getColorEvaluator().getColor(this.guiReference.getColorPalette()));
+        g.setColor(state.getColorEvaluator().getColor(this.globalReference.getColorPalette()));
         OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
         int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
         g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
@@ -238,7 +238,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private boolean isDefaultState(State state) {
-        return this.guiReference.getAutomaton().getDefaultState().equals(state);
+        return this.globalReference.getAutomaton().getDefaultState().equals(state);
     }
 
     public Collection<OrderedPair> getCellLocationsOnScreen() {
@@ -257,7 +257,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
     private void fillBackgroundWithDefaultCellColor(Graphics g) {
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
-        g.setColor(this.guiReference.getAutomaton().getDefaultState().getColorEvaluator().getColor(this.guiReference.getColorPalette()));
+        g.setColor(this.globalReference.getAutomaton().getDefaultState().getColorEvaluator().getColor(this.globalReference.getColorPalette()));
         g.fillRect(0, 0, screenSizeInPixels.x(), screenSizeInPixels.y());
     }
 
