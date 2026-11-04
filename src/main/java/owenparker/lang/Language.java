@@ -8,6 +8,10 @@ public abstract class Language implements HasDisplayableName {
 
 	public static Language currentLanguage;
 
+	public static void changeLanguage(Language language) {
+		// TODO: Implement Language.changeLanguage()
+	}
+
 	public enum Key {
 		TITLE("Cellular Automaton Simulator"),
 
@@ -25,6 +29,7 @@ public abstract class Language implements HasDisplayableName {
 		CELL_MENU_OPTION("Cell"),
 		AGENT_MENU_OPTION("Agent"),
 		COLOR_SCHEME_MENU_OPTION("Color Scheme"),
+		LANGUAGE_MENU_OPTION("Language"),
 
 		DARK_THEME("Dark"),
 		LIGHT_THEME("Light"),
@@ -43,7 +48,10 @@ public abstract class Language implements HasDisplayableName {
 
 		ERROR_WINDOW_TITLE("Error - %s"),
 
-		STEPS_PER_SECOND("steps/s");
+		STEPS_PER_SECOND("steps/s")
+
+		;
+
 
 
 		private final String defaultString;
