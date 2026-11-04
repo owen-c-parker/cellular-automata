@@ -16,7 +16,7 @@ public class FileManagement {
 		getPluginsDirectory();
 	}
 
-	private static File getPluginsDirectory() {
+	public static File getPluginsDirectory() {
 		return createDirectoryIfNotPresent(getMainDirectoryPath().resolve("plugins"));
 	}
 

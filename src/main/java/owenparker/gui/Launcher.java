@@ -2,7 +2,10 @@ package owenparker.gui;
 
 import owenparker.automaton_factories.*;
 import owenparker.engine.AutomatonFactory;
+import owenparker.engine.OrderedPair;
 import owenparker.engine.colors.ColorPalette;
+import owenparker.plugins.Plugin;
+import owenparker.plugins.PluginLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,15 +18,21 @@ public class Launcher {
 	public static final String APP_NAME = "Cellular Automaton Simulator";
 	public static final String APP_NAME_NO_SPACES = "CellularAutomatonSimulator";
 
+	public static final LinkedList<AutomatonFactory> automatonFactoriesFromPlugins = new LinkedList<>();
+	public static final LinkedList<ColorPalette> colorPalettesFromPlugins = new LinkedList<>();
+	public static final LinkedList<Plugin> installedPlugins = new LinkedList<>();
+
 	public static List<AutomatonFactory> getAvailableAutomatonClasses() {
-		return List.of(
+		List<AutomatonFactory> factories = new LinkedList<>(List.of(
 				new CGOLFactory(),
 				new KnightCGOLFactory(),
 				new Rule110Factory(),
 				new WireworldFactory(),
 				new BriansBrainFactory(),
 				new LangtonsAntFactory()
-		);
+		));
+		factories.addAll(automatonFactoriesFromPlugins);
+		return factories;
 	}
 
 	public static Collection<ColorPalette> getAvailablePalettes() {
@@ -31,13 +40,14 @@ public class Launcher {
 		for (ColorPalette.DefaultPaletteEntry defaultPaletteEntry : ColorPalette.DefaultPaletteEntry.values()) {
 			palettes.add(defaultPaletteEntry.getPalette());
 		}
+		palettes.addAll(colorPalettesFromPlugins);
 		return palettes;
 	}
 
 	public static void errorWindow(Exception e) {
 		GenericWindow errorWindow = new GenericWindow();
 		errorWindow.setTitle(String.format("Error - %s", e.getClass().getSimpleName()));
-		errorWindow.getContentPane().add(new JScrollPane(new JLabel(String.format("<html>%s</html>", e))));
+		errorWindow.getContentPane().add(new JScrollPane(new JLabel(String.format("<html>%s</html>", e).replaceAll("\n", "<br>"))));
 		errorWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		errorWindow.setSize(screen.width / 2, screen.height / 2);
@@ -51,6 +61,7 @@ public class Launcher {
 
 	private void launch() {
 		//setLookAndFeel();
+		PluginLoader.loadAvailablePlugins();
 		new AutomatonWindow();
 	}
 
