@@ -4,6 +4,8 @@ import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.lang.Language;
 
 import javax.swing.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
     public final GlobalReference globalReference;
@@ -29,5 +31,17 @@ public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
 
 	public static String translation(Language.Key key) {
 		return Language.getCurrentLanguage().get(key);
+	}
+
+	public final void add(AccessorComponent<?> child) {
+		getComponent().add(child.getComponent());
+	}
+
+	public final void add(Function<GlobalReference, AccessorComponent<?>> childGetter) {
+		try {
+			add(childGetter.apply(this.globalReference));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

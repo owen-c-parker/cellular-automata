@@ -7,7 +7,7 @@ import java.util.*;
 import static owenparker.engine.BorderPolicy.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
-	private Board board = new Board(getDefaultState());
+	private Board board = new Board(getDefaultState(), NO_BORDER, Board.DEFAULT_EXTENT);
 
 	Set<Agent> agents = new HashSet<>();
 
@@ -82,7 +82,7 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 	}
 
 	public final void clear() {
-		this.board = new Board(getDefaultState());
+		this.board = this.board.makeEmptyBoardWithSameProperties();
 		this.agents = new HashSet<>();
 	}
 

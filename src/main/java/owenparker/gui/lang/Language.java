@@ -57,9 +57,15 @@ public abstract class Language implements HasDisplayableName {
 
 		ERROR_WINDOW_TITLE("Error - %s"),
 
-		STEPS_PER_SECOND("steps/s")
+		STEPS_PER_SECOND("steps/s"),
 
-		;
+		AUTOMATON_MENU_OPTION("Automaton"),
+
+		BORDER_POLICY_MENU_OPTION("Border Policy"),
+
+		NO_BORDER("No border"), FIlL_WITH_DEFAULT("Fill with default"), LOOP("Loop"),
+
+		RESET_CAMERA("Reset pan and zoom");
 
 
 

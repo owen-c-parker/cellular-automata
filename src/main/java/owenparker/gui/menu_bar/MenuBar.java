@@ -3,6 +3,7 @@ package owenparker.gui.menu_bar;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.menu_bar.about.AboutMenu;
+import owenparker.gui.menu_bar.automaton.AutomatonMenu;
 import owenparker.gui.menu_bar.file.FileMenu;
 import owenparker.gui.menu_bar.language.LanguageMenu;
 import owenparker.gui.menu_bar.palettes.PaletteMenu;
@@ -11,13 +12,14 @@ import owenparker.gui.menu_bar.tools.ToolsMenu;
 
 import javax.swing.*;
 
-public class AutomatonMenuBar extends AccessorComponent<JMenuBar> {
+public class MenuBar extends AccessorComponent<JMenuBar> {
 
-    public AutomatonMenuBar(GlobalReference globalReference) {
+    public MenuBar(GlobalReference globalReference) {
         super(globalReference, new JMenuBar());
 
         getComponent().add(new FileMenu(globalReference).getComponent());
         getComponent().add(new PlaceMenu(globalReference).getComponent());
+		getComponent().add(new AutomatonMenu(globalReference).getComponent());
         getComponent().add(new ToolsMenu(globalReference).getComponent());
 		getComponent().add(new PaletteMenu(globalReference).getComponent());
 		getComponent().add(new AboutMenu(globalReference).getComponent());

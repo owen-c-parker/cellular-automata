@@ -2,7 +2,7 @@ package owenparker.gui;
 
 import owenparker.gui.control.Controls;
 import owenparker.gui.grid.GridDisplay;
-import owenparker.gui.menu_bar.AutomatonMenuBar;
+import owenparker.gui.menu_bar.MenuBar;
 import owenparker.gui.stats.StatsPanel;
 import owenparker.gui.lang.Language;
 
@@ -34,7 +34,7 @@ public class AutomatonWindow extends GenericWindow {
 
         getContentPane().add(topContainer, BorderLayout.CENTER);
 
-        setJMenuBar(new AutomatonMenuBar(globalReference).getComponent());
+        setJMenuBar(new MenuBar(globalReference).getComponent());
         setExtendedState(MAXIMIZED_BOTH);
 
         setSize(800, 800);

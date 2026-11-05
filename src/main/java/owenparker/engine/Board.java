@@ -7,12 +7,13 @@ import static owenparker.engine.BorderPolicy.FILL_WITH_DEFAULT;
 import static owenparker.engine.BorderPolicy.LOOP;
 
 public final class Board implements Serializable {
+	public static final OrderedPair DEFAULT_EXTENT = new OrderedPair(50, 50);
 	Map<OrderedPair, State> cells = new HashMap<>();
 	private final State defaultState;
 
-	public BorderPolicy borderPolicy = LOOP;
+	public BorderPolicy borderPolicy;
 
-	public OrderedPair extent = new OrderedPair(50, 50);
+	public OrderedPair extent;
 
 	OrderedPair transformLocation(OrderedPair location) {
 		if (this.borderPolicy.equals(LOOP))
@@ -31,10 +32,15 @@ public final class Board implements Serializable {
 		;
 	}
 
-	public Board(State defaultState) {
+	public Board(State defaultState, BorderPolicy borderPolicy, OrderedPair extent) {
 		this.defaultState = defaultState;
+		this.borderPolicy = borderPolicy;
+		this.extent = extent;
 	}
 
+	Board makeEmptyBoardWithSameProperties() {
+		return new Board(getDefaultState(), this.borderPolicy, this.extent);
+	}
 
 	public State getCellAt(OrderedPair location) {
 		location = transformLocation(location);
@@ -50,7 +56,7 @@ public final class Board implements Serializable {
 	}
 
 	public Board getUpdatedBoard(Neighborhood wakeUpNeighborhood) {
-		Board updatedBoard = new Board(this.defaultState);
+		Board updatedBoard = makeEmptyBoardWithSameProperties();
 
 		Set<OrderedPair> knownCellLocations = this.cells.keySet();
 		Set<OrderedPair> locationsToUpdate = new HashSet<>();

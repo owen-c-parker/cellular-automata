@@ -10,7 +10,8 @@ public class ToolsMenu extends AccessorComponent<JMenu> {
     public ToolsMenu(GlobalReference globalReference) {
         super(globalReference, new JMenu(translation(Language.Key.TOOLS_MENU_OPTION)));
 
-        getComponent().add(new NoiseMenuItem(globalReference).getComponent());
-        getComponent().add(new ClearMenuItem(globalReference).getComponent());
+        add(NoiseMenuItem::new);
+        add(ClearMenuItem::new);
+		add(ResetCameraMenuItem::new);
     }
 }

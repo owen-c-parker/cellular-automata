@@ -1,6 +1,7 @@
 package owenparker.gui;
 
 import owenparker.engine.Automaton;
+import owenparker.engine.BorderPolicy;
 import owenparker.engine.CursorPlaceable;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.grid.GridDisplay;
@@ -26,6 +27,7 @@ public class GlobalReference {
     public void setAutomaton(Automaton automaton) {
         this.automaton = automaton;
         this.selectedForPlacement = automaton.getSelectedByDefault();
+		resetCamera();
         this.newAutomatonEvent.fire();
     }
 
@@ -52,5 +54,17 @@ public class GlobalReference {
 
 	public ColorPalette getColorPalette() {
 		return this.colorPalette;
+	}
+
+	public void setBorderPolicy(BorderPolicy borderPolicy) {
+		this.automaton.setBorderPolicy(borderPolicy);
+		this.repaintEvent.fire();
+	}
+
+	public void resetCamera() {
+		if (this.gridDisplay == null)
+			return;
+		this.gridDisplay.resetCamera();
+		this.repaintEvent.fire();
 	}
 }

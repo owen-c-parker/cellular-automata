@@ -25,9 +25,9 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double MAX_SCALE = 100;
     private static final double DEFAULT_CELL_SCALE = 20;
 
-    private double cellScale = DEFAULT_CELL_SCALE;
-    private double scrollX = 0;
-    private double scrollY = 0;
+    private double cellScale;
+    private double scrollX;
+    private double scrollY;
 
     private MouseEvent lastMouseEvent = null;
     private MouseEvent shiftClickStartPlace = null;
@@ -37,9 +37,15 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         return this.cellScale;
     }
 
-    private class GridDisplayPanel extends JPanel {
+	public void resetCamera() {
+		this.cellScale = DEFAULT_CELL_SCALE;
+		this.scrollX = 0;
+		this.scrollY = 0;
+	}
+
+	private class GridDisplayPanel extends JPanel {
         public GridDisplayPanel() {
-            setSize(800, 800);
+			resetCamera();
 
 			setBorder(new LineBorder(GridDisplay.this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
 
