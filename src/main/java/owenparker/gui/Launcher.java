@@ -1,6 +1,5 @@
 package owenparker.gui;
 
-import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.lang.Language;
 import owenparker.plugins.DefaultPlugin;
 import owenparker.plugins.Plugin;

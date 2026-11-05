@@ -17,9 +17,9 @@ import java.util.List;
 public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
     private final ButtonGroup selectedButtonGroup;
 
-    public PlacementSubMenu(GlobalReference globalReference, String label, ButtonGroup selectedButtonGroup) {
+    public PlacementSubMenu(GlobalReference globalReference, String label, ButtonGroup selectedForPlacingButtonGroup) {
         super(globalReference, new JMenu(label));
-        this.selectedButtonGroup = selectedButtonGroup;
+        this.selectedButtonGroup = selectedForPlacingButtonGroup;
 
 		ResourceMenuLister<CursorPlaceable> lister = new ResourceMenuLister<>(
 				placeable -> this.globalReference.selectedForPlacement = placeable,
@@ -28,6 +28,7 @@ public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
 
 		lister.setButtonGetter(JRadioButtonMenuItem::new);
 		lister.setComponentModifier(this::modifyComponent);
+		lister.setButtonGroup(selectedForPlacingButtonGroup, globalReference.selectedForPlacement::equals);
 		lister.listResources(this);
     }
 
@@ -35,9 +36,6 @@ public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
 
 	private void modifyComponent(AbstractButton menuItem, CursorPlaceable cursorPlaceable) {
 		colorMenuItem(menuItem, cursorPlaceable);
-		this.selectedButtonGroup.add(menuItem);
-		if (this.globalReference.selectedForPlacement.equals(cursorPlaceable))
-			this.selectedButtonGroup.setSelected(menuItem.getModel(), true);
 	}
 
     private void colorMenuItem(AbstractButton menuItem, CursorPlaceable cursorPlaceable) {
