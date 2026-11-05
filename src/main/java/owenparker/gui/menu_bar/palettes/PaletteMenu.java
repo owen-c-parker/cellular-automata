@@ -1,8 +1,9 @@
 package owenparker.gui.menu_bar.palettes;
 
+import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.gui.menu_bar.PluginResourceLister;
+import owenparker.gui.menu_bar.PluginResourceMenuLister;
 import owenparker.gui.lang.Language;
 import owenparker.plugins.Plugin;
 
@@ -17,12 +18,8 @@ public class PaletteMenu extends AccessorComponent<JMenu> {
 
 	private void refreshOptions() {
 		getComponent().removeAll();
-
-		PluginResourceLister.generateList(
-				this,
-				this.globalReference::setColorPalette,
-				Plugin::getColorPalettes,
-				JRadioButtonMenuItem::new
-		);
+		PluginResourceMenuLister<ColorPalette> lister = new PluginResourceMenuLister<>(Plugin::getColorPalettes, this.globalReference::setColorPalette);
+		lister.setButtonGetter(JRadioButtonMenuItem::new);
+		lister.listResources(this);
 	}
 }

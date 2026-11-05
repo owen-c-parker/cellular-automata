@@ -1,7 +1,10 @@
 package owenparker.engine;
 
+import javax.swing.border.Border;
 import java.io.Serializable;
 import java.util.*;
+
+import static owenparker.engine.BorderPolicy.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
 	private Board board = new Board(getDefaultState());
@@ -20,22 +23,17 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
         return null;
     }
 
-	public final boolean addAgent(Agent agent) {
-		return this.agents.add(agent);
+	public final void addAgent(Agent agent) {
+		this.agents.add(agent);
 	}
 
-	public final boolean removeAgent(Agent agent) {
-		return this.agents.remove(agent);
-	}
-
-	private void updateAllListeners() {
-		this.updateListeners.forEach(Runnable::run);
+	public final void removeAgent(Agent agent) {
+		this.agents.remove(agent);
 	}
 
 	public final void step() {
 		this.board = this.board.getUpdatedBoard(getWakeUpNeighborhood());
 		stepAllAgents();
-		updateAllListeners();
 	}
 
 	private void stepAllAgents() {
@@ -50,24 +48,28 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 
 	public final void setCellAt(OrderedPair location, State state) {
 		this.board.setCellAt(location, state);
-		updateAllListeners();
 	}
 
-	List<Runnable> updateListeners = new LinkedList<>();
-
-	public final void registerUpdateListener(Runnable runnable) {
-		this.updateListeners.add(runnable);
+	public final State getCellAt(OrderedPair position) {
+		if (position == null)
+			return getDefaultState();
+		return this.board.getCellAt(position);
 	}
 
 	public List<State> getSelectableCellStates() {return List.of();};
+
 	public List<AgentFactory> getSelectableAgentFactories() {
 		return List.of();
 	}
 
 	public abstract State getDefaultState();
 
-	public final State getCellAt(OrderedPair orderedPair) {
-		return this.board.getCellAt(orderedPair);
+	public BorderPolicy getBorderPolicy() {
+		return this.board.borderPolicy;
+	}
+
+	public void setBorderPolicy(BorderPolicy borderPolicy) {
+		this.board.borderPolicy = borderPolicy;
 	}
 
 	@Override
@@ -82,10 +84,36 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 	public final void clear() {
 		this.board = new Board(getDefaultState());
 		this.agents = new HashSet<>();
-		updateAllListeners();
 	}
 
     public Collection<Agent> getAgents() {
         return Collections.unmodifiableCollection(this.agents);
     }
+
+	public void deleteAgentAt(OrderedPair orderedPair) {
+		OrderedPair transformedLocation = this.board.transformLocation(orderedPair);
+		if (transformedLocation == null)
+			 return;
+		for (Agent agent : getAgents()) {
+			OrderedPair agentLocation = this.board.transformLocation(agent.getPosition());
+			System.out.println(transformedLocation.x() + ", " + transformedLocation.y() + "; " + agentLocation.x() + ", " + agentLocation.y());
+			if (transformedLocation.equals(agentLocation)) {
+				removeAgent(agent);
+				return;
+			}
+		}
+	}
+
+	public Collection<Agent> findAgentsAt(OrderedPair location) {
+		List<Agent> agents = new LinkedList<>();
+		location = this.board.transformLocation(location);
+		if (location == null)
+			return agents;
+		for (Agent agent : getAgents()) {
+			OrderedPair agentPosition = this.board.transformLocation(agent.getPosition());
+			if (location.equals(agentPosition))
+				agents.add(agent);
+		}
+		return agents;
+	}
 }

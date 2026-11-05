@@ -2,6 +2,7 @@ package owenparker.engine;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * An agent is a stateful object that has a position
@@ -11,6 +12,14 @@ public abstract class Agent implements Serializable {
 
 	public Agent(OrderedPair position) {
 		this.position = position;
+	}
+
+	public void stepWithRespectToBorderPolicy(Board board) {
+		OrderedPair oldPosition = this.position;
+		step(board);
+		this.position = board.transformLocation(this.position);
+		if (this.position == null)
+			this.position = oldPosition;
 	}
 
 	public abstract void step(Board board);
@@ -27,4 +36,5 @@ public abstract class Agent implements Serializable {
     public OrderedPair getPosition() {
         return this.position;
     }
+
 }

@@ -155,11 +155,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         }
 
         if (SwingUtilities.isRightMouseButton(event)) {
-            Agent agentToDelete = null;
-            for (Agent agent : this.globalReference.getAutomaton().getAgents())
-                if (agent.getPosition().equals(fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY()))))
-                    agentToDelete = agent;
-            this.globalReference.getAutomaton().removeAgent(agentToDelete);
+			this.globalReference.getAutomaton().deleteAgentAt(fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY())));
         }
 
     }
@@ -205,9 +201,10 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private void drawAllAgents(Graphics g) {
-        Collection<Agent> agents = this.globalReference.getAutomaton().getAgents();
-        for (Agent agent : agents)
-            agent.draw(g.create((int) (agent.getPosition().x() * this.cellScale + this.scrollX), (int) (agent.getPosition().y() * this.cellScale + this.scrollY), (int) this.cellScale, (int) this.cellScale));
+		for (OrderedPair location : getCellLocationsOnScreen()) {
+			this.globalReference.getAutomaton().findAgentsAt(location)
+					.forEach(agent -> agent.draw(g.create((int) (location.x() * this.cellScale + this.scrollX), (int) (location.y() * this.cellScale + this.scrollY), (int) this.cellScale, (int) this.cellScale)));
+		}
     }
 
     private void drawAllCells(Graphics g) {
@@ -228,12 +225,12 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {
         return cellSpace
                 .scale(this.cellScale)
-                .add((int) this.scrollX, (int) this.scrollY);
+                .add((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY));
     }
 
     public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
         return screenSpace
-                .subtract((int) this.scrollX, (int) this.scrollY)
+                .subtract((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY))
                 .divide(this.cellScale);
     }
 

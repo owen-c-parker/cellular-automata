@@ -3,7 +3,6 @@ package owenparker.engine;
 import java.io.Serializable;
 
 public record OrderedPair(int x, int y) implements Serializable {
-
 	public OrderedPair negate() {
 		return new OrderedPair(-x(), -y());
 	}
@@ -57,5 +56,16 @@ public record OrderedPair(int x, int y) implements Serializable {
 
 	public double getAngle() {
 		return Math.atan2(y(), x());
+	}
+
+	public OrderedPair mod(OrderedPair divisor) {
+		OrderedPair dividend = this;
+		while (dividend.x < 0) {
+			dividend = new OrderedPair(dividend.x + divisor.x, dividend.y);
+		}
+		while (dividend.y < 0) {
+			dividend = new OrderedPair(dividend.x, dividend.y + divisor.y());
+		}
+		return new OrderedPair(dividend.x % divisor.x, dividend.y % divisor.y);
 	}
 }
