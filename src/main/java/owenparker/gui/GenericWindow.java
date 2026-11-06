@@ -4,18 +4,20 @@ import owenparker.engine.ImageHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class GenericWindow extends JFrame {
-	private final static LinkedList<Image> ICONS = new LinkedList<>();
-
-	static {
-		for (String path : new String[] {"/images/icon64.png", "/images/icon32.png", "/images/icon16.png"}) {
-			Image image = ImageHelper.readImage(path);
-			if (image != null)
-				ICONS.add(image);
-		}
-	}
+	private final static List<Image> ICONS = ImageHelper.readImages("images/icons");
 
 	public GenericWindow() {
 		setIconImages(ICONS);

@@ -96,7 +96,6 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 			 return;
 		for (Agent agent : getAgents()) {
 			OrderedPair agentLocation = this.board.transformLocation(agent.getPosition());
-			System.out.println(transformedLocation.x() + ", " + transformedLocation.y() + "; " + agentLocation.x() + ", " + agentLocation.y());
 			if (transformedLocation.equals(agentLocation)) {
 				removeAgent(agent);
 				return;

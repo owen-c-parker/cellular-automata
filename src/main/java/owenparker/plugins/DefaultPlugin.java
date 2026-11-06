@@ -39,7 +39,8 @@ public class DefaultPlugin extends Plugin {
 						ColorPalette.Slot.ACTIVE_1, decode("#bd6c00"),
 						ColorPalette.Slot.DISSIPATING_1, decode("#4b2c00"),
 						ColorPalette.Slot.ACTIVE_2, decode("#00bd36"),
-						ColorPalette.Slot.DISSIPATING_2, decode("#00651d")
+						ColorPalette.Slot.DISSIPATING_2, decode("#00651d"),
+						ColorPalette.Slot.GRIDLINES, decode("#15100d")
 				)),
 				new ColorPalette(translate(Language.Key.LIGHT_ROAST_THEME), Map.of(
 						ColorPalette.Slot.BACKGROUND, decode("#cbaf76"),
@@ -48,7 +49,8 @@ public class DefaultPlugin extends Plugin {
 						ColorPalette.Slot.ACTIVE_1, decode("#bd6c00"),
 						ColorPalette.Slot.DISSIPATING_1, decode("#4b2c00"),
 						ColorPalette.Slot.ACTIVE_2, decode("#00bd36"),
-						ColorPalette.Slot.DISSIPATING_2, decode("#00651d")
+						ColorPalette.Slot.DISSIPATING_2, decode("#00651d"),
+						ColorPalette.Slot.GRIDLINES, decode("#15100d")
 				)),
 				new ColorPalette(translate(Language.Key.DARK_THEME), Map.of()),
 				new ColorPalette(translate(Language.Key.DARK_CONTRAST_THEME), Map.of(
