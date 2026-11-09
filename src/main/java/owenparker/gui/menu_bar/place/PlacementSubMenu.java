@@ -13,18 +13,30 @@ import java.util.LinkedList;
 
 public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
 
+    private final ButtonGroup selectedForPlacingButtonGroup;
+
     public PlacementSubMenu(GlobalReference globalReference, String label, ButtonGroup selectedForPlacingButtonGroup) {
         super(globalReference, new JMenu(label));
 
-        ResourceMenuLister<CursorPlaceable> lister = new ResourceMenuLister<>(
-				placeable -> this.globalReference.selectedForPlacement = placeable,
-				new LinkedList<>(getPlaceables())
-		);
+        this.selectedForPlacingButtonGroup = selectedForPlacingButtonGroup;
 
-		lister.setButtonGetter(JRadioButtonMenuItem::new);
-		lister.setComponentModifier(this::modifyComponent);
-		lister.setButtonGroup(selectedForPlacingButtonGroup, globalReference.selectedForPlacement::equals);
-		lister.listResources(this);
+        globalReference.newColorPaletteEvent.add(this::refresh);
+
+        refresh();
+    }
+
+    private void refresh() {
+        getComponent().removeAll();
+
+        ResourceMenuLister<CursorPlaceable> lister = new ResourceMenuLister<>(
+                placeable -> this.globalReference.selectedForPlacement = placeable,
+                new LinkedList<>(getPlaceables())
+        );
+
+        lister.setButtonGetter(JRadioButtonMenuItem::new);
+        lister.setComponentModifier(this::modifyComponent);
+        lister.setButtonGroup(selectedForPlacingButtonGroup, globalReference.selectedForPlacement::equals);
+        lister.listResources(this);
     }
 
     abstract Collection<CursorPlaceable> getPlaceables();
