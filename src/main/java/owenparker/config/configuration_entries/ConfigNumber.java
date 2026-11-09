@@ -2,6 +2,9 @@ package owenparker.config.configuration_entries;
 
 import owenparker.config.ConfigEntry;
 
+import javax.swing.*;
+import javax.swing.event.ChangeListener;
+
 public abstract class ConfigNumber<T extends Number> extends ConfigEntry<T> {
     protected T min = null;
     protected T max = null;
@@ -29,5 +32,13 @@ public abstract class ConfigNumber<T extends Number> extends ConfigEntry<T> {
         }
 
         super.set(value);
+    }
+
+    @Override
+    public JComponent getControlComponent() {
+        JSpinner spinner = new JSpinner();
+        spinner.setValue(get());
+        spinner.addChangeListener(_ -> attemptSet(spinner.getValue()));
+        return spinner;
     }
 }

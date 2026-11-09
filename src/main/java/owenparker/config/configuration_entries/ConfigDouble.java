@@ -12,14 +12,6 @@ public class ConfigDouble extends ConfigNumber<Double> {
     }
 
     @Override
-    protected JComponent getControlComponent() {
-        JSpinner spinner = new JSpinner();
-        spinner.setValue(get());
-        spinner.addChangeListener(_ -> set(Double.valueOf(spinner.getValue().toString())));
-        return spinner;
-    }
-
-    @Override
     public void attemptSet(Object value) {
         if (value instanceof Double number)
             set(number);

@@ -1,6 +1,8 @@
-package owenparker.gui;
+package owenparker.gui.automaton_config;
 
 import owenparker.config.Configuration;
+import owenparker.gui.AccessorComponent;
+import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
 

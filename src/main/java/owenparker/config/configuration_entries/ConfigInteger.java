@@ -19,12 +19,4 @@ public class ConfigInteger extends ConfigNumber<Integer> {
         }
         set(Integer.getInteger(value.toString()));
     }
-
-    @Override
-    public JComponent getControlComponent() {
-        JSpinner spinner = new JSpinner();
-        spinner.setValue(get());
-        spinner.addChangeListener(_ -> set((Integer) spinner.getValue()));
-        return spinner;
-    }
 }
