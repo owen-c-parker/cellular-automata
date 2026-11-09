@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LangtonsAnt extends Automaton {
 
-	private static final Image ANT_IMAGE = ImageHelper.readImageFromResources("/images/ant.png");
+	private static final Image ANT_IMAGE = ImageHelper.readImageFromResources("images/ant.png");
 
 	private static final AgentFactory ANT = new AgentFactory() {
         @Override

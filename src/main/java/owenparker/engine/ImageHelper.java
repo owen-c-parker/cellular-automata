@@ -3,6 +3,7 @@ package owenparker.engine;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -24,7 +25,12 @@ public class ImageHelper {
 	}
 
 	public static Image readImageFromResources(String path) {
-		return readImage(Objects.requireNonNull(ImageHelper.class.getResource(path)).getPath());
+		try (InputStream stream = ImageHelper.class.getClassLoader().getResourceAsStream(path)) {
+			return ImageIO.read(Objects.requireNonNull(stream));
+		} catch (IOException | NullPointerException e) {
+			System.err.println("Couldn't read " + path);
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static Image readImage(Path path) {
@@ -38,21 +44,5 @@ public class ImageHelper {
 			System.err.printf("Could not read image %s\n%s\n", path, e);
 		}
 		return null;
-	}
-
-	public static List<Image> readImages(String pathString) {
-		URL folderURL = Thread.currentThread().getContextClassLoader().getResource(pathString);
-		assert folderURL != null;
-		try {
-			Path path = Paths.get(folderURL.toURI());
-			try (Stream<Path> imagePaths = Files.list(path)) {
-				return imagePaths
-						.filter(Files::isRegularFile)
-						.map(ImageHelper::readImage)
-						.toList();
-			}
-		} catch (URISyntaxException | IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 }
