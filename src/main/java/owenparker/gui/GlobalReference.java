@@ -6,8 +6,6 @@ import owenparker.engine.CursorPlaceable;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.grid.GridDisplay;
 
-import javax.swing.*;
-
 
 /**
  * This class was created as a desire to avoid using static variables, as it makes testing difficult. I now feel that

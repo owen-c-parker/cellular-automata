@@ -1,10 +1,7 @@
 package owenparker.engine;
 
-import javax.swing.border.Border;
 import java.io.Serializable;
 import java.util.*;
-
-import static owenparker.engine.BorderPolicy.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
 	private Board board;

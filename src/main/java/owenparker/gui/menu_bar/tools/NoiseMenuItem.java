@@ -3,14 +3,13 @@ package owenparker.gui.menu_bar.tools;
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
 import owenparker.gui.GlobalReference;
-import owenparker.gui.lang.Language;
 
 import java.util.List;
 import java.util.Random;
 
 public class NoiseMenuItem extends ToolMenuItem {
     public NoiseMenuItem(GlobalReference globalReference) {
-        super(globalReference, translation(Language.Key.NOISE_MENU_ITEM), () -> {
+        super(globalReference, "Fill screen with random cells", () -> {
             Random random = new Random();
             for (OrderedPair location : globalReference.gridDisplay.getCellLocationsOnScreen()) {
                 List<State> selectable = globalReference.getAutomaton().getSelectableCellStates();

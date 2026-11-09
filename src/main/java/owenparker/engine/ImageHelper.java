@@ -2,15 +2,13 @@ package owenparker.engine;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.net.URI;
-import java.util.List;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 

@@ -2,7 +2,6 @@ package owenparker.gui.control;
 
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -50,7 +49,7 @@ public class SpeedController extends AccessorComponent<JPanel> {
             );
 
             String speedString = String.valueOf(this.globalReference.ticksPerMillisecond * 1000);
-            label.setText(String.format("%" + longestSpeedStringLength + "s %s", speedString, translation(Language.Key.STEPS_PER_SECOND)));
+            label.setText(String.format("%" + longestSpeedStringLength + "s steps per second", speedString));
         });
         return label;
     }

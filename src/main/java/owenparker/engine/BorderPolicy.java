@@ -1,21 +1,19 @@
 package owenparker.engine;
 
-import owenparker.gui.lang.Language;
-
 public enum BorderPolicy implements HasDisplayableName {
-	NO_BORDER(Language.Key.NO_BORDER),
-	FILL_WITH_DEFAULT(Language.Key.FIlL_WITH_DEFAULT),
-	LOOP(Language.Key.LOOP);
+	NO_BORDER("No border"),
+	FILL_WITH_DEFAULT("Border"),
+	LOOP("Repeat");
 
-	private final Language.Key key;
+	private final String name;
 
-	BorderPolicy(Language.Key key) {
-		this.key = key;
+	BorderPolicy(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public String getDisplayableName() {
-		return Language.getCurrentLanguage().get(this.key);
+		return this.name;
 	}
 
 

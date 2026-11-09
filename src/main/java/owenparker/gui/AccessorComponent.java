@@ -1,10 +1,8 @@
 package owenparker.gui;
 
 import owenparker.engine.colors.ColorPalette;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
@@ -28,10 +26,6 @@ public abstract class AccessorComponent<COMPONENT_TYPE extends JComponent> {
     public COMPONENT_TYPE getComponent() {
         return this.component;
     }
-
-	public static String translation(Language.Key key) {
-		return Language.getCurrentLanguage().get(key);
-	}
 
 	public final void add(AccessorComponent<?> child) {
 		getComponent().add(child.getComponent());

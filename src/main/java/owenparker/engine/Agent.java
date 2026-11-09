@@ -2,7 +2,6 @@ package owenparker.engine;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * An agent is a stateful object that has a position

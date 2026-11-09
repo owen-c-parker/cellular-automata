@@ -3,7 +3,6 @@ package owenparker.gui.stats;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.TextUtils;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 
@@ -20,9 +19,9 @@ public class StatsPanel extends AccessorComponent<JPanel> {
 
     private void update() {
         this.textLabel.setText(TextUtils.convertToHTML(
-				translation(Language.Key.STAT_ACTIVE_CELLS) +
+				"Active cells: " +
                 this.globalReference.getAutomaton().getActiveCellCount() + "\n" +
-				translation(Language.Key.STAT_ZOOM) +
+				"Zoom level: " +
                 String.format("%.2f", this.globalReference.gridDisplay.getCellScale())
         ));
     }

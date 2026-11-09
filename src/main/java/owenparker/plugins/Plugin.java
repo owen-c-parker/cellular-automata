@@ -4,7 +4,6 @@ import owenparker.engine.AutomatonFactory;
 import owenparker.engine.HasDisplayableName;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.Launcher;
-import owenparker.gui.lang.Language;
 
 import java.util.List;
 
@@ -17,19 +16,11 @@ public abstract class Plugin implements HasDisplayableName {
 		return List.of();
 	}
 
-	public List<Language> getLanguages() {
-		return List.of();
-	}
-
 	public abstract String getAuthor();
 
 	public final void load() {
 		Launcher.installedPlugins.add(this);
 
 		System.out.printf("Loaded plugin \"%s\"\n", getDisplayableName());
-	}
-
-	protected String translate(Language.Key key) {
-		return Language.getCurrentLanguage().get(key);
 	}
 }

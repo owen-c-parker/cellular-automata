@@ -1,27 +1,22 @@
 package owenparker.gui.menu_bar.place;
 
 import owenparker.engine.CursorPlaceable;
-import owenparker.engine.State;
 import owenparker.engine.colors.HasColor;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.menu_bar.ResourceMenuLister;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorChooserUI;
 import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
-    private final ButtonGroup selectedButtonGroup;
 
     public PlacementSubMenu(GlobalReference globalReference, String label, ButtonGroup selectedForPlacingButtonGroup) {
         super(globalReference, new JMenu(label));
-        this.selectedButtonGroup = selectedForPlacingButtonGroup;
 
-		ResourceMenuLister<CursorPlaceable> lister = new ResourceMenuLister<>(
+        ResourceMenuLister<CursorPlaceable> lister = new ResourceMenuLister<>(
 				placeable -> this.globalReference.selectedForPlacement = placeable,
 				new LinkedList<>(getPlaceables())
 		);

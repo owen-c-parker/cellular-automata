@@ -3,7 +3,8 @@ package owenparker.config.configuration_entries;
 import owenparker.config.ConfigEntry;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigDropdown<T> extends ConfigEntry<T> {
     private final T[] options;

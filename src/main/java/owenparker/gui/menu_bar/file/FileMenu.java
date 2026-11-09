@@ -2,13 +2,12 @@ package owenparker.gui.menu_bar.file;
 
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 
 public class FileMenu extends AccessorComponent<JMenu> {
     public FileMenu(GlobalReference globalReference) {
-        super(globalReference, new JMenu(translation(Language.Key.FILE_MENU_OPTION)));
+        super(globalReference, new JMenu("File"));
 
         add(new NewFileMenu(globalReference));
         add(new ConfigureAutomatonMenu(globalReference));

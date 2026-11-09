@@ -1,11 +1,10 @@
 package owenparker.gui.menu_bar.tools;
 
 import owenparker.gui.GlobalReference;
-import owenparker.gui.lang.Language;
 
 public class ClearMenuItem extends ToolMenuItem {
     public ClearMenuItem(GlobalReference globalReference) {
-        super(globalReference, translation(Language.Key.CLEAR_MENU_OPTION), () -> {
+        super(globalReference, "Clear entire grid", () -> {
             globalReference.getAutomaton().clear();
             globalReference.repaintEvent.fire();
         });

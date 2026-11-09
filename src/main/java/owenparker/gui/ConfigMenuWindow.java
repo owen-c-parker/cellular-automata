@@ -2,7 +2,6 @@ package owenparker.gui;
 
 import owenparker.config.Configuration;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class ConfigMenuWindow extends GenericWindow {

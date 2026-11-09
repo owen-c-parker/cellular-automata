@@ -3,7 +3,6 @@ package owenparker.gui.menu_bar.file;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.Launcher;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import java.io.File;
@@ -13,10 +12,10 @@ import java.io.ObjectOutputStream;
 public class SaveMenu extends AccessorComponent<JMenuItem> {
 
 	public SaveMenu(GlobalReference globalReference) {
-		super(globalReference, new JMenuItem(translation(Language.Key.SAVE_MENU_OPTION)));
+		super(globalReference, new JMenuItem("Save"));
 
 		getComponent().addActionListener(_ -> {
-			AutomatonFileChooser fileChooser = new AutomatonFileChooser(globalReference, translation(Language.Key.SAVE_MENU_OPTION));
+			AutomatonFileChooser fileChooser = new AutomatonFileChooser(globalReference, "Save");
 			fileChooser.getComponent().setSelectedFile(new File(".automaton"));
 			int result = fileChooser.getComponent().showSaveDialog(getComponent());
 			if (result != JFileChooser.APPROVE_OPTION)

@@ -1,11 +1,11 @@
 package owenparker.gui;
 
 import owenparker.config.Configuration;
-import owenparker.config.configuration_entries.*;
+import owenparker.config.configuration_entries.ConfigDouble;
+import owenparker.config.configuration_entries.ConfigDropdown;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.plugins.Plugin;
 
-import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 

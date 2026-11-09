@@ -4,7 +4,6 @@ import owenparker.engine.Automaton;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
 import owenparker.gui.Launcher;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import java.io.File;
@@ -13,10 +12,10 @@ import java.io.ObjectInputStream;
 
 public class LoadMenu extends AccessorComponent<JMenuItem> {
 	public LoadMenu(GlobalReference globalReference) {
-		super(globalReference, new JMenuItem(translation(Language.Key.LOAD_MENU_OPTION)));
+		super(globalReference, new JMenuItem("Load"));
 
 		getComponent().addActionListener(_ -> {
-			AutomatonFileChooser fileChooser = new AutomatonFileChooser(globalReference, translation(Language.Key.LOAD_MENU_OPTION));
+			AutomatonFileChooser fileChooser = new AutomatonFileChooser(globalReference, "Load");
 			fileChooser.getComponent().showOpenDialog(getComponent());
 			File fileToRead = fileChooser.getComponent().getSelectedFile();
 			if (fileToRead == null)

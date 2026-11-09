@@ -4,12 +4,9 @@ import owenparker.gui.control.Controls;
 import owenparker.gui.grid.GridDisplay;
 import owenparker.gui.menu_bar.MenuBar;
 import owenparker.gui.stats.StatsPanel;
-import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.nio.file.Paths;
 
 public class AutomatonWindow extends GenericWindow {
 
@@ -19,7 +16,7 @@ public class AutomatonWindow extends GenericWindow {
 
         globalReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
 
-        globalReference.newAutomatonEvent.add(() -> setTitle(String.format("%s - %s", Language.getCurrentLanguage().get(Language.Key.TITLE), globalReference.getAutomaton().getDisplayableName())));
+        globalReference.newAutomatonEvent.add(() -> setTitle(String.format("Cellular Automaton Simulator - %s", globalReference.getAutomaton().getDisplayableName())));
 
         globalReference.setAutomaton(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst().buildAutomaton());
 
