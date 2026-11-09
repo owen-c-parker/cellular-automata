@@ -31,11 +31,11 @@ public record OrderedPair(int x, int y) implements Serializable {
 	}
 
 	public OrderedPair scale(Number scalar) {
-		return new OrderedPair((int) (scalar.doubleValue() * x()), (int) (y() * scalar.doubleValue()));
+		return new OrderedPair((int) Math.floor(scalar.doubleValue() * x()), (int) Math.floor(y() * scalar.doubleValue()));
 	}
 
 	public OrderedPair divide(Number divisor) {
-		return scale( 1 / divisor.doubleValue());
+		return scale( 1.0 / divisor.doubleValue());
 	}
 	public static final OrderedPair UP = new OrderedPair(0, -1);
 	public static final OrderedPair DOWN = new OrderedPair(0, 1);

@@ -18,6 +18,9 @@ import java.awt.event.MouseWheelEvent;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static owenparker.engine.OrderedPair.EAST;
+import static owenparker.engine.OrderedPair.NORTH;
+
 public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double ZOOM_AMOUNT = .1;
     private static final double MIN_SCALE = 1;
@@ -256,9 +259,17 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
-        return screenSpace
-                .subtract((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY))
+
+
+        OrderedPair cellSpacePreScaling = screenSpace
+                .subtract((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY));
+
+        OrderedPair cellSpace = cellSpacePreScaling
                 .divide(this.cellScale);
+
+        System.out.printf("Cell space: %s, Cell space pre scaling: %s, Screen space: %s\n", cellSpace, cellSpacePreScaling, screenSpace);
+
+        return cellSpace;
     }
 
     private boolean isDefaultState(State state) {
