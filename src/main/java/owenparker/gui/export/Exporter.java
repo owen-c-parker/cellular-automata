@@ -47,7 +47,9 @@ public abstract class Exporter implements HasDisplayableName {
         chooser.setFileFilter(getFileFilter());
         chooser.setDialogTitle("Export");
         chooser.setSelectedFile(new File(getDefaultFileName()));
-        chooser.showSaveDialog(null);
+        int option = chooser.showSaveDialog(null);
+		if (option != JFileChooser.APPROVE_OPTION)
+			return null;
         return chooser.getSelectedFile();
     }
 
