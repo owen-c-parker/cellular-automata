@@ -43,6 +43,6 @@ public class Launcher {
 	private void launch() {
 		installedPlugins.add(new DefaultPlugin());
 		PluginLoader.loadAvailablePlugins();
-		new AutomatonWindow();
+		new MainWindow();
 	}
 }

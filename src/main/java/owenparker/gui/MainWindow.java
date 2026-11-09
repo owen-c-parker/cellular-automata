@@ -6,11 +6,12 @@ import owenparker.gui.menu_bar.MenuBar;
 import owenparker.gui.stats.StatsPanel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
-public class AutomatonWindow extends GenericWindow {
+public class MainWindow extends GenericWindow {
 
-	public AutomatonWindow() {
+	public MainWindow() {
         GlobalReference globalReference = new GlobalReference();
 
 
@@ -28,7 +29,12 @@ public class AutomatonWindow extends GenericWindow {
 
         JPanel topContainer = new JPanel(new BorderLayout());
         topContainer.add(new GridDisplay(globalReference).getComponent(), BorderLayout.CENTER);
-        topContainer.add(new StatsPanel(globalReference).getComponent(), BorderLayout.EAST);
+
+        JPanel rightContainer = new JPanel(new BorderLayout());
+        rightContainer.add(new StatsPanel(globalReference).getComponent(), BorderLayout.SOUTH);
+        rightContainer.add(new AutomatonConfigPanelContainer(globalReference).getComponent(), BorderLayout.CENTER);
+
+        topContainer.add(rightContainer, BorderLayout.EAST);
 
         getContentPane().add(topContainer, BorderLayout.CENTER);
 
