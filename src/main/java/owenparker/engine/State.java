@@ -1,14 +1,11 @@
 package owenparker.engine;
 
-import owenparker.engine.colors.ColorEvaluator;
-import owenparker.engine.colors.ColorPalette;
-import owenparker.engine.colors.PaletteColor;
-import owenparker.engine.colors.StaticColor;
+import owenparker.engine.colors.*;
 
 import java.awt.*;
 import java.io.Serializable;
 
-public abstract class State implements CursorPlaceable, HasDisplayableName, Serializable {
+public abstract class State implements CursorPlaceable, HasDisplayableName, Serializable, HasColor {
 	private final String name;
 	private final ColorEvaluator color;
 

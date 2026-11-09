@@ -37,7 +37,7 @@ public abstract class PlacementSubMenu extends AccessorComponent<JMenu> {
         if (!(cursorPlaceable instanceof HasColor hasColor))
 			return;
 
-		Color color = hasColor.getColorEvaluator().getColor(this.globalReference.getColorPalette());
+        Color color = hasColor.getColorEvaluator().getColor(this.globalReference.getColorPalette());
 
         menuItem.setBackground(color);
         menuItem.setForeground(isTooLight(color) ? Color.DARK_GRAY : Color.LIGHT_GRAY);
