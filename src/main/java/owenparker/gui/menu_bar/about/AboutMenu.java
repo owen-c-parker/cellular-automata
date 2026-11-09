@@ -12,5 +12,9 @@ public class AboutMenu extends AccessorComponent<JMenu> {
 		JMenuItem licenseInfoButton = new JMenuItem("License information");
 		licenseInfoButton.addActionListener(_ -> new LicenseInfoWindow());
 		getComponent().add(licenseInfoButton);
+
+        JMenuItem pluginsButton = new JMenuItem("Installed Plugins");
+        pluginsButton.addActionListener(_ -> new InstalledPluginsWindow());
+        getComponent().add(pluginsButton);
 	}
 }
