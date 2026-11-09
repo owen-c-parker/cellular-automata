@@ -40,13 +40,13 @@ public record OrderedPair(int x, int y) implements Serializable {
 	public static final OrderedPair UP = new OrderedPair(0, -1);
 	public static final OrderedPair DOWN = new OrderedPair(0, 1);
 	public static final OrderedPair LEFT = new OrderedPair(-1, 0);
+    public static final OrderedPair RIGHT = new OrderedPair(1, 0);
 
-	public static final OrderedPair RIGHT = new OrderedPair(1, 0);
-	public static final OrderedPair NORTH = UP;
+    public static final OrderedPair NORTH = UP;
 	public static final OrderedPair SOUTH = DOWN;
-	public static final OrderedPair EAST = LEFT;
+	public static final OrderedPair EAST = RIGHT;
+	public static final OrderedPair WEST = LEFT;
 
-	public static final OrderedPair WEST = RIGHT;
 	public static final OrderedPair NORTH_EAST = NORTH.add(EAST);
 	public static final OrderedPair NORTH_WEST = NORTH.add(WEST);
 	public static final OrderedPair SOUTH_EAST = SOUTH.add(EAST);
@@ -75,4 +75,9 @@ public record OrderedPair(int x, int y) implements Serializable {
 		}
 		return new OrderedPair(dividend.x % divisor.x, dividend.y % divisor.y);
 	}
+
+    @Override
+    public String toString() {
+        return String.format("(%d, %d)", x(), y());
+    }
 }
