@@ -32,6 +32,13 @@ public abstract class State implements CursorPlaceable, HasDisplayableName, Seri
 		return this.name;
 	}
 
+	@Override
+	public void draw(Graphics g, ColorPalette colorPalette) {
+		g.setColor(getColorEvaluator().getColor(colorPalette));
+		g.fillRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
+		customDraw(g);
+	}
+
 	/**
 	 * Override this method to draw additional graphics over the cell. The origin is the top left of the cell, and the
 	 * clipping bounds are bound to the cell itself

@@ -5,8 +5,9 @@ import java.io.Serializable;
 
 public record OrderedPair(int x, int y) implements Serializable {
     public static final OrderedPair UNIT = new OrderedPair(1, 1);
+	public static final OrderedPair ORIGIN = new OrderedPair(0, 0);
 
-    public OrderedPair(Dimension dimension) {
+	public OrderedPair(Dimension dimension) {
         this(dimension.width, dimension.height);
     }
 

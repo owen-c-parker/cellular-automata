@@ -4,6 +4,7 @@ import owenparker.gui.automaton_config.AutomatonConfigPanelContainer;
 import owenparker.gui.control.Controls;
 import owenparker.gui.grid.GridDisplay;
 import owenparker.gui.menu_bar.MenuBar;
+import owenparker.gui.sidebar.SideBar;
 import owenparker.gui.stats.StatsPanel;
 
 import javax.swing.*;
@@ -37,6 +38,8 @@ public class MainWindow extends GenericWindow {
         topContainer.add(rightContainer, BorderLayout.EAST);
 
         getContentPane().add(topContainer, BorderLayout.CENTER);
+
+		getContentPane().add(new SideBar(globalReference).getComponent(), BorderLayout.WEST);
 
         setJMenuBar(new MenuBar(globalReference).getComponent());
         setExtendedState(MAXIMIZED_BOTH);
