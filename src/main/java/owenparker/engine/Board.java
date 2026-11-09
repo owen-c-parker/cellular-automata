@@ -10,7 +10,9 @@ public final class Board implements Serializable {
 	public static final OrderedPair DEFAULT_EXTENT = new OrderedPair(50, 50);
     private final AutomatonConfig config;
     Map<OrderedPair, State> cells = new HashMap<>();
+    Set<OrderedPair> cellsThatMightMove = new HashSet<>();
 	private final State defaultState;
+    private final Neighborhood wakeUpNeighborhood;
 
     private OrderedPair getExtent() {
         return config.getSize();
@@ -38,13 +40,14 @@ public final class Board implements Serializable {
 		;
 	}
 
-	public Board(State defaultState, AutomatonConfig config) {
+	public Board(State defaultState, Neighborhood wakeUpNeighborhood, AutomatonConfig config) {
 		this.defaultState = defaultState;
 		this.config = config;
+        this.wakeUpNeighborhood = wakeUpNeighborhood;
 	}
 
 	Board makeEmptyBoardWithSameProperties() {
-		return new Board(getDefaultState(), config);
+		return new Board(getDefaultState(), wakeUpNeighborhood, config);
 	}
 
 	public State getCellAt(OrderedPair location) {
@@ -57,16 +60,16 @@ public final class Board implements Serializable {
 	public void setCellAt(OrderedPair location, State state) {
 		location = transformLocation(location);
 		if (location == null || state.equals(getDefaultState()) && getCellAt(location).equals(getDefaultState())) return;
-		this.cells.put(location, state);
+        this.cellsThatMightMove.add(location);
+        this.cells.put(location, state);
 	}
 
 	public Board getUpdatedBoard(Neighborhood wakeUpNeighborhood) {
 		Board updatedBoard = makeEmptyBoardWithSameProperties();
 
-		Set<OrderedPair> knownCellLocations = this.cells.keySet();
 		Set<OrderedPair> locationsToUpdate = new HashSet<>();
 
-		for (OrderedPair orderedPair : knownCellLocations) {
+		for (OrderedPair orderedPair : cellsThatMightMove) {
 			locationsToUpdate.add(orderedPair);
 			locationsToUpdate.addAll(
 					wakeUpNeighborhood
@@ -79,15 +82,28 @@ public final class Board implements Serializable {
 			);
 		}
 
+        updatedBoard.cells = new HashMap<>(this.cells);
+
 		for (OrderedPair locationToUpdate : locationsToUpdate) {
 			State state = getCellAt(locationToUpdate);
-			updatedBoard.setCellAt(locationToUpdate, state.getNewState(this, locationToUpdate));
+            State newState = state.getNewState(this, locationToUpdate);
+            if (!newState.equals(state))
+                updatedBoard.setCellAt(locationToUpdate, newState);
 		}
+
+        updatedBoard.pruneDefaults();
 
 		return updatedBoard;
 	}
 
-	public Collection<State> getNeighborsOf(Neighborhood neighborhood, OrderedPair location) {
+    private void pruneDefaults() {
+        Set<OrderedPair> keySet = new HashSet<>(this.cells.keySet());
+        for (OrderedPair location : keySet)
+            if (this.cells.get(location).equals(getDefaultState()))
+                this.cells.remove(location);
+    }
+
+    public Collection<State> getNeighborsOf(Neighborhood neighborhood, OrderedPair location) {
 		return neighborhood
 				.getAll()
 				.stream()
@@ -99,4 +115,8 @@ public final class Board implements Serializable {
 	public State getDefaultState() {
 		return this.defaultState;
 	}
+
+    public int getNumberOfCellsThatMightMove() {
+        return this.cellsThatMightMove.size();
+    }
 }

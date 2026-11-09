@@ -8,7 +8,7 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
     private final AutomatonConfig config = new AutomatonConfig();
 
     protected Automaton() {
-        board = new Board(getDefaultState(), config);
+        board = new Board(getDefaultState(), getWakeUpNeighborhood(), config);
     }
 
     public AutomatonConfig getConfig() {
@@ -121,4 +121,8 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 		}
 		return agents;
 	}
+
+    public int getNumberOfCellsThatMightMove() {
+        return this.board.getNumberOfCellsThatMightMove();
+    }
 }

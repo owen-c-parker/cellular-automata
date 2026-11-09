@@ -19,9 +19,11 @@ public class StatsPanel extends AccessorComponent<JPanel> {
 
     private void update() {
         this.textLabel.setText(TextUtils.convertToHTML(
-				"Active cells: " +
+                "Total cells: " +
                 this.globalReference.getAutomaton().getActiveCellCount() + "\n" +
-				"Zoom level: " +
+                "Cells to update: " +
+                this.globalReference.getAutomaton().getNumberOfCellsThatMightMove() + "\n" +
+                "Zoom level: " +
                 String.format("%.2f", this.globalReference.gridDisplay.getCellScale())
         ));
     }
