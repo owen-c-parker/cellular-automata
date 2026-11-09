@@ -9,6 +9,11 @@ public class ConfigString extends ConfigEntry<String> {
     }
 
     @Override
+    public void attemptSet(Object value) {
+        set(value.toString());
+    }
+
+    @Override
     public JComponent getControlComponent() {
         JPanel panel = new JPanel();
         panel.add(new JLabel(getName()));

@@ -33,9 +33,8 @@ public class Launcher {
     public static <T> Collection<T> getAllOfAResource(Function<Plugin, Collection<T>> resourceGetter) {
         LinkedList<T> resources = new LinkedList<>();
 
-        for (Plugin plugin : installedPlugins) {
+        for (Plugin plugin : installedPlugins)
             resources.addAll(resourceGetter.apply(plugin));
-        }
 
         return resources;
     }

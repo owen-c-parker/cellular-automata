@@ -3,7 +3,6 @@ package owenparker.config.configuration_entries;
 import owenparker.gui.EventNotifier;
 
 import javax.swing.*;
-import java.util.concurrent.Callable;
 
 public abstract class ConfigEntry<T> {
     private T value;
@@ -49,4 +48,6 @@ public abstract class ConfigEntry<T> {
     public void addSetListener(Runnable runnable) {
         this.setNotifier.add(runnable);
     }
+
+    public abstract void attemptSet(Object value);
 }

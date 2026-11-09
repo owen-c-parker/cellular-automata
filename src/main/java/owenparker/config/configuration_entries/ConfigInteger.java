@@ -8,6 +8,15 @@ public class ConfigInteger extends ConfigEntry<Integer> {
     }
 
     @Override
+    public void attemptSet(Object value) {
+        if (value instanceof Integer integer) {
+            set(integer);
+            return;
+        }
+        set(Integer.getInteger(value.toString()));
+    }
+
+    @Override
     public JComponent getControlComponent() {
         JSpinner spinner = new JSpinner();
         spinner.setValue(get());

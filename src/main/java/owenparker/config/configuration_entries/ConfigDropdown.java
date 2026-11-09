@@ -1,6 +1,8 @@
 package owenparker.config.configuration_entries;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class ConfigDropdown<T> extends ConfigEntry<T> {
     private final T[] options;
@@ -22,5 +24,15 @@ public class ConfigDropdown<T> extends ConfigEntry<T> {
             set(options.getItemAt(options.getSelectedIndex()));
         });
         return options;
+    }
+
+    @Override
+    public void attemptSet(Object value) {
+        try {
+            List<T> things = new ArrayList<>(List.of(options));
+            set(things.stream().filter(t -> t.toString().equals(value.toString())).findFirst().orElse(options[0]));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

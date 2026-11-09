@@ -7,7 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FileManagement {
-	static {
+    private static final String CONFIG_FILE = "config.txt";
+
+    static {
 		initializeAllDirectories();
 	}
 
@@ -60,4 +62,8 @@ public class FileManagement {
 
 		return createDirectoryIfNotPresent(path);
 	}
+
+    public static File getConfigFile() {
+        return Paths.get(FileManagement.getMainDirectory().getPath(), FileManagement.CONFIG_FILE).toFile();
+    }
 }

@@ -8,17 +8,20 @@ import owenparker.gui.lang.Language;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.nio.file.Paths;
 
 public class AutomatonWindow extends GenericWindow {
 
 	public AutomatonWindow() {
         GlobalReference globalReference = new GlobalReference();
 
-		globalReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
 
-		globalReference.newAutomatonEvent.add(() -> setTitle(String.format("%s - %s", Language.getCurrentLanguage().get(Language.Key.TITLE), globalReference.getAutomaton().getDisplayableName())));
+        globalReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
 
-		globalReference.setAutomaton(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst().buildAutomaton());
+        globalReference.newAutomatonEvent.add(() -> setTitle(String.format("%s - %s", Language.getCurrentLanguage().get(Language.Key.TITLE), globalReference.getAutomaton().getDisplayableName())));
+
+        globalReference.setAutomaton(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst().buildAutomaton());
 
         setContentPane(new JPanel(new BorderLayout()));
 
@@ -34,6 +37,8 @@ public class AutomatonWindow extends GenericWindow {
 
         setJMenuBar(new MenuBar(globalReference).getComponent());
         setExtendedState(MAXIMIZED_BOTH);
+
+        globalReference.preferences.setEntriesBasedOnConfigFile(FileManagement.getConfigFile());
 
         setSize(800, 800);
         setLocationRelativeTo(null);
