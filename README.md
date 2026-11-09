@@ -1,7 +1,7 @@
 # Cellular Automaton Simulator
 
 This is a program for simulating [cellular automata](https://en.wikipedia.org/wiki/cellular_automata/). Some
-[sample automata](src/main/java/automata) are included.
+[sample automata](src/main/java/owenparker/automata) are included.
 
 ### Controls
 
@@ -13,7 +13,12 @@ This is a program for simulating [cellular automata](https://en.wikipedia.org/wi
 | Right click         | Remove cells          |
 | Hold shift          | Draw in straight line |
 
-# Highlights
+# Plugins
 
- - Easily extensible
- - Friendly GUI
+Plugins can be installed easily. They come in the form of `.jar`
+files and are simply put into the `plugins` directory that you
+can find a link to inside the program.
+
+Writing plugins is fairly simple. An example plugin is available
+[here](https://github.com/owen-c-parker/sample-automata-plugin).
+You just need to include the JAR for this release as a dependency.
