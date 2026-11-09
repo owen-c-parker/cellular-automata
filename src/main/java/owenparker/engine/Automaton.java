@@ -1,6 +1,7 @@
 package owenparker.engine;
 
 import java.io.Serializable;
+import java.sql.Array;
 import java.util.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
@@ -124,5 +125,35 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 
     public int getNumberOfCellsThatMightMove() {
         return this.board.getNumberOfCellsThatMightMove();
+    }
+
+    public Collection<OrderedPair> getAllCellLocations() {
+        return this.board.cells.keySet();
+    }
+
+    public OrderedPair[] getExtent() {
+        List<OrderedPair> cellLocations = new ArrayList<>(getAllCellLocations());
+        int left = cellLocations.getFirst().x();
+        int right = cellLocations.getFirst().x();
+        int top = cellLocations.getFirst().y();
+        int bottom = cellLocations.getFirst().y();
+
+        for (OrderedPair location : cellLocations) {
+            int x = location.x();
+            int y = location.y();
+            if (x < left)
+                left = x;
+            if (x > right)
+                right = x;
+            if (y < top)
+                top = y;
+            if (y > bottom)
+                bottom = y;
+        }
+
+        return new OrderedPair[]{
+                new OrderedPair(left, top),
+                new OrderedPair(right, bottom)
+        };
     }
 }
