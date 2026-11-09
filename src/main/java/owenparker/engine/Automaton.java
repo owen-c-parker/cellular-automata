@@ -7,6 +7,7 @@ import java.util.*;
 public abstract class Automaton implements HasDisplayableName, Serializable {
 	private Board board;
     private final AutomatonConfig config = new AutomatonConfig();
+    private int totalSteps = 0;
 
     protected Automaton() {
         board = new Board(getDefaultState(), getWakeUpNeighborhood(), config);
@@ -41,7 +42,8 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 	public final void step() {
 		this.board = this.board.getUpdatedBoard(getWakeUpNeighborhood());
 		stepAllAgents();
-	}
+        this.totalSteps++;
+    }
 
 	private void stepAllAgents() {
 		this.agents.forEach(agent -> agent.step(this.board));
@@ -155,5 +157,9 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
                 new OrderedPair(left, top),
                 new OrderedPair(right, bottom)
         };
+    }
+
+    public int getTotalSteps() {
+        return this.totalSteps;
     }
 }

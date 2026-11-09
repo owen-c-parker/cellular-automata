@@ -23,6 +23,8 @@ public class StatsPanel extends AccessorComponent<JPanel> {
                 this.globalReference.getAutomaton().getActiveCellCount() + "\n" +
                 "Cells to update: " +
                 this.globalReference.getAutomaton().getNumberOfCellsThatMightMove() + "\n" +
+                "Total steps: " +
+                this.globalReference.getAutomaton().getTotalSteps() + "\n" +
                 "Zoom level: " +
                 String.format("%.2f", this.globalReference.gridDisplay.getCellScale())
         ));
