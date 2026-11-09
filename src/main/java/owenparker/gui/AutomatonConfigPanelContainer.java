@@ -1,5 +1,7 @@
 package owenparker.gui;
 
+import owenparker.config.Configuration;
+
 import javax.swing.*;
 
 public class AutomatonConfigPanelContainer extends AccessorComponent<JPanel> {
@@ -12,6 +14,8 @@ public class AutomatonConfigPanelContainer extends AccessorComponent<JPanel> {
 
     private void refresh() {
         getComponent().removeAll();
-        getComponent().add(globalReference.getAutomaton().getConfig().getPanel());
+        Configuration config = globalReference.getAutomaton().getConfig();
+        getComponent().add(config.getPanel());
+        config.getEntries().forEach(entry -> entry.addSetListener(globalReference.repaintEvent::fire));
     }
 }
