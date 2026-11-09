@@ -13,6 +13,8 @@ public class ConfigDouble extends ConfigNumber<Double> {
 
     @Override
     public void attemptSet(Object value) {
+		if (value == null)
+			return;
         if (value instanceof Double number)
             set(number);
         set(Double.valueOf(value.toString()));

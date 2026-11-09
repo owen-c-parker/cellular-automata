@@ -267,8 +267,6 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         OrderedPair cellSpace = cellSpacePreScaling
                 .divide(this.cellScale);
 
-        System.out.printf("Cell space: %s, Cell space pre scaling: %s, Screen space: %s\n", cellSpace, cellSpacePreScaling, screenSpace);
-
         return cellSpace;
     }
 

@@ -3,6 +3,7 @@ package owenparker.gui;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigDouble;
 import owenparker.config.configuration_entries.ConfigDropdown;
+import owenparker.config.configuration_entries.ConfigInteger;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.plugins.Plugin;
 
@@ -15,7 +16,19 @@ public class Preferences extends Configuration {
             Launcher.installedPlugins.getFirst().getColorPalettes().getFirst(),
             Launcher.getAllOfAResource(Plugin::getColorPalettes).toArray(new ColorPalette[0])
     );
-    public final ConfigDouble cellScaleToStopDrawingGridlines = new ConfigDouble("Zoom level to start drawing grid", 10.0, 1.0, 100.0);
+    public final ConfigDouble cellScaleToStopDrawingGridlines = new ConfigDouble(
+			"Zoom level to start drawing grid",
+			10.0,
+			1.0,
+			100.0
+	);
+	public final ConfigInteger maxIterationsForHalting = new ConfigInteger(
+			"Maximum iterations before giving up on a halt search",
+			100_000,
+			1,
+			Integer.MAX_VALUE
+	);
+
 
     public Preferences() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

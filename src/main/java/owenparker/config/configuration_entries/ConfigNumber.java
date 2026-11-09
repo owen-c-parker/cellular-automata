@@ -21,6 +21,8 @@ public abstract class ConfigNumber<T extends Number> extends ConfigEntry<T> {
 
     @Override
     public void set(T value) {
+		if (value == null) return;
+
         if (max != null && value.doubleValue() > max.doubleValue()) {
             super.set(max);
             return;

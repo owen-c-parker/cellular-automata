@@ -24,6 +24,7 @@ public class Controls extends AccessorComponent<JPanel> {
         getComponent().add(new PauseButton(this.globalReference).getComponent());
         getComponent().add(new StepButton(this.globalReference).getComponent());
         getComponent().add(new SpeedController(this.globalReference).getComponent());
+		getComponent().add(new HaltButton(this.globalReference).getComponent());
 
         this.globalReference.speedChangeEvent.fire();
     }

@@ -1,7 +1,6 @@
 package owenparker.engine;
 
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
@@ -162,4 +161,8 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
     public int getTotalSteps() {
         return this.totalSteps;
     }
+
+	public Map<OrderedPair, State> getBoardMap() {
+		return this.board.cells;
+	}
 }

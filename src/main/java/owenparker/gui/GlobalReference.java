@@ -26,8 +26,8 @@ public class GlobalReference {
     public final Preferences preferences = new Preferences();
 
     public GlobalReference() {
-        preferences.selectedTheme.addSetListener(newColorPaletteEvent::fire);
-        preferences.selectedTheme.addSetListener(repaintEvent::fire);
+		this.preferences.selectedTheme.addSetListener(this.newColorPaletteEvent::fire);
+		this.preferences.selectedTheme.addSetListener(this.repaintEvent::fire);
     }
 
     public Automaton getAutomaton() {
