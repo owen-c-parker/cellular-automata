@@ -1,5 +1,7 @@
 package owenparker.config.configuration_entries;
 
+import owenparker.config.ConfigEntry;
+
 import javax.swing.*;
 
 public class ConfigString extends ConfigEntry<String> {

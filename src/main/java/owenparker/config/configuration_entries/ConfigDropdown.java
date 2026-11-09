@@ -1,7 +1,8 @@
 package owenparker.config.configuration_entries;
 
+import owenparker.config.ConfigEntry;
+
 import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class ConfigDropdown<T> extends ConfigEntry<T> {

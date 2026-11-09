@@ -1,8 +1,5 @@
 package owenparker.config;
 
-import owenparker.config.configuration_entries.ConfigEntry;
-import owenparker.gui.FileManagement;
-
 import javax.swing.*;
 import java.io.*;
 import java.util.Arrays;
@@ -26,18 +23,21 @@ public abstract class Configuration implements Serializable {
 
     public final void setEntriesBasedOnConfigFile(File file) {
         try (FileReader reader = new FileReader(file)) {
-            setEntriesBasedOnConfigFile(reader.readAllAsString());
+            setEntriesBasedOnConfigFileString(reader.readAllAsString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            setEntriesBasedOnConfigFileString("");
         }
     }
 
-    public final void setEntriesBasedOnConfigFile(String config) {
+    public final void setEntriesBasedOnConfigFileString(String config) {
         String[] lines = config.split("\n");
 
         List<? extends ConfigEntry<?>> entries = getEntries();
 
         for (String line : lines) {
+            if (line.isEmpty())
+                continue;
+
             String key = line.substring(0, line.indexOf("="));
             String value = line.substring(line.indexOf("=") + 1);
 
@@ -50,10 +50,16 @@ public abstract class Configuration implements Serializable {
     }
 
     public JPanel getPanel() {
-        JPanel panel = new JPanel();
+        JPanel subPanel = new JPanel();
+        subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
         for (ConfigEntry<?> entry : getEntries()) {
-            panel.add(entry.getControlPanel());
+            subPanel.add(entry.getControlPanel());
+            subPanel.add(new JSeparator());
         }
+        subPanel.remove(subPanel.getComponentCount() - 1);
+        JScrollPane pane = new JScrollPane(subPanel);
+        JPanel panel = new JPanel();
+        panel.add(pane);
         return panel;
     }
 

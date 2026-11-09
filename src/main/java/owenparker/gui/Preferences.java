@@ -15,6 +15,7 @@ public class Preferences extends Configuration {
             Launcher.installedPlugins.getFirst().getColorPalettes().getFirst(),
             Launcher.getAllOfAResource(Plugin::getColorPalettes).toArray(new ColorPalette[0])
     );
+    public final ConfigDouble cellScaleToStopDrawingGridlines = new ConfigDouble("Zoom level to start drawing grid", 10.0, 1.0, 100.0);
 
     public Preferences() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

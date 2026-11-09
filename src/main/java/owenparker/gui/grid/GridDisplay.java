@@ -1,7 +1,7 @@
 package owenparker.gui.grid;
 
-import owenparker.engine.Agent;
 import owenparker.engine.AgentFactory;
+import owenparker.engine.BorderPolicy;
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
 import owenparker.engine.colors.ColorPalette;
@@ -21,8 +21,7 @@ import java.util.LinkedList;
 public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double ZOOM_AMOUNT = .1;
     private static final double MIN_SCALE = 1;
-    private static final double SCALE_TO_STOP_DRAWING_GRIDLINES = 20;
-    private static final double MAX_SCALE = 100;
+    private static final double MAX_SCALE = 300;
     private static final double DEFAULT_CELL_SCALE = 20;
 
     private double cellScale;
@@ -108,9 +107,26 @@ public class GridDisplay extends AccessorComponent<JPanel> {
             fillBackgroundWithDefaultCellColor(g);
             drawAllCells(g);
             drawAllAgents(g);
-            if (GridDisplay.this.cellScale >= SCALE_TO_STOP_DRAWING_GRIDLINES)
-                drawGridlines(g);
+            drawGridlinesIfApplicable(g);
+            drawBordersIfApplicable(g);
         }
+    }
+
+    private void drawBordersIfApplicable(Graphics g) {
+        if (!globalReference.getAutomaton().getConfig().borderPolicy.get().equals(BorderPolicy.FILL_WITH_DEFAULT))
+            return;
+
+        OrderedPair topLeft = fromCellSpaceToScreenSpace(new OrderedPair(0, 0));
+        OrderedPair bottomRight = fromCellSpaceToScreenSpace(globalReference.getAutomaton().getConfig().getSize());
+
+        OrderedPair screenSize = new OrderedPair(getComponent().getSize());
+
+        g.setColor(globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
+
+        g.fillRect(0, 0, screenSize.x(), topLeft.y()); // Top
+        g.fillRect(0, bottomRight.y(), screenSize.x(), screenSize.y() - bottomRight.y()); // Bottom
+        g.fillRect(0, 0, topLeft.x(), screenSize.y()); // Left
+        g.fillRect(bottomRight.x(), 0, screenSize.x() - bottomRight.x(), screenSize.y()); // Right
     }
 
     public GridDisplay(GlobalReference globalReference) {
@@ -197,13 +213,18 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         this.globalReference.getAutomaton().setCellAt(cellLocation, stateToPaint);
     }
 
-    private void drawGridlines(Graphics g) {
+    private void drawGridlinesIfApplicable(Graphics g) {
+        if (GridDisplay.this.cellScale < globalReference.preferences.cellScaleToStopDrawingGridlines.get())
+            return;
+
+        int sizeOfLines = (int) Math.clamp(4 + (30 / this.cellScale), 0, 3);
+
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
         g.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
         for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
-            g.fillRect((int) x - 1, 0, 3, screenSizeInPixels.y());
+            g.fillRect((int) x - 1, 0, sizeOfLines, screenSizeInPixels.y());
         for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
-            g.fillRect(0, (int) y - 1, screenSizeInPixels.x(), 3);
+            g.fillRect(0, (int) y - 1, screenSizeInPixels.x(), sizeOfLines);
     }
 
     private void drawAllAgents(Graphics g) {

@@ -63,7 +63,9 @@ public abstract class Language implements HasDisplayableName {
 
 		BORDER_POLICY_MENU_OPTION("Border Policy"),
 
-		NO_BORDER("No border"), FIlL_WITH_DEFAULT("Fill with default"), LOOP("Loop"),
+		NO_BORDER("No border"),
+        FIlL_WITH_DEFAULT("Border"),
+        LOOP("Repeat"),
 
 		RESET_CAMERA("Reset pan and zoom");
 

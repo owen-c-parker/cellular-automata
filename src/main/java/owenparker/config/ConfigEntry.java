@@ -1,10 +1,11 @@
-package owenparker.config.configuration_entries;
+package owenparker.config;
 
 import owenparker.gui.EventNotifier;
 
 import javax.swing.*;
+import java.io.Serializable;
 
-public abstract class ConfigEntry<T> {
+public abstract class ConfigEntry<T> implements Serializable {
     private T value;
     private final EventNotifier setNotifier = new EventNotifier();
 

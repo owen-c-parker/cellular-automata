@@ -30,6 +30,7 @@ public final class Board implements Serializable {
 
 	private boolean isInsideExtent(OrderedPair position) {
 		return
+                position == null ||
 				position.x() >= 0 &&
 				position.y() >= 0 &&
 				position.x() < this.getExtent().x() &&
@@ -73,6 +74,7 @@ public final class Board implements Serializable {
 							.stream()
 							.map(orderedPair::add)
 							.map(this::transformLocation)
+                            .filter(Objects::nonNull)
 							.toList()
 			);
 		}

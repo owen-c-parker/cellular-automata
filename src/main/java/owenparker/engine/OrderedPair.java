@@ -1,9 +1,16 @@
 package owenparker.engine;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public record OrderedPair(int x, int y) implements Serializable {
-	public OrderedPair negate() {
+    public static final OrderedPair UNIT = new OrderedPair(1, 1);
+
+    public OrderedPair(Dimension dimension) {
+        this(dimension.width, dimension.height);
+    }
+
+    public OrderedPair negate() {
 		return new OrderedPair(-x(), -y());
 	}
 

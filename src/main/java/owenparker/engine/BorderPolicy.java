@@ -17,4 +17,10 @@ public enum BorderPolicy implements HasDisplayableName {
 	public String getDisplayableName() {
 		return Language.getCurrentLanguage().get(this.key);
 	}
+
+
+    @Override
+    public String toString() {
+        return getDisplayableName();
+    }
 }
