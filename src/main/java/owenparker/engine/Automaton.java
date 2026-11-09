@@ -7,7 +7,16 @@ import java.util.*;
 import static owenparker.engine.BorderPolicy.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
-	private Board board = new Board(getDefaultState(), NO_BORDER, Board.DEFAULT_EXTENT);
+	private Board board;
+    private final AutomatonConfig config = new AutomatonConfig();
+
+    protected Automaton() {
+        board = new Board(getDefaultState(), config);
+    }
+
+    public AutomatonConfig getConfig() {
+        return config;
+    }
 
 	Set<Agent> agents = new HashSet<>();
 
@@ -65,11 +74,11 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 	public abstract State getDefaultState();
 
 	public BorderPolicy getBorderPolicy() {
-		return this.board.borderPolicy;
+		return this.config.getBorderPolicy();
 	}
 
 	public void setBorderPolicy(BorderPolicy borderPolicy) {
-		this.board.borderPolicy = borderPolicy;
+		this.config.borderPolicy.set(borderPolicy);
 	}
 
 	@Override

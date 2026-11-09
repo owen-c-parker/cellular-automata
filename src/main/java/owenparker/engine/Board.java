@@ -8,17 +8,22 @@ import static owenparker.engine.BorderPolicy.LOOP;
 
 public final class Board implements Serializable {
 	public static final OrderedPair DEFAULT_EXTENT = new OrderedPair(50, 50);
-	Map<OrderedPair, State> cells = new HashMap<>();
+    private final AutomatonConfig config;
+    Map<OrderedPair, State> cells = new HashMap<>();
 	private final State defaultState;
 
-	public BorderPolicy borderPolicy;
+    private OrderedPair getExtent() {
+        return config.getSize();
+    }
 
-	public OrderedPair extent;
+    private BorderPolicy getBorderPolicy() {
+        return config.getBorderPolicy();
+    }
 
 	OrderedPair transformLocation(OrderedPair location) {
-		if (this.borderPolicy.equals(LOOP))
-			return location.mod(this.extent);
-		if (this.borderPolicy.equals(FILL_WITH_DEFAULT) && !isInsideExtent(location))
+		if (getBorderPolicy().equals(LOOP))
+			return location.mod(this.getExtent());
+		if (getBorderPolicy().equals(FILL_WITH_DEFAULT) && !isInsideExtent(location))
 			return null;
 		return location;
 	}
@@ -27,19 +32,18 @@ public final class Board implements Serializable {
 		return
 				position.x() >= 0 &&
 				position.y() >= 0 &&
-				position.x() < this.extent.x() &&
-				position.y() < this.extent.y()
+				position.x() < this.getExtent().x() &&
+				position.y() < this.getExtent().y()
 		;
 	}
 
-	public Board(State defaultState, BorderPolicy borderPolicy, OrderedPair extent) {
+	public Board(State defaultState, AutomatonConfig config) {
 		this.defaultState = defaultState;
-		this.borderPolicy = borderPolicy;
-		this.extent = extent;
+		this.config = config;
 	}
 
 	Board makeEmptyBoardWithSameProperties() {
-		return new Board(getDefaultState(), this.borderPolicy, this.extent);
+		return new Board(getDefaultState(), config);
 	}
 
 	public State getCellAt(OrderedPair location) {

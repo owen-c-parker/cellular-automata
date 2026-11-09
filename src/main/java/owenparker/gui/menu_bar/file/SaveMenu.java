@@ -23,10 +23,8 @@ public class SaveMenu extends AccessorComponent<JMenuItem> {
 				return;
 
 			File fileToWriteTo = fileChooser.getComponent().getSelectedFile();
-			if (fileToWriteTo == null) {
-				Launcher.errorWindow(new RuntimeException(translation(Language.Key.NO_FILE_SELECTED)));
+			if (fileToWriteTo == null)
 				return;
-			}
 			try {
 				new ObjectOutputStream(new FileOutputStream(fileToWriteTo)).writeObject(globalReference.getAutomaton());
 			} catch (Exception e) {

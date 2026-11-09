@@ -1,5 +1,7 @@
 package owenparker.gui;
 
+import owenparker.engine.HasDisplayableName;
+import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.lang.Language;
 import owenparker.plugins.DefaultPlugin;
 import owenparker.plugins.Plugin;
@@ -7,7 +9,9 @@ import owenparker.plugins.PluginLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.function.Function;
 
 public class Launcher {
 
@@ -26,7 +30,17 @@ public class Launcher {
 		errorWindow.setVisible(true);
 	}
 
-	void main() {
+    public static <T> Collection<T> getAllOfAResource(Function<Plugin, Collection<T>> resourceGetter) {
+        LinkedList<T> resources = new LinkedList<>();
+
+        for (Plugin plugin : installedPlugins) {
+            resources.addAll(resourceGetter.apply(plugin));
+        }
+
+        return resources;
+    }
+
+    void main() {
 		launch();
 	}
 

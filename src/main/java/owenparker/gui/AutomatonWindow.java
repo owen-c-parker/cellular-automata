@@ -14,8 +14,6 @@ public class AutomatonWindow extends GenericWindow {
 	public AutomatonWindow() {
         GlobalReference globalReference = new GlobalReference();
 
-		globalReference.setColorPalette(Launcher.installedPlugins.getFirst().getColorPalettes().getFirst());
-
 		globalReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
 
 		globalReference.newAutomatonEvent.add(() -> setTitle(String.format("%s - %s", Language.getCurrentLanguage().get(Language.Key.TITLE), globalReference.getAutomaton().getDisplayableName())));

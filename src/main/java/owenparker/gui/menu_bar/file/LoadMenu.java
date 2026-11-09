@@ -19,10 +19,8 @@ public class LoadMenu extends AccessorComponent<JMenuItem> {
 			AutomatonFileChooser fileChooser = new AutomatonFileChooser(globalReference, translation(Language.Key.LOAD_MENU_OPTION));
 			fileChooser.getComponent().showOpenDialog(getComponent());
 			File fileToRead = fileChooser.getComponent().getSelectedFile();
-			if (fileToRead == null) {
-				Launcher.errorWindow(new RuntimeException(translation(Language.Key.NO_FILE_SELECTED)));
+			if (fileToRead == null)
 				return;
-			}
 			try {
 				Automaton automaton = (Automaton) new ObjectInputStream(new FileInputStream(fileToRead)).readObject();
 				globalReference.setAutomaton(automaton);

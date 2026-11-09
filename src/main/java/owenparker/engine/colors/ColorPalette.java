@@ -17,14 +17,19 @@ public class ColorPalette implements HasDisplayableName, Serializable {
 		return this.name;
 	}
 
-	private final Map<Slot, Color> colorValues;
+    @Override
+    public String toString() {
+        return getDisplayableName();
+    }
+
+    private final Map<Slot, Color> colorValues;
 
 	public ColorPalette(String name, Map<Slot, Color> colorValues) {
 		this.name = name;
 		this.colorValues = Map.copyOf(colorValues);
 	}
 
-	public enum Slot {
+    public enum Slot {
 		BACKGROUND(DARK_GRAY),
 		MIDDLE(GRAY),
 		FOREGROUND(LIGHT_GRAY),
