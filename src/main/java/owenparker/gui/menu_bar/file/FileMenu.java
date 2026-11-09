@@ -10,9 +10,10 @@ public class FileMenu extends AccessorComponent<JMenu> {
         super(globalReference, new JMenu("File"));
 
         add(new NewFileMenu(globalReference));
-        add(new ConfigureAutomatonMenu(globalReference));
+        getComponent().add(new JSeparator());
 		add(new SaveMenu(globalReference));
 		add(new LoadMenu(globalReference));
+        getComponent().add(new JSeparator());
         add(new PreferencesMenu(globalReference));
     }
 }
