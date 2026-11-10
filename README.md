@@ -5,30 +5,15 @@ This is a program for simulating [cellular automata](https://en.wikipedia.org/wi
 
 ## Controls
 
-| Input               | Action  |
-|:--------------------|:--------|
-| Scroll down         | Zoom    |
-| Hold mouse button 3 | Panning |
-
-### Pencil
-
-| Input               | Action                |
-|:--------------------|:----------------------|
-| Left click          | Draw cells            |
-| Right click         | Remove cells          |
-
-### Select area
-
-| Input          | Action             |
-|:---------------|:-------------------|
-| Click and drag | Select area        |
-| Right click    | Copy selected area |
-
-### Rectangle
-
-| Input          | Action         |
-|:---------------|:---------------|
-| Click and drag | Fill rectangle |
+| Mode      | Input               | Action             |
+|:----------|:--------------------|:-------------------|
+|           | Scroll down         | Zoom               |
+|           | Hold mouse button 3 | Panning            |
+| Pencil    | Left click          | Draw cells         |
+| Pencil    | Right click         | Remove cells       |
+| Select    | Click and drag      | Select area        |
+| Select    | Right click         | Copy selected area |
+| Rectangle | Click and drag      | Fill rectangle     |
 
 # Plugins
 
