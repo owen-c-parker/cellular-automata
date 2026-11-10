@@ -40,6 +40,7 @@ public abstract class RectangleAreaOperation extends CursorModeOperation {
 		this.bounds = new Bounds(this.bounds.a(), location);
 
 		getGridDisplay().renderBounds(this.bounds);
+		getGlobalReference().repaintEvent.fire();
 	}
 
 	protected Collection<OrderedPair> getCellLocationsInBounds() {

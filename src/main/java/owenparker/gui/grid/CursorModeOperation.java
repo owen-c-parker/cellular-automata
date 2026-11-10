@@ -55,9 +55,9 @@ public abstract class CursorModeOperation implements MouseListener, MouseMotionL
 			}
 
 			this.lastEventWasMiddleDrag = true;
-		}
 
-		getGlobalReference().repaintEvent.fire();
+			getGlobalReference().repaintEvent.fire();
+		}
 	}
 
 	@Override

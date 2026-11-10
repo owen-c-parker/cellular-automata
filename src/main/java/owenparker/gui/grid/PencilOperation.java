@@ -29,10 +29,14 @@ public class PencilOperation extends CursorModeOperation {
 
 		OrderedPair location = getGridDisplay().fromScreenSpaceToCellSpace(new OrderedPair(e));
 		if (getGlobalReference().selectedForPlacement instanceof State state) {
-			if (SwingUtilities.isLeftMouseButton(e))
+			if (SwingUtilities.isLeftMouseButton(e)) {
 				getAutomaton().place(location, state);
-			if (SwingUtilities.isRightMouseButton(e))
+				getGlobalReference().repaintEvent.fire();
+			}
+			if (SwingUtilities.isRightMouseButton(e)) {
 				getAutomaton().remove(location, state);
+				getGlobalReference().repaintEvent.fire();
+			}
 		}
 	}
 
