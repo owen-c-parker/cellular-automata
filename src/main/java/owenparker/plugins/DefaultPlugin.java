@@ -4,8 +4,10 @@ import owenparker.automaton_factories.*;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.colors.ColorPalette;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static java.awt.Color.*;
 
@@ -23,10 +25,29 @@ public class DefaultPlugin extends Plugin {
 		);
 	}
 
+	private ColorPalette createColorPalette(String title, Map<ColorPalette.Slot, Color> colorMap, Function<Color, Color> indexedColorFunction) {
+		return new ColorPalette() {
+			@Override
+			protected Map<Slot, Color> getColorValues() {
+				return colorMap;
+			}
+
+			@Override
+			public String getDisplayableName() {
+				return title;
+			}
+
+			@Override
+			public Color getIndexedColor(int index) {
+				return indexedColorFunction.apply(super.getIndexedColor(index));
+			}
+		};
+	}
+
 	@Override
 	public List<ColorPalette> getColorPalettes() {
 		return List.of(
-				new ColorPalette("Dark Roast", Map.of(
+				createColorPalette("Dark Roast", Map.of(
 						ColorPalette.Slot.BACKGROUND, decode("#413725"),
 						ColorPalette.Slot.MIDDLE, decode("#816E49"),
 						ColorPalette.Slot.FOREGROUND, decode("#cbaf76"),
@@ -35,8 +56,8 @@ public class DefaultPlugin extends Plugin {
 						ColorPalette.Slot.ACTIVE_2, decode("#00bd36"),
 						ColorPalette.Slot.DISSIPATING_2, decode("#00651d"),
 						ColorPalette.Slot.GRIDLINES, decode("#15100d")
-				)),
-				new ColorPalette("Light Roast", Map.of(
+				), Color::darker),
+				createColorPalette("Light Roast", Map.of(
 						ColorPalette.Slot.BACKGROUND, decode("#cbaf76"),
 						ColorPalette.Slot.MIDDLE, decode("#816E49"),
 						ColorPalette.Slot.FOREGROUND, decode("#413725"),
@@ -45,23 +66,23 @@ public class DefaultPlugin extends Plugin {
 						ColorPalette.Slot.ACTIVE_2, decode("#00bd36"),
 						ColorPalette.Slot.DISSIPATING_2, decode("#00651d"),
 						ColorPalette.Slot.GRIDLINES, decode("#15100d")
-				)),
-				new ColorPalette("Dark", Map.of()),
-				new ColorPalette("Dark (high contrast)", Map.of(
+				), Color::brighter),
+				createColorPalette("Dark", Map.of(), Color::darker),
+				createColorPalette("Dark (high contrast)", Map.of(
 						ColorPalette.Slot.BACKGROUND, BLACK,
 						ColorPalette.Slot.FOREGROUND, WHITE,
 						ColorPalette.Slot.GRIDLINES, GRAY
-				)),
-				new ColorPalette("Light", Map.of(
+				), color -> color),
+				createColorPalette("Light", Map.of(
 						ColorPalette.Slot.BACKGROUND, LIGHT_GRAY,
 						ColorPalette.Slot.FOREGROUND, DARK_GRAY,
 						ColorPalette.Slot.GRIDLINES, GRAY
-				)),
-				new ColorPalette("Light (high contrast)", Map.of(
+				), Color::brighter),
+				createColorPalette("Light (high contrast)", Map.of(
 						ColorPalette.Slot.BACKGROUND, WHITE,
 						ColorPalette.Slot.FOREGROUND, BLACK,
 						ColorPalette.Slot.GRIDLINES, GRAY
-				))
+				), color -> color)
 			);
 	}
 

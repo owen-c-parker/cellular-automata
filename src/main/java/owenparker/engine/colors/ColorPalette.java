@@ -4,32 +4,34 @@ import owenparker.engine.HasDisplayableName;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.awt.Color.*;
 
-public class ColorPalette implements HasDisplayableName, Serializable {
+public abstract class ColorPalette implements HasDisplayableName, Serializable {
 
-	private final String name;
-
-	@Override
-	public String getDisplayableName() {
-		return this.name;
-	}
+	private final static float PHI = (float) (1.0 + Math.sqrt(5.0) / 2.0);
 
     @Override
     public String toString() {
         return getDisplayableName();
     }
 
-    private final Map<Slot, Color> colorValues;
+	/**
+	 * Get a unique color based on an index. By default, it returns a full saturation color whose hue is
+	 * <code>360 * index * &phi;</code>, but it is encouraged that you override this behavior. A good option
+	 * is to call this method and modify the resulting color.
+	 */
+	public Color getIndexedColor(int index) {
+		float angle = ((float) index) * 360.0f * PHI;
 
-	public ColorPalette(String name, Map<Slot, Color> colorValues) {
-		this.name = name;
-		this.colorValues = Map.copyOf(colorValues);
+		Color.getHSBColor(angle, 1.0f, 0.5f);
+
+		return null;
 	}
 
-    public enum Slot {
+	public enum Slot {
 		BACKGROUND(DARK_GRAY),
 		MIDDLE(GRAY),
 		FOREGROUND(LIGHT_GRAY),
@@ -47,6 +49,8 @@ public class ColorPalette implements HasDisplayableName, Serializable {
 	}
 
 	public Color getColor(Slot slot) {
-		return this.colorValues.getOrDefault(slot, slot.defaultColor);
+		return getColorValues().getOrDefault(slot, slot.defaultColor);
 	}
+
+	protected abstract Map<Slot, Color> getColorValues();
 }
