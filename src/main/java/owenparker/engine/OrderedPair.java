@@ -1,6 +1,7 @@
 package owenparker.engine;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
 public record OrderedPair(int x, int y) implements Serializable {
@@ -11,7 +12,11 @@ public record OrderedPair(int x, int y) implements Serializable {
         this(dimension.width, dimension.height);
     }
 
-    public OrderedPair negate() {
+	public OrderedPair(MouseEvent e) {
+		this(e.getX(), e.getY());
+	}
+
+	public OrderedPair negate() {
 		return new OrderedPair(-x(), -y());
 	}
 

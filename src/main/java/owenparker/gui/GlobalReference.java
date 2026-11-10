@@ -15,10 +15,12 @@ public class GlobalReference {
     public boolean currentlyPlaying = false;
     public double ticksPerMillisecond = 8.0 / 1000;
 	private Automaton automaton;
-    public CursorPlaceable selectedForPlacement;
-    public GridDisplay gridDisplay;
+	public CursorPlaceable selectedForPlacement;
+	private CursorMode currentCursorMode = CursorMode.PENCIL;
+	public GridDisplay gridDisplay;
 
-    public final EventNotifier speedChangeEvent = new EventNotifier();
+	public final EventNotifier cursorModeChangeEvent = new EventNotifier();
+	public final EventNotifier speedChangeEvent = new EventNotifier();
     public final EventNotifier repaintEvent = new EventNotifier();
     public final EventNotifier newAutomatonEvent = new EventNotifier();
 	public final EventNotifier newColorPaletteEvent = new EventNotifier();
@@ -47,7 +49,7 @@ public class GlobalReference {
     }
 
 	public ColorPalette getColorPalette() {
-		return preferences.selectedTheme.get();
+		return this.preferences.selectedTheme.get();
 	}
 
 	public void setBorderPolicy(BorderPolicy borderPolicy) {
@@ -60,5 +62,14 @@ public class GlobalReference {
 			return;
 		this.gridDisplay.resetCamera();
 		this.repaintEvent.fire();
+	}
+
+	public CursorMode getCurrentCursorMode() {
+		return this.currentCursorMode;
+	}
+
+	public void setCurrentCursorMode(CursorMode currentCursorMode) {
+		this.currentCursorMode = currentCursorMode;
+		this.cursorModeChangeEvent.fire();
 	}
 }

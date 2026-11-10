@@ -12,14 +12,9 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.util.Collection;
 import java.util.LinkedList;
-
-import static owenparker.engine.OrderedPair.EAST;
-import static owenparker.engine.OrderedPair.NORTH;
 
 public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double ZOOM_AMOUNT = .1;
@@ -28,12 +23,8 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double DEFAULT_CELL_SCALE = 20;
 
     private double cellScale;
-    private double scrollX;
-    private double scrollY;
-
-    private MouseEvent lastMouseEvent = null;
-    private MouseEvent shiftClickStartPlace = null;
-    private MouseEvent mostRecentMove = null;
+    public double scrollX;
+    public double scrollY;
 
     public double getCellScale() {
         return this.cellScale;
@@ -56,55 +47,33 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                 repaint();
             });
 
-            addMouseListener(new MouseInputAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    super.mouseReleased(e);
-                    GridDisplay.this.lastMouseEvent = null;
-                    GridDisplay.this.shiftClickStartPlace = null;
-                    GridDisplay.this.globalReference.repaintEvent.fire();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    super.mouseClicked(e);
-                    if (e.isShiftDown())
-                        GridDisplay.this.shiftClickStartPlace = e;
-                    placeCellAtClickedLocation(e);
-                    placeAgentAtClickedLocation(e);
-                    GridDisplay.this.globalReference.repaintEvent.fire();
-                }
-            });
-
-            addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    super.mouseMoved(e);
-                    GridDisplay.this.mostRecentMove = e;
-                    GridDisplay.this.globalReference.repaintEvent.fire();
-                }
-
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    super.mouseDragged(e);
-                    placeCellAtClickedLocation(e);
-                    dragScroll(e);
-                    GridDisplay.this.lastMouseEvent = e;
-                    GridDisplay.this.globalReference.repaintEvent.fire();
-                }
-            });
-
-            addMouseWheelListener(new MouseInputAdapter() {
-                @Override
-                public void mouseWheelMoved(MouseWheelEvent e) {
-                    super.mouseWheelMoved(e);
-                    performZoom(e);
-                    GridDisplay.this.globalReference.repaintEvent.fire();
-                }
-            });
+			GridDisplay.this.globalReference.cursorModeChangeEvent.add(this::refreshListeners);
+			refreshListeners();
         }
 
-        @Override
+		private void refreshListeners() {
+			for (MouseListener mouseListener : getMouseListeners()) {
+				removeMouseListener(mouseListener);
+			}
+			for (MouseMotionListener mouseMotionListener : getMouseMotionListeners()) {
+				removeMouseMotionListener(mouseMotionListener);
+			}
+			for (MouseWheelListener mouseWheelListener : getMouseWheelListeners()) {
+				removeMouseWheelListener(mouseWheelListener);
+			}
+			
+			CursorModeOperation operation = switch (GridDisplay.this.globalReference.getCurrentCursorMode()) {
+				case SELECT -> new SelectOperation(GridDisplay.this);
+				case PENCIL -> new PencilOperation(GridDisplay.this);
+				case RECTANGLE -> new RectangleOperation(GridDisplay.this);
+			};
+			
+			addMouseListener(operation);
+			addMouseMotionListener(operation);
+			addMouseWheelListener(operation);
+		}
+
+		@Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             fillBackgroundWithDefaultCellColor(g);
@@ -138,15 +107,17 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         globalReference.gridDisplay = this;
     }
 
-    private void performZoom(MouseWheelEvent event) {
+    public void performZoom(MouseWheelEvent event) {
         double modifier = 1 + -ZOOM_AMOUNT * event.getPreciseWheelRotation();
+
+		OrderedPair location = new OrderedPair(event);
 
         double tentativeNewScale = this.cellScale * modifier;
 
         if (tentativeNewScale < MIN_SCALE || tentativeNewScale > MAX_SCALE)
             return;
 
-        OrderedPair mousePosOnScreen = new OrderedPair(this.mostRecentMove.getX(), this.mostRecentMove.getY());
+        OrderedPair mousePosOnScreen = new OrderedPair(location.x(), location.y());
 
         int width = getComponent().getWidth();
         int height = getComponent().getHeight();
@@ -157,67 +128,8 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         this.cellScale = tentativeNewScale;
     }
 
-    private void dragScroll(MouseEvent event) {
-        if (!SwingUtilities.isMiddleMouseButton(event)) return;
-
-        if (this.lastMouseEvent == null) return;
-
-        OrderedPair offset = new OrderedPair(event.getX(), event.getY())
-                .subtract(this.lastMouseEvent.getX(), this.lastMouseEvent.getY());
-
-        this.scrollX += offset.x();
-        this.scrollY += offset.y();
-    }
-
-    private void placeAgentAtClickedLocation(MouseEvent event) {
-        if (!(this.globalReference.selectedForPlacement instanceof AgentFactory agentFactory))
-            return;
-
-        if (SwingUtilities.isLeftMouseButton(event)) {
-            OrderedPair cellSpacePosition = fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY()));
-
-            this.globalReference.getAutomaton().addAgent(agentFactory.buildAgent(cellSpacePosition));
-        }
-
-        if (SwingUtilities.isRightMouseButton(event)) {
-			this.globalReference.getAutomaton().deleteAgentAt(fromScreenSpaceToCellSpace(new OrderedPair(event.getX(), event.getY())));
-        }
-
-    }
-
-    private void placeCellAtClickedLocation(MouseEvent event) {
-        if (!(this.globalReference.selectedForPlacement instanceof State state))
-            return;
-
-
-        OrderedPair location = new OrderedPair(event.getX(), event.getY());
-        OrderedPair cellLocation = fromScreenSpaceToCellSpace(location);
-
-        if (this.shiftClickStartPlace != null) {
-            OrderedPair lastClickedCellLocation = fromScreenSpaceToCellSpace(new OrderedPair(this.shiftClickStartPlace.getX(), this.shiftClickStartPlace.getY()));
-
-            OrderedPair difference = lastClickedCellLocation.subtract(cellLocation);
-
-            if (Math.abs(difference.x()) > Math.abs(difference.y())) {
-                cellLocation = new OrderedPair(cellLocation.x(), lastClickedCellLocation.y());
-            } else {
-                cellLocation = new OrderedPair(lastClickedCellLocation.x(), cellLocation.y());
-            }
-        }
-
-
-        State stateToPaint = null;
-        if (SwingUtilities.isLeftMouseButton(event))
-            stateToPaint = state;
-        if (SwingUtilities.isRightMouseButton(event))
-            stateToPaint = this.globalReference.getAutomaton().getDefaultState();
-        if (stateToPaint == null) return;
-
-        this.globalReference.getAutomaton().setCellAt(cellLocation, stateToPaint);
-    }
-
     private void drawGridlinesIfApplicable(Graphics g) {
-        if (GridDisplay.this.cellScale < globalReference.preferences.cellScaleToStopDrawingGridlines.get())
+        if (GridDisplay.this.cellScale < this.globalReference.preferences.cellScaleToStopDrawingGridlines.get())
             return;
 
         int sizeOfLines = (int) Math.clamp(4 + (30 / this.cellScale), 0, 3);

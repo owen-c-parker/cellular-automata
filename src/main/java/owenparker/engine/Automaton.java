@@ -98,7 +98,7 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
         return Collections.unmodifiableCollection(this.agents);
     }
 
-	public void deleteAgentAt(OrderedPair orderedPair) {
+	public void removeAgentAt(OrderedPair orderedPair) {
 		OrderedPair transformedLocation = this.board.transformLocation(orderedPair);
 		if (transformedLocation == null)
 			 return;
@@ -164,5 +164,23 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 
 	public Map<OrderedPair, State> getBoardMap() {
 		return this.board.cells;
+	}
+
+	public final void place(OrderedPair location, CursorPlaceable thingToPlace) {
+		if (thingToPlace instanceof State state) {
+			setCellAt(location, state);
+		}
+		if (thingToPlace instanceof AgentFactory agentFactory) {
+			addAgent(agentFactory.buildAgent(location));
+		}
+	}
+
+	public final void remove(OrderedPair location, CursorPlaceable typeOfThingToRemove) {
+		if (typeOfThingToRemove instanceof State) {
+			setCellAt(location, getDefaultState());
+		}
+		if (typeOfThingToRemove instanceof AgentFactory) {
+			removeAgentAt(location);
+		}
 	}
 }

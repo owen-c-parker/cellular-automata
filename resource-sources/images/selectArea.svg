@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733333"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e94, 2025-05-08)"
+   sodipodi:docname="selectArea.svg"
+   inkscape:export-filename="../../src/main/resources/images/gui/selectArea.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.552143"
+     inkscape:cx="143.35019"
+     inkscape:cy="131.43119"
+     inkscape:window-width="1536"
+     inkscape:window-height="796"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:none;stroke:#64b4b2;stroke-width:3.33375;stroke-dasharray:3.33375001, 3.33375001;stroke-linejoin:miter;stroke-linecap:butt;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1"
+       width="46.666424"
+       height="46.666424"
+       x="10.533452"
+       y="10.533452" />
+    <path
+       id="path1"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:5.00841;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:5.00841, 5.00841;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 50.531783,43.171959 v 19.466265 l 4.021506,-4.318072 2.325952,4.651903 2.565845,-1.282533 -2.245211,-4.489647 h 5.102966 z" />
+  </g>
+</svg>

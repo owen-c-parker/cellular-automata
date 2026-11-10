@@ -29,8 +29,8 @@ public class ImageHelper {
 			return ImageIO.read(Objects.requireNonNull(stream));
 		} catch (IOException | NullPointerException e) {
 			System.err.println("Couldn't read " + path);
-			throw new RuntimeException(e);
 		}
+		return null;
 	}
 
 	public static Image readImage(Path path) {

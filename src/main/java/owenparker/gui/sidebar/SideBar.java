@@ -1,25 +1,20 @@
 package owenparker.gui.sidebar;
 
 import owenparker.engine.*;
-import owenparker.engine.colors.ColorEvaluator;
-import owenparker.engine.colors.HasColor;
-import owenparker.engine.colors.StaticColor;
 import owenparker.gui.AccessorComponent;
+import owenparker.gui.CursorMode;
 import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class SideBar extends AccessorComponent<JScrollPane> {
-	private List<PlaceableButton> placeableButtons;
+	private List<SideBarButton> buttons;
 
 	public void refreshSelection() {
-		this.placeableButtons.forEach(PlaceableButton::refreshSelection);
+		this.buttons.forEach(SideBarButton::refreshSelection);
 	}
 
 	public SideBar(GlobalReference globalReference) {
@@ -31,10 +26,18 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 	}
 
 	private void refresh() {
-		this.placeableButtons = new LinkedList<>();
+
+		this.buttons = new LinkedList<>();
 
 		JPanel innerPanel = new JPanel();
 		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+
+		for (CursorMode cursorMode : CursorMode.values()) {
+			SideBarButton button = cursorMode.getButton(this);
+			innerPanel.add(button.getComponent());
+			this.buttons.add(button);
+			innerPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		}
 
 		List<State> states = this.globalReference.getAutomaton().getSelectableCellStates();
 		if (!states.isEmpty())
@@ -55,6 +58,7 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 	}
 
 	private void createButtonsForPlaceables(JComponent target, List<? extends CursorPlaceable> placeables, String title) {
+		target.add(new JSeparator(SwingConstants.HORIZONTAL));
 		target.add(new JLabel(title));
 		for (CursorPlaceable placeable : placeables) {
 			createButtonFromPlaceable(target, placeable);
@@ -64,7 +68,7 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 	private void createButtonFromPlaceable(JComponent target, CursorPlaceable placeable) {
 		PlaceableButton button = new PlaceableButton(this.globalReference, placeable, this);
 		target.add(button.getComponent());
-		this.placeableButtons.add(button);
+		this.buttons.add(button);
 		target.add(Box.createRigidArea(new Dimension(0, 5)));
 	}
 }
