@@ -15,8 +15,6 @@ public class PencilOperation extends CursorModeOperation {
 	public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
 
-		System.out.println(e);
-
 		OrderedPair location = getGridDisplay().fromScreenSpaceToCellSpace(new OrderedPair(e));
 
 		if (SwingUtilities.isLeftMouseButton(e))

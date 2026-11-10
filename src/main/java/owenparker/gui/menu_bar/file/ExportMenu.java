@@ -2,6 +2,7 @@ package owenparker.gui.menu_bar.file;
 
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
+import owenparker.gui.export.ExportConfig;
 import owenparker.gui.export.ExportWindow;
 
 import javax.swing.*;

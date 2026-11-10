@@ -20,7 +20,5 @@ public abstract class Plugin implements HasDisplayableName {
 
 	public final void load() {
 		Launcher.installedPlugins.add(this);
-
-		System.out.printf("Loaded plugin \"%s\"\n", getDisplayableName());
 	}
 }

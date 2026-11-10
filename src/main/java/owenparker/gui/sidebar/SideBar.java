@@ -21,6 +21,7 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 		super(globalReference, new JScrollPane());
 
 		globalReference.newAutomatonEvent.add(this::refresh);
+		globalReference.newColorPaletteEvent.add(this::refresh);
 
 		refresh();
 	}
@@ -55,6 +56,8 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 		getComponent().setPreferredSize(new Dimension(64, 0));
 		getComponent().getVerticalScrollBar().setUnitIncrement(16);
 		getComponent().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		refreshSelection();
 	}
 
 	private void createButtonsForPlaceables(JComponent target, List<? extends CursorPlaceable> placeables, String title) {

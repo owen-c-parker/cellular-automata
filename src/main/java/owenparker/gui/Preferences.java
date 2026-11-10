@@ -22,12 +22,6 @@ public class Preferences extends Configuration {
 			1.0,
 			100.0
 	);
-	public final ConfigInteger maxIterationsForHalting = new ConfigInteger(
-			"Maximum iterations before giving up on a halt search",
-			100_000,
-			1,
-			Integer.MAX_VALUE
-	);
 
 
     public Preferences() {
