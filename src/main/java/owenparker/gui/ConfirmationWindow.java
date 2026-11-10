@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 public class ConfirmationWindow<T extends Configuration> extends GenericWindow {
-	public ConfirmationWindow(GlobalReference globalReference, T config, Consumer<T> confirmCallback, String confirmText) {
+	public ConfirmationWindow(T config, Consumer<T> confirmCallback, String confirmText) {
 		setContentPane(new JPanel(new BorderLayout()));
 
 		setTitle(confirmText);

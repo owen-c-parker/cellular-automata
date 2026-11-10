@@ -1,9 +1,9 @@
 package owenparker.gui;
 
-import owenparker.engine.Automaton;
-import owenparker.engine.BorderPolicy;
-import owenparker.engine.CursorPlaceable;
+import owenparker.config.Configuration;
+import owenparker.engine.*;
 import owenparker.engine.colors.ColorPalette;
+import owenparker.engine.exceptions.InvalidConfigException;
 import owenparker.gui.grid.GridDisplay;
 
 
@@ -71,5 +71,31 @@ public class GlobalReference {
 	public void setCurrentCursorMode(CursorMode currentCursorMode) {
 		this.currentCursorMode = currentCursorMode;
 		this.cursorModeChangeEvent.fire();
+	}
+
+	public <T extends Configuration> void buildAutomatonFromFactory(AutomatonFactory<T> factory) {
+		if (factory instanceof NoConfigAutomatonFactory noConfigFactory) {
+			setAutomaton(noConfigFactory.buildAutomaton());
+			return;
+		}
+
+		T config = factory.getConfig();
+		String title = String.format("Create %s", factory.getDisplayableName());
+		new ConfirmationWindow<>(
+				config,
+				filledConfig -> {
+					try {
+						setAutomaton(factory.buildAutomaton(filledConfig));
+					} catch (InvalidConfigException e) {
+						Launcher.errorWindow(e);
+					}
+				},
+				title
+		);
+		try {
+			setAutomaton(factory.buildAutomaton(config));
+		} catch (InvalidConfigException e) {
+			Launcher.errorWindow(e);
+		}
 	}
 }

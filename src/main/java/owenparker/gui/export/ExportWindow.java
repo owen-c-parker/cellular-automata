@@ -7,7 +7,6 @@ public class ExportWindow extends ConfirmationWindow<ExportConfig> {
 
 	public ExportWindow(GlobalReference globalReference) {
 		super(
-				globalReference,
 				new ExportConfig(globalReference),
 				c -> c.exporter.get().export(c, globalReference.getAutomaton()),
 				"Export"

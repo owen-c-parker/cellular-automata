@@ -8,7 +8,7 @@ import owenparker.gui.Launcher;
 import java.util.List;
 
 public abstract class Plugin implements HasDisplayableName {
-	public List<AutomatonFactory> getAutomatonFactories() {
+	public List<AutomatonFactory<?>> getAutomatonFactories() {
 		return List.of();
 	}
 

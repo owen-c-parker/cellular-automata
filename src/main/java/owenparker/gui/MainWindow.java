@@ -20,7 +20,7 @@ public class MainWindow extends GenericWindow {
 
         globalReference.newAutomatonEvent.add(() -> setTitle(String.format("Cellular Automaton Simulator - %s", globalReference.getAutomaton().getDisplayableName())));
 
-        globalReference.setAutomaton(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst().buildAutomaton());
+		globalReference.buildAutomatonFromFactory(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst());
 
         setContentPane(new JPanel(new BorderLayout()));
 

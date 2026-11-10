@@ -11,9 +11,10 @@ import static java.awt.Color.*;
 
 public class DefaultPlugin extends Plugin {
 	@Override
-	public List<AutomatonFactory> getAutomatonFactories() {
+	public List<AutomatonFactory<?>> getAutomatonFactories() {
 		return List.of(
 				new CGOLFactory(),
+				new LifeLikeFactory(),
 				new KnightCGOLFactory(),
 				new Rule110Factory(),
 				new WireworldFactory(),

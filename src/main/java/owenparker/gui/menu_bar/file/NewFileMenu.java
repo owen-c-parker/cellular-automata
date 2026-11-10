@@ -12,9 +12,9 @@ public class NewFileMenu extends AccessorComponent<JMenu> {
     public NewFileMenu(GlobalReference globalReference) {
         super(globalReference, new JMenu("New"));
 
-		PluginResourceMenuLister<AutomatonFactory> lister = new PluginResourceMenuLister<>(
+		PluginResourceMenuLister<AutomatonFactory<?>> lister = new PluginResourceMenuLister<>(
 				Plugin::getAutomatonFactories,
-				factory -> globalReference.setAutomaton(factory.buildAutomaton())
+				globalReference::buildAutomatonFromFactory
 		);
 
 		lister.listResources(this);

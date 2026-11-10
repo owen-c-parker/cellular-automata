@@ -22,7 +22,7 @@ public class WarpButton extends AccessorComponent<JButton> {
 	}
 
 	private void click() {
-		new ConfirmationWindow<>(this.globalReference, new WarpConfig(), c -> {
+		new ConfirmationWindow<>(new WarpConfig(), c -> {
 			int stepCount = c.stepCount.get();
 
 			Automaton automaton = this.globalReference.getAutomaton();
