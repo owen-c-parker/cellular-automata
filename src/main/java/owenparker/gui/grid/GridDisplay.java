@@ -1,6 +1,7 @@
 package owenparker.gui.grid;
 
 import owenparker.engine.BorderPolicy;
+import owenparker.engine.Bounds;
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
 import owenparker.engine.colors.ColorPalette;
@@ -23,6 +24,8 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private static final double MAX_SCALE = 300;
     private static final double DEFAULT_CELL_SCALE = 20;
 
+	private Bounds boundsToRender = null;
+
     private double cellScale;
     public double scrollX;
     public double scrollY;
@@ -37,6 +40,11 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 		this.scrollY = 0;
 	}
 
+	public void renderBounds(Bounds bounds) {
+		this.boundsToRender = bounds;
+		this.globalReference.repaintEvent.fire();
+	}
+
 	private class GridDisplayPanel extends JPanel {
         public GridDisplayPanel() {
 			resetCamera();
@@ -49,6 +57,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
             });
 
 			GridDisplay.this.globalReference.cursorModeChangeEvent.add(this::refreshListeners);
+			GridDisplay.this.globalReference.cursorModeChangeEvent.add(GridDisplay.this.globalReference.repaintEvent::fire);
 			refreshListeners();
         }
 
@@ -66,7 +75,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 			CursorModeOperation operation = switch (GridDisplay.this.globalReference.getCurrentCursorMode()) {
 				case SELECT -> new SelectOperation(GridDisplay.this);
 				case PENCIL -> new PencilOperation(GridDisplay.this);
-				case RECTANGLE -> new RectangleOperation(GridDisplay.this);
+				case RECTANGLE -> new FillRectangleOperation(GridDisplay.this);
 			};
 			
 			addMouseListener(operation);
@@ -82,10 +91,37 @@ public class GridDisplay extends AccessorComponent<JPanel> {
             drawAllAgents(g);
             drawGridlinesIfApplicable(g);
             drawBordersIfApplicable(g);
+			drawBounds(g);
         }
     }
 
-    private void drawBordersIfApplicable(Graphics g) {
+	private void drawBounds(Graphics g) {
+		if (this.boundsToRender == null)
+			return;
+
+		Bounds bounds = fromCellSpaceToScreenSpace(this.boundsToRender);
+
+		Graphics2D g2d = (Graphics2D) g;
+
+		g2d.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.ACTIVE_2));
+		g2d.setStroke(new BasicStroke(4));
+
+		int top    = Math.min(bounds.a().y(), bounds.b().y());
+		int bottom = Math.max(bounds.a().y(), bounds.b().y());
+		int left   = Math.min(bounds.a().x(), bounds.b().x());
+		int right  = Math.max(bounds.a().x(), bounds.b().x());
+
+		System.out.printf("%d %d %d %d\n", top, bottom, left, right);
+
+		g2d.drawRect(
+				left,
+				top,
+				right - left + (int) this.cellScale,
+				bottom - top + (int) this.cellScale
+		);
+	}
+
+	private void drawBordersIfApplicable(Graphics g) {
         if (!globalReference.getAutomaton().getConfig().borderPolicy.get().equals(BorderPolicy.FILL_WITH_DEFAULT))
             return;
 
@@ -106,6 +142,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         super(globalReference);
         setComponent(new GridDisplayPanel());
         globalReference.gridDisplay = this;
+		globalReference.cursorModeChangeEvent.add(() -> this.boundsToRender = null);
     }
 
     public void performZoom(MouseWheelEvent event) {
@@ -171,17 +208,19 @@ public class GridDisplay extends AccessorComponent<JPanel> {
                 .add((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY));
     }
 
+	private Bounds fromCellSpaceToScreenSpace(Bounds bounds) {
+		return new Bounds(fromCellSpaceToScreenSpace(bounds.a()), fromCellSpaceToScreenSpace(bounds.b()));
+	}
+
     public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
-
-
-        OrderedPair cellSpacePreScaling = screenSpace
-                .subtract((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY));
-
-        OrderedPair cellSpace = cellSpacePreScaling
-                .divide(this.cellScale);
-
-        return cellSpace;
+		return screenSpace
+                .subtract((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY))
+				.divide(this.cellScale);
     }
+
+	public Bounds fromScreenSpaceToCellSpace(Bounds bounds) {
+		return new Bounds(fromScreenSpaceToCellSpace(bounds.a()), fromScreenSpaceToCellSpace(bounds.b()));
+	}
 
     private boolean isDefaultState(State state) {
         return this.globalReference.getAutomaton().getDefaultState().equals(state);
