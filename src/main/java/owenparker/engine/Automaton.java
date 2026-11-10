@@ -39,13 +39,13 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 	}
 
 	public final void step() {
-		this.board = this.board.getUpdatedBoard(getWakeUpNeighborhood());
+		this.board = this.board.getUpdatedBoard();
 		stepAllAgents();
         this.totalSteps++;
     }
 
 	private void stepAllAgents() {
-		this.agents.forEach(agent -> agent.step(this.board));
+		this.agents.forEach(agent -> agent.stepWithRespectToBorderPolicy(this.board));
 	}
 
 	/**

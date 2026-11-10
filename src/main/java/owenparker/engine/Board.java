@@ -6,8 +6,10 @@ import java.util.*;
 import static owenparker.engine.BorderPolicy.FILL_WITH_DEFAULT;
 import static owenparker.engine.BorderPolicy.LOOP;
 
+/**
+ * Uses {@link #cells} to store the current state of the board.
+ */
 public final class Board implements Serializable {
-	public static final OrderedPair DEFAULT_EXTENT = new OrderedPair(50, 50);
     private final AutomatonConfig config;
     Map<OrderedPair, State> cells = new HashMap<>();
     Set<OrderedPair> cellsThatMightMove = new HashSet<>();
@@ -15,11 +17,11 @@ public final class Board implements Serializable {
     private final Neighborhood wakeUpNeighborhood;
 
     private OrderedPair getExtent() {
-        return config.getSize();
+        return this.config.getSize();
     }
 
     private BorderPolicy getBorderPolicy() {
-        return config.getBorderPolicy();
+        return this.config.getBorderPolicy();
     }
 
 	OrderedPair transformLocation(OrderedPair location) {
@@ -40,6 +42,11 @@ public final class Board implements Serializable {
 		;
 	}
 
+	/**
+	 * @param defaultState usually an empty state
+	 * @param wakeUpNeighborhood neighborhood used to notify cells
+	 * @param config configuration of the parent {@link Automaton}
+	 */
 	public Board(State defaultState, Neighborhood wakeUpNeighborhood, AutomatonConfig config) {
 		this.defaultState = defaultState;
 		this.config = config;
@@ -47,9 +54,13 @@ public final class Board implements Serializable {
 	}
 
 	Board makeEmptyBoardWithSameProperties() {
-		return new Board(getDefaultState(), wakeUpNeighborhood, config);
+		return new Board(getDefaultState(), this.wakeUpNeighborhood, this.config);
 	}
 
+	/**
+	 * @param location location of cell to get
+	 * @return state of cell
+	 */
 	public State getCellAt(OrderedPair location) {
 		location = transformLocation(location);
 		if (location == null)
@@ -57,6 +68,10 @@ public final class Board implements Serializable {
 		return this.cells.getOrDefault(location, this.defaultState);
 	}
 
+	/**
+	 * @param location location of cell to set
+	 * @param state state of cell
+	 */
 	public void setCellAt(OrderedPair location, State state) {
 		location = transformLocation(location);
 		if (location == null || state.equals(getDefaultState()) && getCellAt(location).equals(getDefaultState())) return;
@@ -64,15 +79,19 @@ public final class Board implements Serializable {
         this.cells.put(location, state);
 	}
 
-	public Board getUpdatedBoard(Neighborhood wakeUpNeighborhood) {
+	/**
+	 * Takes the board, updates all the cells, and returns the updated board. Does not affect this board.
+	 * @return new board
+	 */
+	public Board getUpdatedBoard() {
 		Board updatedBoard = makeEmptyBoardWithSameProperties();
 
 		Set<OrderedPair> locationsToUpdate = new HashSet<>();
 
-		for (OrderedPair orderedPair : cellsThatMightMove) {
+		for (OrderedPair orderedPair : this.cellsThatMightMove) {
 			locationsToUpdate.add(orderedPair);
 			locationsToUpdate.addAll(
-					wakeUpNeighborhood
+					this.wakeUpNeighborhood
 							.getAll()
 							.stream()
 							.map(orderedPair::add)
@@ -103,6 +122,12 @@ public final class Board implements Serializable {
                 this.cells.remove(location);
     }
 
+	/**
+	 * Gets the neighbors of the current cell
+	 * @param neighborhood neighborhood to check
+	 * @param location location of cell to check around
+	 * @return cell states of neighbors
+	 */
     public Collection<State> getNeighborsOf(Neighborhood neighborhood, OrderedPair location) {
 		return neighborhood
 				.getAll()
@@ -112,6 +137,11 @@ public final class Board implements Serializable {
 				.toList();
 	}
 
+	/**
+	 * Get the default cell state
+	 * @return {@link #defaultState}
+	 * @see #Board
+	 */
 	public State getDefaultState() {
 		return this.defaultState;
 	}
