@@ -111,8 +111,6 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 		int left   = Math.min(bounds.a().x(), bounds.b().x());
 		int right  = Math.max(bounds.a().x(), bounds.b().x());
 
-		System.out.printf("%d %d %d %d\n", top, bottom, left, right);
-
 		g2d.drawRect(
 				left,
 				top,
