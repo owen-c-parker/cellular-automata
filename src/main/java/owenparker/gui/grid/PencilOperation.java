@@ -12,8 +12,8 @@ public class PencilOperation extends CursorModeOperation {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		super.mouseClicked(e);
+	public void mousePressed(MouseEvent e) {
+		super.mousePressed(e);
 
 		OrderedPair location = getGridDisplay().fromScreenSpaceToCellSpace(new OrderedPair(e));
 
