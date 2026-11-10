@@ -1,6 +1,8 @@
 package owenparker.gui.sidebar;
 
-import owenparker.engine.*;
+import owenparker.engine.AgentFactory;
+import owenparker.engine.CursorPlaceable;
+import owenparker.engine.State;
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.CursorMode;
 import owenparker.gui.GlobalReference;

@@ -1,7 +1,6 @@
 package owenparker.gui.export;
 
 import owenparker.engine.*;
-import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.Launcher;
 import owenparker.gui.export.exporters.BMPExporter;
 import owenparker.gui.export.exporters.JPGExporter;

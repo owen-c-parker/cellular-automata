@@ -1,7 +1,5 @@
 package owenparker.config.configuration_entries;
 
-import javax.swing.*;
-
 public class ConfigDouble extends ConfigNumber<Double> {
     public ConfigDouble(String name, Double initialValue) {
         super(name, initialValue);

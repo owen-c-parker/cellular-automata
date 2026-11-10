@@ -1,6 +1,5 @@
 package owenparker.gui.grid;
 
-import owenparker.engine.AgentFactory;
 import owenparker.engine.BorderPolicy;
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
@@ -10,9 +9,11 @@ import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.Collection;
 import java.util.LinkedList;
 

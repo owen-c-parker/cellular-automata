@@ -3,10 +3,11 @@ package owenparker.gui.control;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigInteger;
 import owenparker.engine.Automaton;
-import owenparker.gui.*;
+import owenparker.gui.AccessorComponent;
+import owenparker.gui.ConfirmationWindow;
+import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class WarpButton extends AccessorComponent<JButton> {
 	public WarpButton(GlobalReference globalReference) {

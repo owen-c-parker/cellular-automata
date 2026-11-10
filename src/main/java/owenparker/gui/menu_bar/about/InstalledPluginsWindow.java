@@ -2,7 +2,6 @@ package owenparker.gui.menu_bar.about;
 
 import owenparker.gui.FileManagement;
 import owenparker.gui.GenericWindow;
-import owenparker.gui.GlobalReference;
 import owenparker.gui.Launcher;
 import owenparker.plugins.Plugin;
 

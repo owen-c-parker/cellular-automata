@@ -4,14 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class ImageHelper {
 	public static void drawImageToFillGraphicsContext(Graphics2D g, Image image, double angle) {

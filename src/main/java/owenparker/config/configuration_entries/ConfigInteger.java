@@ -1,7 +1,5 @@
 package owenparker.config.configuration_entries;
 
-import javax.swing.*;
-
 public class ConfigInteger extends ConfigNumber<Integer> {
     public ConfigInteger(String name, Integer initialValue) {
         super(name, initialValue);

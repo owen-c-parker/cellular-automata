@@ -3,7 +3,6 @@ package owenparker.config.configuration_entries;
 import owenparker.config.ConfigEntry;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 
 public abstract class ConfigNumber<T extends Number> extends ConfigEntry<T> {
     protected T min = null;

@@ -1,7 +1,6 @@
 package owenparker.gui;
 
 import owenparker.config.Configuration;
-import owenparker.gui.export.ExportConfig;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
