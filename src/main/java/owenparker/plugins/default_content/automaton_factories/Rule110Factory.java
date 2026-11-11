@@ -1,8 +1,8 @@
 package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.plugins.default_content.automata.Rule110;
 import owenparker.engine.Automaton;
 import owenparker.engine.NoConfigAutomatonFactory;
+import owenparker.plugins.default_content.automata.Rule110;
 
 public class Rule110Factory extends NoConfigAutomatonFactory {
 	@Override

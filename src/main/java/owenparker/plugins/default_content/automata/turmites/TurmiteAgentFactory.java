@@ -3,7 +3,6 @@ package owenparker.plugins.default_content.automata.turmites;
 import owenparker.engine.*;
 
 import java.awt.*;
-
 import java.util.List;
 
 public class TurmiteAgentFactory implements AgentFactory {

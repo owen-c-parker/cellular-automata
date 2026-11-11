@@ -1,7 +1,5 @@
 package owenparker.config;
 
-import tools.jackson.databind.ObjectMapper;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;

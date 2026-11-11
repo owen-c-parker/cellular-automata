@@ -1,11 +1,11 @@
 package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.plugins.default_content.automata.Lifelike;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigString;
 import owenparker.engine.Automaton;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.exceptions.InvalidConfigException;
+import owenparker.plugins.default_content.automata.Lifelike;
 
 import java.util.ArrayList;
 import java.util.List;

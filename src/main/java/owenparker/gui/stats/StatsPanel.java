@@ -2,7 +2,6 @@ package owenparker.gui.stats;
 
 import owenparker.gui.AccessorComponent;
 import owenparker.gui.GlobalReference;
-import owenparker.gui.TextUtils;
 
 import javax.swing.*;
 import java.util.Objects;

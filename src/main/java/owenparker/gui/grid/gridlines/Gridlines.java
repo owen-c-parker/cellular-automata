@@ -1,7 +1,6 @@
 package owenparker.gui.grid.gridlines;
 
 import owenparker.engine.HasDisplayableName;
-import owenparker.engine.OrderedPair;
 import owenparker.gui.grid.GridDisplay;
 
 import java.awt.*;

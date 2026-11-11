@@ -1,8 +1,8 @@
 package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.plugins.default_content.automata.ChessWander;
 import owenparker.engine.Automaton;
 import owenparker.engine.NoConfigAutomatonFactory;
+import owenparker.plugins.default_content.automata.ChessWander;
 
 public class ChessWanderFactory extends NoConfigAutomatonFactory {
 	@Override

@@ -5,11 +5,9 @@ import owenparker.config.configuration_entries.ConfigString;
 import owenparker.engine.Automaton;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.exceptions.InvalidConfigException;
-import owenparker.plugins.default_content.automata.turmites.TurmiteAgentFactory;
 import owenparker.plugins.default_content.automata.turmites.TurmiteAutomaton;
 import owenparker.plugins.default_content.automata.turmites.TurnDecision;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

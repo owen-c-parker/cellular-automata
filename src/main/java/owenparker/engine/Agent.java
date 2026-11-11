@@ -1,7 +1,5 @@
 package owenparker.engine;
 
-import owenparker.engine.colors.ColorPalette;
-
 import java.awt.*;
 import java.io.Serializable;
 

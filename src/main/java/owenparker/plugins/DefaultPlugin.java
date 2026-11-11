@@ -1,8 +1,8 @@
 package owenparker.plugins;
 
-import owenparker.plugins.default_content.automaton_factories.*;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.colors.ColorPalette;
+import owenparker.plugins.default_content.automaton_factories.*;
 
 import java.awt.*;
 import java.util.List;

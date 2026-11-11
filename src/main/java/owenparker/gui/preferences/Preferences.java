@@ -1,6 +1,5 @@
 package owenparker.gui.preferences;
 
-import owenparker.config.ConfigEntry;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigDouble;
 import owenparker.config.configuration_entries.ConfigDropdown;

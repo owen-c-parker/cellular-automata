@@ -1,8 +1,8 @@
 package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.plugins.default_content.automata.CGOL;
 import owenparker.engine.Automaton;
 import owenparker.engine.NoConfigAutomatonFactory;
+import owenparker.plugins.default_content.automata.CGOL;
 
 public class CGOLFactory extends NoConfigAutomatonFactory {
     @Override
