@@ -215,11 +215,14 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 			this.globalReference.getAutomaton().findAgentsAt(location)
 					.forEach(agent -> {
 						Bounds bounds = new Bounds(location.scale(this.cellScale).add(new OrderedPair(this.scrollX, this.scrollY)), new OrderedPair((int) this.cellScale, (int) this.cellScale));
+
+						OrderedPair screenSpace = fromCellSpaceToScreenSpace(location);
+
 						agent.draw(g.create(
-								bounds.getTopLeft().x().intValue(),
-								bounds.getTopLeft().y().intValue(),
-								bounds.getBottomRight().x().intValue(),
-								bounds.getBottomRight().y().intValue()
+								screenSpace.x().intValue(),
+								screenSpace.y().intValue(),
+								(int) this.cellScale,
+								(int) this.cellScale
 						));
 					});
 		}
