@@ -27,26 +27,20 @@ public abstract class Lifelike extends Automaton {
 			this.ON = new State(ColorPalette.Slot.FOREGROUND, "Alive") {
 				@Override
 				public State getNewState(Board board, OrderedPair location) {
-					return getSurviveNumbers().contains(countAliveNeighbors(board, location)) ? getOnState() : getOffState();
+					return getSurviveNumbers().contains(countAliveNeighbors(board, location)) ? getOnState() : getDefaultState();
 				}
 			};
 		return this.ON;
 	}
 
-	private State getOffState() {
-		if (this.OFF == null)
-			this.OFF = new State(ColorPalette.Slot.BACKGROUND, "Dead") {
-				@Override
-				public State getNewState(Board board, OrderedPair location) {
-					return getBirthNumbers().contains(countAliveNeighbors(board, location)) ? getOnState() : getOffState();
-				}
-			};
-		return this.OFF;
-	}
-
 	@Override
-	public State getDefaultState() {
-		return getOffState();
+	public State generateDefaultState() {
+		return new State(ColorPalette.Slot.BACKGROUND, "Dead") {
+			@Override
+			public State getNewState(Board board, OrderedPair location) {
+				return getBirthNumbers().contains(countAliveNeighbors(board, location)) ? getOnState() : this;
+			}
+		};
 	}
 
 	@Override
@@ -56,7 +50,7 @@ public abstract class Lifelike extends Automaton {
 
 	@Override
 	public List<State> getSelectableCellStates() {
-		return List.of(getOffState(), getOnState());
+		return List.of(getDefaultState(), getOnState());
 	}
 
 	protected abstract List<Integer> getBirthNumbers();

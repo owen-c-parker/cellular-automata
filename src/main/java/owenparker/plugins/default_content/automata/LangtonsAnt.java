@@ -93,7 +93,7 @@ public class LangtonsAnt extends Automaton {
 	}
 
 	@Override
-	public State getDefaultState() {
+	public State generateDefaultState() {
 		return OFF;
 	}
 }

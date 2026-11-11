@@ -59,7 +59,7 @@ public abstract class ElementaryAutomaton extends Automaton {
 	}
 
 	@Override
-	public State getDefaultState() {
+	public State generateDefaultState() {
 		return getZero();
 	}
 

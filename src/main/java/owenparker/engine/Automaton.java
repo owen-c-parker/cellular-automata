@@ -70,7 +70,21 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 		return List.of();
 	}
 
-	public abstract State getDefaultState();
+	private State defaultState;
+
+	public final State getDefaultState() {
+		if (this.defaultState == null)
+			this.defaultState = generateDefaultState();
+		return this.defaultState;
+	}
+
+
+	/**
+	 * This method will be run once and only once to generate the default state. If you need the default state, use
+	 * {@link #getDefaultState} instead, as it will generate the default state only if it hasn't been generated yet.
+	 * @return default state
+	 */
+	protected abstract State generateDefaultState();
 
 	public BorderPolicy getBorderPolicy() {
 		return this.config.getBorderPolicy();

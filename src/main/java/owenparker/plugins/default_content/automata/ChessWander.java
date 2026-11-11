@@ -45,7 +45,7 @@ public class ChessWander extends Automaton {
 	}
 
 	@Override
-	public State getDefaultState() {
+	public State generateDefaultState() {
 		return new State(ColorPalette.Slot.BACKGROUND, "Nothing") {
 			@Override
 			public State getNewState(Board board, OrderedPair location) {

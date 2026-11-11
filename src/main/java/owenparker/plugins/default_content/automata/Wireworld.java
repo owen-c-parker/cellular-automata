@@ -62,7 +62,7 @@ public class Wireworld extends Automaton {
 	}
 
 	@Override
-	public State getDefaultState() {
+	public State generateDefaultState() {
 		return NOTHING;
 	}
 }

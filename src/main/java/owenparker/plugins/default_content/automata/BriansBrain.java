@@ -53,12 +53,12 @@ public class BriansBrain extends Automaton {
 	}
 
 	@Override
-	public CursorPlaceable getSelectedByDefault() {
-		return ON;
+	protected State generateDefaultState() {
+		return OFF;
 	}
 
 	@Override
-	public State getDefaultState() {
-		return OFF;
+	public CursorPlaceable getSelectedByDefault() {
+		return ON;
 	}
 }
