@@ -6,6 +6,7 @@ import owenparker.engine.State;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
+import java.util.HashMap;
 
 public class SelectOperation extends RectangleAreaOperation {
 	public SelectOperation(GridDisplay gridDisplay) {
@@ -26,10 +27,14 @@ public class SelectOperation extends RectangleAreaOperation {
 
 	private void copyTo(OrderedPair destinationTopLeft) {
 		Collection<OrderedPair> sourceLocations = getCellLocationsInBounds();
+
+		HashMap<OrderedPair, State> buffer = new HashMap<>();
 		sourceLocations.forEach(source -> {
 			OrderedPair destination = source.subtract(getBounds().getTopLeft()).add(destinationTopLeft);
-			State state = getAutomaton().getCellAt(source);
-			getAutomaton().setCellAt(destination, state);
+			buffer.put(destination, getAutomaton().getCellAt(source));
+		});
+		buffer.forEach((location, state) -> {
+			getAutomaton().setCellAt(location, state);
 		});
 	}
 }
