@@ -10,11 +10,11 @@ import owenparker.gui.GlobalReference;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -27,8 +27,10 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 	private Bounds boundsToRender = null;
 
     private double cellScale;
-    public double scrollX;
-    public double scrollY;
+    public BigDecimal scrollX;
+    public BigDecimal scrollY;
+
+	private MouseEvent lastMouseEvent = null;
 
     public double getCellScale() {
         return this.cellScale;
@@ -36,13 +38,29 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
 	public void resetCamera() {
 		this.cellScale = DEFAULT_CELL_SCALE;
-		this.scrollX = 0;
-		this.scrollY = 0;
+		this.scrollX = BigDecimal.ZERO;
+		this.scrollY = BigDecimal.ZERO;
 	}
 
 	public void renderBounds(Bounds bounds) {
 		this.boundsToRender = bounds;
 		this.globalReference.repaintEvent.fire();
+	}
+
+	public OrderedPair getCursorLocationInCellSpace() {
+		if (this.lastMouseEvent == null)
+			return null;
+		return fromScreenSpaceToCellSpace(new OrderedPair(this.lastMouseEvent));
+	}
+
+	public void setCamera(BigInteger x, BigInteger y) {
+		this.scrollX = new BigDecimal(x).multiply(BigDecimal.valueOf(this.cellScale)).negate();
+		this.scrollY = new BigDecimal(y).multiply(BigDecimal.valueOf(this.cellScale)).negate();
+	}
+
+	public void moveCamera(OrderedPair difference) {
+		this.scrollX = this.scrollX.add(new BigDecimal(difference.x()));
+		this.scrollY = this.scrollY.add(new BigDecimal(difference.y()));
 	}
 
 	private class GridDisplayPanel extends JPanel {
@@ -81,6 +99,15 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 			addMouseListener(operation);
 			addMouseMotionListener(operation);
 			addMouseWheelListener(operation);
+
+			addMouseMotionListener(new MouseInputAdapter() {
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					super.mouseMoved(e);
+					GridDisplay.this.globalReference.mouseMoveEvent.fire();
+					GridDisplay.this.lastMouseEvent = e;
+				}
+			});
 		}
 
 		@Override
@@ -106,16 +133,16 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 		g2d.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.ACTIVE_2));
 		g2d.setStroke(new BasicStroke(4));
 
-		int top    = Math.min(bounds.a().y(), bounds.b().y());
-		int bottom = Math.max(bounds.a().y(), bounds.b().y());
-		int left   = Math.min(bounds.a().x(), bounds.b().x());
-		int right  = Math.max(bounds.a().x(), bounds.b().x());
+		BigInteger top    = bounds.getTopLeft().y();
+		BigInteger bottom = bounds.getBottomRight().y();
+		BigInteger left   = bounds.getTopLeft().x();
+		BigInteger right  = bounds.getBottomRight().x();
 
 		g2d.drawRect(
-				left,
-				top,
-				right - left + (int) this.cellScale,
-				bottom - top + (int) this.cellScale
+				left.intValue(),
+				top.intValue(),
+				right.subtract(left).add(BigInteger.valueOf((long) this.cellScale)).intValue(),
+				bottom.subtract(top).add(BigInteger.valueOf((long) this.cellScale)).intValue()
 		);
 	}
 
@@ -130,10 +157,10 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
         g.setColor(globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
 
-        g.fillRect(0, 0, screenSize.x(), topLeft.y()); // Top
-        g.fillRect(0, bottomRight.y(), screenSize.x(), screenSize.y() - bottomRight.y()); // Bottom
-        g.fillRect(0, 0, topLeft.x(), screenSize.y()); // Left
-        g.fillRect(bottomRight.x(), 0, screenSize.x() - bottomRight.x(), screenSize.y()); // Right
+        g.fillRect(0, 0, screenSize.x().intValue(), topLeft.y().intValue()); // Top
+        g.fillRect(0, bottomRight.y().intValue(), screenSize.x().intValue(), screenSize.y().subtract(bottomRight.y()).intValue()); // Bottom
+        g.fillRect(0, 0, topLeft.x().intValue(), screenSize.y().intValue()); // Left
+        g.fillRect(bottomRight.x().intValue(), 0, screenSize.x().subtract(bottomRight.x()).intValue(), screenSize.y().intValue()); // Right
     }
 
     public GridDisplay(GlobalReference globalReference) {
@@ -144,13 +171,15 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     public void performZoom(MouseWheelEvent event) {
-        double modifier = 1 + -ZOOM_AMOUNT * event.getPreciseWheelRotation();
+        BigDecimal modifier = new BigDecimal(1 + -ZOOM_AMOUNT * event.getPreciseWheelRotation());
 
 		OrderedPair location = new OrderedPair(event);
 
-        double tentativeNewScale = this.cellScale * modifier;
+		BigDecimal cellScale = new BigDecimal(this.cellScale);
 
-        if (tentativeNewScale < MIN_SCALE || tentativeNewScale > MAX_SCALE)
+        BigDecimal tentativeNewScale = cellScale.multiply(modifier);
+
+        if (tentativeNewScale.compareTo(new BigDecimal(MIN_SCALE)) < 0 || tentativeNewScale.compareTo(new BigDecimal(MAX_SCALE)) > 0)
             return;
 
         OrderedPair mousePosOnScreen = new OrderedPair(location.x(), location.y());
@@ -158,10 +187,13 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         int width = getComponent().getWidth();
         int height = getComponent().getHeight();
 
-        this.scrollX = this.scrollX * modifier - ((double) mousePosOnScreen.x() / width * (width * modifier - width));
-        this.scrollY = this.scrollY * modifier - ((double) mousePosOnScreen.y() / height * (height * modifier - height));
+        //this.scrollX = this.scrollX * modifier - (mousePosOnScreen.x().doubleValue() / width * (width * modifier - width));
+        //this.scrollY = this.scrollY * modifier - (mousePosOnScreen.y().doubleValue() / height * (height * modifier - height));
 
-        this.cellScale = tentativeNewScale;
+		this.scrollX = this.scrollX.multiply(modifier).subtract(new BigDecimal(mousePosOnScreen.x().doubleValue() / width * (width * modifier.doubleValue() - width)));
+		this.scrollY = this.scrollY.multiply(modifier).subtract(new BigDecimal(mousePosOnScreen.y().doubleValue() / height * (height * modifier.doubleValue() - height)));
+
+        this.cellScale = tentativeNewScale.doubleValue();
     }
 
     private void drawGridlinesIfApplicable(Graphics g) {
@@ -172,16 +204,24 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
         g.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
-        for (double x = this.scrollX % this.cellScale; x < screenSizeInPixels.x(); x += this.cellScale)
-            g.fillRect((int) x - 1, 0, sizeOfLines, screenSizeInPixels.y());
-        for (double y = this.scrollY % this.cellScale; y < screenSizeInPixels.y(); y += this.cellScale)
-            g.fillRect(0, (int) y - 1, screenSizeInPixels.x(), sizeOfLines);
+        for (double x = this.scrollX.doubleValue() % this.cellScale; x < screenSizeInPixels.x().intValue(); x += this.cellScale)
+            g.fillRect((int) x - 1, 0, sizeOfLines, screenSizeInPixels.y().intValue());
+        for (double y = this.scrollY.doubleValue() % this.cellScale; y < screenSizeInPixels.y().intValue(); y += this.cellScale)
+            g.fillRect(0, (int) y - 1, screenSizeInPixels.x().intValue(), sizeOfLines);
     }
 
     private void drawAllAgents(Graphics g) {
 		for (OrderedPair location : getCellLocationsOnScreen()) {
 			this.globalReference.getAutomaton().findAgentsAt(location)
-					.forEach(agent -> agent.draw(g.create((int) (location.x() * this.cellScale + this.scrollX), (int) (location.y() * this.cellScale + this.scrollY), (int) this.cellScale, (int) this.cellScale)));
+					.forEach(agent -> {
+						Bounds bounds = new Bounds(location.scale(this.cellScale).add(new OrderedPair(this.scrollX, this.scrollY)), new OrderedPair((int) this.cellScale, (int) this.cellScale));
+						agent.draw(g.create(
+								bounds.getTopLeft().x().intValue(),
+								bounds.getTopLeft().y().intValue(),
+								bounds.getBottomRight().x().intValue(),
+								bounds.getBottomRight().y().intValue()
+						));
+					});
 		}
     }
 
@@ -196,19 +236,19 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         g.setColor(state.getColorEvaluator().getColor(this.globalReference.getColorPalette()));
         OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
         int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
-        g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
-        state.customDraw(g.create(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize));
+        g.fillRect(locationInScreenSpace.x().intValue(), locationInScreenSpace.y().intValue(), cellSize, cellSize);
+        state.customDraw(g.create(locationInScreenSpace.x().intValue(), locationInScreenSpace.y().intValue(), cellSize, cellSize));
 
 		if (this.globalReference.preferences.debug.get().drawUpdater.get() && this.globalReference.getAutomaton().isToBeUpdated(location)) {
 			g.setColor(Color.YELLOW);
-			g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize / 2, cellSize / 2);
+			g.fillRect(locationInScreenSpace.x().intValue(), locationInScreenSpace.y().intValue(), cellSize / 2, cellSize / 2);
 		}
     }
 
     private OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {
         return cellSpace
                 .scale(this.cellScale)
-                .add((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY));
+                .add(new OrderedPair(this.scrollX.toBigInteger(), this.scrollY.toBigInteger()));
     }
 
 	private Bounds fromCellSpaceToScreenSpace(Bounds bounds) {
@@ -217,7 +257,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
     public OrderedPair fromScreenSpaceToCellSpace(OrderedPair screenSpace) {
 		return screenSpace
-                .subtract((int) Math.floor(this.scrollX), (int) Math.floor(this.scrollY))
+                .subtract(new OrderedPair(this.scrollX.toBigInteger(), this.scrollY.toBigInteger()))
 				.divide(this.cellScale);
     }
 
@@ -230,12 +270,12 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     public Collection<OrderedPair> getCellLocationsOnScreen() {
-        OrderedPair scrollAsCells = new OrderedPair((int) -this.scrollX, (int) -this.scrollY).divide(this.cellScale);
+        OrderedPair scrollAsCells = new OrderedPair(this.scrollX, this.scrollY).negate().divide(this.cellScale);
         OrderedPair screenSizeInCells = getScreenSizeInPixels().divide(this.cellScale);
 
         Collection<OrderedPair> locations = new LinkedList<>();
-        for (int y = scrollAsCells.y() - 1; y <= scrollAsCells.y() + screenSizeInCells.y() + 1; y++) {
-            for (int x = scrollAsCells.x() - 1; x <= scrollAsCells.x() + screenSizeInCells.x() + 1; x++) {
+        for (int y = scrollAsCells.y().intValue() - 1; y <= scrollAsCells.y().intValue() + screenSizeInCells.y().intValue() + 1; y++) {
+            for (int x = scrollAsCells.x().intValue() - 1; x <= scrollAsCells.x().intValue() + screenSizeInCells.x().intValue() + 1; x++) {
                 locations.add(new OrderedPair(x, y));
             }
         }
@@ -246,7 +286,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     private void fillBackgroundWithDefaultCellColor(Graphics g) {
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
         g.setColor(this.globalReference.getAutomaton().getDefaultState().getColorEvaluator().getColor(this.globalReference.getColorPalette()));
-        g.fillRect(0, 0, screenSizeInPixels.x(), screenSizeInPixels.y());
+        g.fillRect(0, 0, screenSizeInPixels.x().intValue(), screenSizeInPixels.y().intValue());
     }
 
     private OrderedPair getScreenSizeInPixels() {

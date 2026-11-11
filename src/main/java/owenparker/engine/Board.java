@@ -1,6 +1,7 @@
 package owenparker.engine;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.*;
 
 import static owenparker.engine.BorderPolicy.FILL_WITH_DEFAULT;
@@ -35,10 +36,10 @@ public final class Board implements Serializable {
 	private boolean isInsideExtent(OrderedPair position) {
 		return
                 position == null ||
-				position.x() >= 0 &&
-				position.y() >= 0 &&
-				position.x() < this.getExtent().x() &&
-				position.y() < this.getExtent().y()
+				position.x().compareTo(BigInteger.ZERO) >= 0 &&
+				position.y().compareTo(BigInteger.ZERO) >= 0 &&
+				position.x().compareTo(this.getExtent().x()) < 0 &&
+				position.y().compareTo(this.getExtent().y()) < 0
 		;
 	}
 

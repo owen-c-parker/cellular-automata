@@ -63,10 +63,10 @@ public abstract class Exporter implements HasDisplayableName {
     protected abstract void saveDataToFile(BufferedImage image, File file) throws IOException;
 
     private BufferedImage createBufferedImage(ExportConfig config, Automaton automaton) {
-        OrderedPair[] extent = automaton.getExtent();
+		OrderedPair[] extent = automaton.getExtent();
         OrderedPair unscaledSize = extent[1].subtract(extent[0]).add(OrderedPair.UNIT);
         OrderedPair scaledSize = unscaledSize.scale(config.scale.get());
-        return new BufferedImage(scaledSize.x(), scaledSize.y(), BufferedImage.TYPE_INT_RGB);
+        return new BufferedImage(scaledSize.x().intValue(), scaledSize.y().intValue(), BufferedImage.TYPE_INT_RGB);
     }
 
     private void draw(Graphics2D g, ExportConfig config, Automaton automaton) {
@@ -75,8 +75,8 @@ public abstract class Exporter implements HasDisplayableName {
         OrderedPair topLeft = extent[0];
         OrderedPair bottomRight = extent[1];
 
-        int width = bottomRight.x() - topLeft.x();
-        int height = bottomRight.y() - topLeft.y();
+        int width = bottomRight.xInt() - topLeft.xInt();
+        int height = bottomRight.yInt() - topLeft.yInt();
 
         Collection<OrderedPair> cellLocations = automaton.getAllCellLocations();
         g.setColor(automaton.getDefaultState().getColorEvaluator().getColor(config.theme.get()));
@@ -86,13 +86,13 @@ public abstract class Exporter implements HasDisplayableName {
             State state = automaton.getCellAt(location);
             g.setColor(state.getColorEvaluator().getColor(config.theme.get()));
             OrderedPair imageSpaceLocation = location.subtract(topLeft).scale(scale);
-            g.fillRect(imageSpaceLocation.x(), imageSpaceLocation.y(), (int) Math.ceil(scale), (int) Math.ceil(scale));
-            state.customDraw(g.create(imageSpaceLocation.x(), imageSpaceLocation.y(), (int) Math.ceil(scale), (int) Math.ceil(scale)));
+            g.fillRect(imageSpaceLocation.xInt(), imageSpaceLocation.yInt(), (int) Math.ceil(scale), (int) Math.ceil(scale));
+            state.customDraw(g.create(imageSpaceLocation.xInt(), imageSpaceLocation.yInt(), (int) Math.ceil(scale), (int) Math.ceil(scale)));
         }
 
         for (Agent agent : automaton.getAgents()) {
             OrderedPair imageSpaceLocation = agent.getPosition().subtract(topLeft).scale(scale);
-            agent.draw(g.create(imageSpaceLocation.x(), imageSpaceLocation.y(), (int) Math.ceil(scale), (int) Math.ceil(scale)));
+            agent.draw(g.create(imageSpaceLocation.xInt(), imageSpaceLocation.yInt(), (int) Math.ceil(scale), (int) Math.ceil(scale)));
         }
     }
 

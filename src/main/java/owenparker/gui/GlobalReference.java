@@ -20,6 +20,7 @@ public class GlobalReference {
 	private CursorMode currentCursorMode = CursorMode.PENCIL;
 	public GridDisplay gridDisplay;
 
+	public final EventNotifier mouseMoveEvent = new EventNotifier();
 	public final EventNotifier cursorModeChangeEvent = new EventNotifier();
 	public final EventNotifier speedChangeEvent = new EventNotifier();
     public final EventNotifier repaintEvent = new EventNotifier();

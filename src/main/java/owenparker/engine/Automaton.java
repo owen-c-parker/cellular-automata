@@ -1,6 +1,7 @@
 package owenparker.engine;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.*;
 
 public abstract class Automaton implements HasDisplayableName, Serializable {
@@ -148,21 +149,21 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 
     public OrderedPair[] getExtent() {
         List<OrderedPair> cellLocations = new ArrayList<>(getAllCellLocations());
-        int left = cellLocations.getFirst().x();
-        int right = cellLocations.getFirst().x();
-        int top = cellLocations.getFirst().y();
-        int bottom = cellLocations.getFirst().y();
+        BigInteger left = cellLocations.getFirst().x();
+		BigInteger right = cellLocations.getFirst().x();
+		BigInteger top = cellLocations.getFirst().y();
+		BigInteger bottom = cellLocations.getFirst().y();
 
         for (OrderedPair location : cellLocations) {
-            int x = location.x();
-            int y = location.y();
-            if (x < left)
+            BigInteger x = location.x();
+            BigInteger y = location.y();
+            if (x.compareTo(left) < 0)
                 left = x;
-            if (x > right)
+            if (x.compareTo(right) > 0)
                 right = x;
-            if (y < top)
+            if (y.compareTo(top) < 0)
                 top = y;
-            if (y > bottom)
+            if (y.compareTo(bottom) > 0)
                 bottom = y;
         }
 

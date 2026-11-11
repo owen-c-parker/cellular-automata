@@ -50,8 +50,7 @@ public abstract class CursorModeOperation implements MouseListener, MouseMotionL
 			this.lastMiddleClickDraggedLocation = location;
 
 			if (this.lastEventWasMiddleDrag) {
-				getGridDisplay().scrollX -= difference.x();
-				getGridDisplay().scrollY -= difference.y();
+				getGridDisplay().moveCamera(difference.negate());
 			}
 
 			this.lastEventWasMiddleDrag = true;

@@ -26,9 +26,12 @@ public class Preferences extends Configuration {
 			1.0,
 			100.0
 	);
-	public final ConfigNested<Debug> debug = new ConfigNested<>("Debug", new Debug());
 	public final ConfigInteger speedSliderNotchCount = new ConfigInteger("Length of speed slider", 16, 3, Integer.MAX_VALUE);
 
+
+
+
+	public final ConfigNested<Debug> debug = new ConfigNested<>("Debug", new Debug());
 
 	public Preferences() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

@@ -12,5 +12,6 @@ public class ToolsMenu extends AccessorComponent<JMenu> {
         add(NoiseMenuItem::new);
         add(ClearMenuItem::new);
 		add(ResetCameraMenuItem::new);
+		add(WarpCameraMenuItem::new);
     }
 }

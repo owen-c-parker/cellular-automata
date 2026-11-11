@@ -5,6 +5,7 @@ import owenparker.engine.OrderedPair;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,8 +46,8 @@ public abstract class RectangleAreaOperation extends CursorModeOperation {
 
 	protected Collection<OrderedPair> getCellLocationsInBounds() {
 		Set<OrderedPair> locations = new HashSet<>();
-		for (int y = this.bounds.getTopLeft().y(); y <= this.bounds.getBottomRight().y(); y++) {
-			for (int x = this.bounds.getTopLeft().x(); x <= this.bounds.getBottomRight().x(); x++) {
+		for (BigInteger y = this.bounds.getTopLeft().y(); y.compareTo(this.bounds.getBottomRight().y()) <= 0; y = y.add(BigInteger.ONE)) {
+			for (BigInteger x = this.bounds.getTopLeft().x(); x.compareTo(this.bounds.getBottomRight().x()) <= 0; x = x.add(BigInteger.ONE)) {
 				locations.add(new OrderedPair(x, y));
 			}
 		}
