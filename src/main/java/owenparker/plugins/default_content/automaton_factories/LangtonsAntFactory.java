@@ -1,6 +1,5 @@
 package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.plugins.default_content.automata.LangtonsAnt;
 import owenparker.engine.Automaton;
 import owenparker.engine.NoConfigAutomatonFactory;
 import owenparker.plugins.default_content.automata.turmites.TurmiteAutomaton;
