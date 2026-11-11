@@ -22,7 +22,8 @@ public class DefaultPlugin extends Plugin {
 				new ElementaryFactory(),
 				new WireworldFactory(),
 				new BriansBrainFactory(),
-				new LangtonsAntFactory()
+				new LangtonsAntFactory(),
+				new TurmitesFactory()
 		);
 	}
 

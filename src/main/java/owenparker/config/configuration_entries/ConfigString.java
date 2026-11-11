@@ -3,6 +3,7 @@ package owenparker.config.configuration_entries;
 import owenparker.config.ConfigEntry;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -22,6 +23,7 @@ public class ConfigString extends ConfigEntry<String> {
         JPanel panel = new JPanel();
         panel.add(new JLabel(getName()));
         JTextField textField = new JTextField(get());
+		textField.setPreferredSize(new Dimension(100, textField.getPreferredSize().height));
         textField.addActionListener(_ -> set(textField.getText()));
 		textField.addKeyListener(new KeyAdapter() {
 			@Override

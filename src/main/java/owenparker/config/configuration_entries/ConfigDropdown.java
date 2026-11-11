@@ -27,7 +27,6 @@ public class ConfigDropdown<T> extends ConfigEntry<T> {
         JComboBox<T> options = new JComboBox<>(getOptions());
         options.setSelectedItem(get());
         options.addActionListener(_ -> {
-			System.out.println(getName() + ": " + options.getSelectedIndex());
             set(options.getItemAt(options.getSelectedIndex()));
         });
         return options;

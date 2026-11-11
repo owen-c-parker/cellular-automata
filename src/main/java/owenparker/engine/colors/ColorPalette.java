@@ -19,16 +19,13 @@ public abstract class ColorPalette implements HasDisplayableName, Serializable {
     }
 
 	/**
-	 * Get a unique color based on an index. By default, it returns a full saturation color whose hue is
-	 * <code>360 * index * &phi;</code>, but it is encouraged that you override this behavior. A good option
-	 * is to call this method and modify the resulting color.
+	 * Get a unique color based on an index. It is encouraged that you override the default behavior, which generates a
+	 * full saturation color. A good option is to call this method and modify the resulting color.
 	 */
 	public Color getIndexedColor(int index) {
-		float angle = ((float) index) * 360.0f * PHI;
+		float angle = ((float) index) * 2.3998277f;
 
-		Color.getHSBColor(angle, 1.0f, 0.5f);
-
-		return null;
+		return Color.getHSBColor(angle, 1.0f, 0.5f);
 	}
 
 	public enum Slot {
