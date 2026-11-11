@@ -14,6 +14,10 @@ public class ConfigDropdown<T> extends ConfigEntry<T> {
         this.options = options;
     }
 
+	public ConfigDropdown(String name, T[] options) {
+		this(name, options[0], options);
+	}
+
     public T[] getOptions() {
         return this.options;
     }
@@ -23,6 +27,7 @@ public class ConfigDropdown<T> extends ConfigEntry<T> {
         JComboBox<T> options = new JComboBox<>(getOptions());
         options.setSelectedItem(get());
         options.addActionListener(_ -> {
+			System.out.println(getName() + ": " + options.getSelectedIndex());
             set(options.getItemAt(options.getSelectedIndex()));
         });
         return options;

@@ -168,6 +168,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         setComponent(new GridDisplayPanel());
         globalReference.gridDisplay = this;
 		globalReference.cursorModeChangeEvent.add(() -> this.boundsToRender = null);
+		globalReference.preferences.gridlineType.addSetListener(globalReference.repaintEvent::fire);
     }
 
     public void performZoom(MouseWheelEvent event) {
@@ -187,9 +188,6 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         int width = getComponent().getWidth();
         int height = getComponent().getHeight();
 
-        //this.scrollX = this.scrollX * modifier - (mousePosOnScreen.x().doubleValue() / width * (width * modifier - width));
-        //this.scrollY = this.scrollY * modifier - (mousePosOnScreen.y().doubleValue() / height * (height * modifier - height));
-
 		this.scrollX = this.scrollX.multiply(modifier).subtract(new BigDecimal(mousePosOnScreen.x().doubleValue() / width * (width * modifier.doubleValue() - width)));
 		this.scrollY = this.scrollY.multiply(modifier).subtract(new BigDecimal(mousePosOnScreen.y().doubleValue() / height * (height * modifier.doubleValue() - height)));
 
@@ -200,14 +198,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         if (GridDisplay.this.cellScale < this.globalReference.preferences.cellScaleToStopDrawingGridlines.get())
             return;
 
-        int sizeOfLines = (int) Math.clamp(4 + (30 / this.cellScale), 0, 3);
-
-        OrderedPair screenSizeInPixels = getScreenSizeInPixels();
-        g.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
-        for (double x = this.scrollX.doubleValue() % this.cellScale; x < screenSizeInPixels.x().intValue(); x += this.cellScale)
-            g.fillRect((int) x - 1, 0, sizeOfLines, screenSizeInPixels.y().intValue());
-        for (double y = this.scrollY.doubleValue() % this.cellScale; y < screenSizeInPixels.y().intValue(); y += this.cellScale)
-            g.fillRect(0, (int) y - 1, screenSizeInPixels.x().intValue(), sizeOfLines);
+		this.globalReference.preferences.gridlineType.get().draw(g, this);
     }
 
     private void drawAllAgents(Graphics g) {
@@ -246,7 +237,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 		}
     }
 
-    private OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {
+    public OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {
         return cellSpace
                 .scale(this.cellScale)
                 .add(new OrderedPair(this.scrollX.toBigInteger(), this.scrollY.toBigInteger()));
@@ -290,7 +281,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         g.fillRect(0, 0, screenSizeInPixels.x().intValue(), screenSizeInPixels.y().intValue());
     }
 
-    private OrderedPair getScreenSizeInPixels() {
+    public OrderedPair getScreenSizeInPixels() {
         Dimension dimension = getComponent().getSize();
         return new OrderedPair(dimension.width, dimension.height);
     }

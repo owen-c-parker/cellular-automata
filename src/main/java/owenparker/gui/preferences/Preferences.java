@@ -9,6 +9,9 @@ import owenparker.config.configuration_entries.ConfigNested;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.FileManagement;
 import owenparker.gui.Launcher;
+import owenparker.gui.grid.gridlines.DotsGridlines;
+import owenparker.gui.grid.gridlines.Gridlines;
+import owenparker.gui.grid.gridlines.SolidGridlines;
 import owenparker.plugins.Plugin;
 
 import java.io.FileWriter;
@@ -27,6 +30,10 @@ public class Preferences extends Configuration {
 			100.0
 	);
 	public final ConfigInteger speedSliderNotchCount = new ConfigInteger("Length of speed slider", 16, 3, Integer.MAX_VALUE);
+	public ConfigDropdown<Gridlines> gridlineType = new ConfigDropdown<>("Gridline style", new Gridlines[] {
+			new SolidGridlines(),
+			new DotsGridlines()
+	});
 
 
 
