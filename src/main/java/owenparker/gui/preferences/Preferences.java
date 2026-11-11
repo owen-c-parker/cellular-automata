@@ -1,8 +1,10 @@
 package owenparker.gui.preferences;
 
+import owenparker.config.ConfigEntry;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigDouble;
 import owenparker.config.configuration_entries.ConfigDropdown;
+import owenparker.config.configuration_entries.ConfigInteger;
 import owenparker.config.configuration_entries.ConfigNested;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.gui.FileManagement;
@@ -25,9 +27,10 @@ public class Preferences extends Configuration {
 			100.0
 	);
 	public final ConfigNested<Debug> debug = new ConfigNested<>("Debug", new Debug());
+	public final ConfigInteger speedSliderNotchCount = new ConfigInteger("Length of speed slider", 16, 3, Integer.MAX_VALUE);
 
 
-    public Preferences() {
+	public Preferences() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             String configAsText = convertToText();
 

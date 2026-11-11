@@ -8,44 +8,30 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class SpeedController extends AccessorComponent<JPanel> {
-    private final double[] speedValues = {
-            .125,
-            .25,
-            .5,
-            1,
-            2,
-            4,
-            8,
-            20,
-            40,
-            80,
-            200,
-            400,
-            800,
-            2000,
-            4000,
-            8000,
-            20000,
-            40000,
-            80000
-    };
-
     public SpeedController(GlobalReference globalReference) {
         super(globalReference, new JPanel());
 
-        getComponent().add(createSlider());
-        getComponent().add(createSpeedLabel());
+		globalReference.preferences.speedSliderNotchCount.addSetListener(this::refresh);
+
+		refresh();
     }
 
-    private JLabel createSpeedLabel() {
+	private void refresh() {
+		getComponent().removeAll();
+
+		getComponent().add(createSlider());
+		getComponent().add(createSpeedLabel());
+	}
+
+	private JLabel createSpeedLabel() {
         JLabel label = new JLabel();
         Font oldFont = label.getFont();
         label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, oldFont.getSize()));
         this.globalReference.speedChangeEvent.add(() -> {
 
             int longestSpeedStringLength = Math.max(
-                    String.valueOf(this.speedValues[0]).length(),
-                    String.valueOf(this.speedValues[this.speedValues.length - 1]).length()
+                    String.valueOf(getSpeedValue(0)).length(),
+                    String.valueOf(getSpeedValue(this.globalReference.preferences.speedSliderNotchCount.get() - 1)).length()
             );
 
             String speedString = String.valueOf(this.globalReference.ticksPerMillisecond * 1000);
@@ -54,18 +40,24 @@ public class SpeedController extends AccessorComponent<JPanel> {
         return label;
     }
 
-    private JSlider createSlider() {
+	private double getSpeedValue(int i) {
+		return Math.pow(2, i - 3);
+	}
+
+	private JSlider createSlider() {
+		int maximum = this.globalReference.preferences.speedSliderNotchCount.get() - 1;
+
         JSlider speedSlider = new JSlider();
         speedSlider.setMinimum(0);
-        speedSlider.setMaximum(this.speedValues.length - 1);
+        speedSlider.setMaximum(maximum);
         ChangeListener changeListener = _ -> {
-            double speedValue = this.speedValues[speedSlider.getValue()];
+            double speedValue = getSpeedValue(speedSlider.getValue());
             this.globalReference.ticksPerMillisecond = speedValue / 1000;
             this.globalReference.speedChangeEvent.fire();
         };
         changeListener.stateChanged(null);
         speedSlider.addChangeListener(changeListener);
-        speedSlider.setValue(6);
+        speedSlider.setValue(Math.min(6, maximum));
 
         speedSlider.setPaintTrack(true);
         speedSlider.setSnapToTicks(true);

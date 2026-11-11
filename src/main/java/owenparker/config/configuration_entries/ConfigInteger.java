@@ -11,12 +11,6 @@ public class ConfigInteger extends ConfigNumber<Integer> {
 
     @Override
     public void attemptSet(Object value) {
-		if (value == null)
-			return;
-		if (value instanceof Integer integer) {
-			set(integer);
-			return;
-		}
-        set(Integer.getInteger(value.toString()));
+        set(Integer.parseInt(value.toString()));
     }
 }
