@@ -1,15 +1,13 @@
-package owenparker.automaton_factories;
+package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.automata.Lifelike;
+import owenparker.plugins.default_content.automata.Lifelike;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigString;
 import owenparker.engine.Automaton;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.exceptions.InvalidConfigException;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class LifeLikeFactory extends AutomatonFactory<LifeLikeFactory.Config> {

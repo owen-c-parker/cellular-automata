@@ -1,6 +1,6 @@
 package owenparker.plugins;
 
-import owenparker.automaton_factories.*;
+import owenparker.plugins.default_content.automaton_factories.*;
 import owenparker.engine.AutomatonFactory;
 import owenparker.engine.colors.ColorPalette;
 
@@ -19,6 +19,7 @@ public class DefaultPlugin extends Plugin {
 				new LifeLikeFactory(),
 				new KnightCGOLFactory(),
 				new Rule110Factory(),
+				new ElementaryFactory(),
 				new WireworldFactory(),
 				new BriansBrainFactory(),
 				new LangtonsAntFactory()

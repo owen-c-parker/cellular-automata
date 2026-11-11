@@ -1,8 +1,7 @@
-package owenparker.automaton_factories;
+package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.automata.LangtonsAnt;
+import owenparker.plugins.default_content.automata.LangtonsAnt;
 import owenparker.engine.Automaton;
-import owenparker.engine.AutomatonFactory;
 import owenparker.engine.NoConfigAutomatonFactory;
 
 public class LangtonsAntFactory extends NoConfigAutomatonFactory {

@@ -1,4 +1,4 @@
-package owenparker.automata;
+package owenparker.plugins.default_content.automata;
 
 import owenparker.engine.Neighborhood;
 

@@ -1,8 +1,7 @@
-package owenparker.automaton_factories;
+package owenparker.plugins.default_content.automaton_factories;
 
-import owenparker.automata.Wireworld;
+import owenparker.plugins.default_content.automata.Wireworld;
 import owenparker.engine.Automaton;
-import owenparker.engine.AutomatonFactory;
 import owenparker.engine.NoConfigAutomatonFactory;
 
 public class WireworldFactory extends NoConfigAutomatonFactory {
