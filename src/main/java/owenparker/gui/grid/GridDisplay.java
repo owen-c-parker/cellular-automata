@@ -274,8 +274,8 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         OrderedPair screenSizeInCells = getScreenSizeInPixels().divide(this.cellScale);
 
         Collection<OrderedPair> locations = new LinkedList<>();
-        for (int y = scrollAsCells.y().intValue() - 1; y <= scrollAsCells.y().intValue() + screenSizeInCells.y().intValue() + 1; y++) {
-            for (int x = scrollAsCells.x().intValue() - 1; x <= scrollAsCells.x().intValue() + screenSizeInCells.x().intValue() + 1; x++) {
+        for (BigInteger y = scrollAsCells.y().subtract(BigInteger.ONE); y.compareTo(scrollAsCells.y().add(screenSizeInCells.y().add(BigInteger.ONE))) <= 0; y = y.add(BigInteger.ONE)) {
+            for (BigInteger x = scrollAsCells.x().subtract(BigInteger.ONE); x.compareTo(scrollAsCells.x().add(screenSizeInCells.x().add(BigInteger.ONE))) <= 0; x = x.add(BigInteger.ONE)) {
                 locations.add(new OrderedPair(x, y));
             }
         }
