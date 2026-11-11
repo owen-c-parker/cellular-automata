@@ -7,7 +7,6 @@ import java.util.List;
 
 public abstract class Lifelike extends Automaton {
 	private State ON;
-	private State OFF;
 
 	@Override
 	protected Neighborhood getWakeUpNeighborhood() {
