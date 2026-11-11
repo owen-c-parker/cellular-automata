@@ -5,6 +5,7 @@ import owenparker.engine.*;
 import owenparker.engine.colors.ColorPalette;
 import owenparker.engine.exceptions.InvalidConfigException;
 import owenparker.gui.grid.GridDisplay;
+import owenparker.gui.preferences.Preferences;
 
 
 /**

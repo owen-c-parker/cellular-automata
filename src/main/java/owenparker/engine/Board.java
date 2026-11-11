@@ -149,4 +149,8 @@ public final class Board implements Serializable {
     public int getNumberOfCellsThatMightMove() {
         return this.cellsThatMightMove.size();
     }
+
+	public boolean isToBeUpdated(OrderedPair location) {
+		return this.cellsThatMightMove.contains(location);
+	}
 }

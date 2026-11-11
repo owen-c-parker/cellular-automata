@@ -43,7 +43,7 @@ public abstract class ConfigEntry<T> implements Serializable {
     }
 
     public String getConfigLine() {
-        return String.format("%s=%s\n", getName(), get());
+        return String.format("%s={%s};", getName(), get());
     }
 
     public void addSetListener(Runnable runnable) {

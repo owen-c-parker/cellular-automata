@@ -1,9 +1,12 @@
-package owenparker.gui;
+package owenparker.gui.preferences;
 
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigDouble;
 import owenparker.config.configuration_entries.ConfigDropdown;
+import owenparker.config.configuration_entries.ConfigNested;
 import owenparker.engine.colors.ColorPalette;
+import owenparker.gui.FileManagement;
+import owenparker.gui.Launcher;
 import owenparker.plugins.Plugin;
 
 import java.io.FileWriter;
@@ -21,6 +24,7 @@ public class Preferences extends Configuration {
 			1.0,
 			100.0
 	);
+	public final ConfigNested<Debug> debug = new ConfigNested<>("Debug", new Debug());
 
 
     public Preferences() {

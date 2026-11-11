@@ -198,6 +198,11 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
         g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize);
         state.customDraw(g.create(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize, cellSize));
+
+		if (this.globalReference.preferences.debug.get().drawUpdater.get() && this.globalReference.getAutomaton().isToBeUpdated(location)) {
+			g.setColor(Color.YELLOW);
+			g.fillRect(locationInScreenSpace.x(), locationInScreenSpace.y(), cellSize / 2, cellSize / 2);
+		}
     }
 
     private OrderedPair fromCellSpaceToScreenSpace(OrderedPair cellSpace) {

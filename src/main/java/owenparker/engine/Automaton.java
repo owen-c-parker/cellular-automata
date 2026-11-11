@@ -197,4 +197,8 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
 			removeAgentAt(location);
 		}
 	}
+
+	public boolean isToBeUpdated(OrderedPair location) {
+		return this.board.isToBeUpdated(location);
+	}
 }

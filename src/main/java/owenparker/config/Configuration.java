@@ -1,11 +1,14 @@
 package owenparker.config;
 
+import tools.jackson.databind.ObjectMapper;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Configuration implements Serializable {
@@ -33,16 +36,16 @@ public abstract class Configuration implements Serializable {
     }
 
     public final void setEntriesBasedOnConfigFileString(String config) {
-        String[] lines = config.split("\n");
+		List<String> entryStrings = getEntryStrings(config);
 
         List<? extends ConfigEntry<?>> entries = getEntries();
 
-        for (String line : lines) {
-            if (line.isEmpty())
+        for (String entryString : entryStrings) {
+            if (entryString.isEmpty())
                 continue;
 
-            String key = line.substring(0, line.indexOf("="));
-            String value = line.substring(line.indexOf("=") + 1);
+            String key = entryString.substring(0, entryString.indexOf("="));
+            String value = entryString.substring(entryString.indexOf("=") + 2, entryString.length() - 1);
 
             for (ConfigEntry<?> configEntry : entries) {
                 if (configEntry.getName().equals(key)) {
@@ -52,7 +55,42 @@ public abstract class Configuration implements Serializable {
         }
     }
 
-    public JPanel getPanel() {
+	private List<String> getEntryStrings(String config) {
+		LinkedList<String> strings = new LinkedList<>();
+
+		int index = -1;
+		int bracketLevel = 0;
+		StringBuilder workingBuilder = new StringBuilder();
+		while (index < config.length() - 1) {
+			index++;
+
+			char character = config.charAt(index);
+
+			switch (character) {
+				case ';':
+					if (bracketLevel <= 0) {
+						strings.add(workingBuilder.toString());
+						workingBuilder = new StringBuilder();
+						continue;
+					}
+					break;
+				case '{':
+					bracketLevel++;
+					break;
+				case '}':
+					bracketLevel--;
+					break;
+				case '\n':
+					continue;
+			}
+
+			workingBuilder.append(config.charAt(index));
+		}
+
+		return strings;
+	}
+
+	public JPanel getPanel() {
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
         for (ConfigEntry<?> entry : getEntries()) {
@@ -69,6 +107,11 @@ public abstract class Configuration implements Serializable {
     public String convertToText() {
         StringBuilder configString = new StringBuilder();
         getEntries().forEach(configEntry -> configString.append(configEntry.getConfigLine()));
-        return configString.toString();
+		return configString.toString();
     }
+
+	@Override
+	public String toString() {
+		return convertToText();
+	}
 }
