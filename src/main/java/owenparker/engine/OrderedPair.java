@@ -62,6 +62,7 @@ public record OrderedPair(BigInteger x, BigInteger y) implements Serializable {
 	public OrderedPair divide(Number divisor) {
 		return scale( 1.0 / divisor.doubleValue());
 	}
+
 	public static final OrderedPair UP = new OrderedPair(0, -1);
 	public static final OrderedPair DOWN = new OrderedPair(0, 1);
 	public static final OrderedPair LEFT = new OrderedPair(-1, 0);
@@ -93,6 +94,12 @@ public record OrderedPair(BigInteger x, BigInteger y) implements Serializable {
 	public OrderedPair mod(OrderedPair divisor) {
 		BigInteger xMod = this.x().divideAndRemainder(divisor.x)[1];
 		BigInteger yMod = this.y().divideAndRemainder(divisor.y)[1];
+
+		if (xMod.signum() < 0)
+			xMod = xMod.add(divisor.x);
+
+		if (yMod.signum() < 0)
+			yMod = yMod.add(divisor.y);
 
 		return new OrderedPair(xMod, yMod);
 	}
