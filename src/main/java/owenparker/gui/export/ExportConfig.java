@@ -4,7 +4,7 @@ import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigDouble;
 import owenparker.config.configuration_entries.ConfigDropdown;
 import owenparker.engine.colors.ColorPalette;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 import owenparker.gui.Launcher;
 import owenparker.plugins.Plugin;
 
@@ -13,10 +13,10 @@ public class ExportConfig extends Configuration {
     public final ConfigDouble scale = new ConfigDouble("Image scale", 16.0, 1.0, Double.MAX_VALUE);
     public final ConfigDropdown<ColorPalette> theme;
 
-    public ExportConfig(GlobalReference globalReference) {
+    public ExportConfig() {
         this.theme = new ConfigDropdown<>(
                 "Theme to render with",
-                globalReference.getColorPalette(),
+                DisplayContext.getColorPalette(),
                 Launcher.getAllOfAResource(Plugin::getColorPalettes).toArray(new ColorPalette[0])
         );
     }

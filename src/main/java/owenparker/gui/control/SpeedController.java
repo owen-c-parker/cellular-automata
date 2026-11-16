@@ -1,40 +1,41 @@
 package owenparker.gui.control;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
+import owenparker.gui.preferences.Preferences;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class SpeedController extends AccessorComponent<JPanel> {
-    public SpeedController(GlobalReference globalReference) {
-        super(globalReference, new JPanel());
+public class SpeedController extends JPanel {
+    public SpeedController() {
+        super();
 
-		globalReference.preferences.speedSliderNotchCount.addSetListener(this::refresh);
+		Preferences.getInstance().speedSliderNotchCount.addSetListener(this::refresh);
 
 		refresh();
     }
 
 	private void refresh() {
-		getComponent().removeAll();
+		removeAll();
 
-		getComponent().add(createSlider());
-		getComponent().add(createSpeedLabel());
+		add(createSlider());
+		add(createSpeedLabel());
 	}
 
 	private JLabel createSpeedLabel() {
         JLabel label = new JLabel();
         Font oldFont = label.getFont();
         label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, oldFont.getSize()));
-        this.globalReference.speedChangeEvent.add(() -> {
+        Events.speedChange.add(() -> {
 
             int longestSpeedStringLength = Math.max(
                     String.valueOf(getSpeedValue(0)).length(),
-                    String.valueOf(getSpeedValue(this.globalReference.preferences.speedSliderNotchCount.get() - 1)).length()
+                    String.valueOf(getSpeedValue(Preferences.getInstance().speedSliderNotchCount.get() - 1)).length()
             );
 
-            String speedString = String.valueOf(this.globalReference.ticksPerMillisecond * 1000);
+            String speedString = String.valueOf(SimulationContext.ticksPerMillisecond * 1000);
             label.setText(String.format("%" + longestSpeedStringLength + "s steps per second", speedString));
         });
         return label;
@@ -45,15 +46,15 @@ public class SpeedController extends AccessorComponent<JPanel> {
 	}
 
 	private JSlider createSlider() {
-		int maximum = this.globalReference.preferences.speedSliderNotchCount.get() - 1;
+		int maximum = Preferences.getInstance().speedSliderNotchCount.get() - 1;
 
         JSlider speedSlider = new JSlider();
         speedSlider.setMinimum(0);
         speedSlider.setMaximum(maximum);
         ChangeListener changeListener = _ -> {
             double speedValue = getSpeedValue(speedSlider.getValue());
-            this.globalReference.ticksPerMillisecond = speedValue / 1000;
-            this.globalReference.speedChangeEvent.fire();
+			SimulationContext.ticksPerMillisecond = speedValue / 1000;
+            Events.speedChange.fire();
         };
         changeListener.stateChanged(null);
         speedSlider.addChangeListener(changeListener);

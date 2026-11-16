@@ -8,6 +8,8 @@ import java.awt.*;
 public abstract class Gridlines implements HasDisplayableName {
 	@Override
 	public boolean equals(Object obj) {
+		if (!(obj instanceof Gridlines))
+			return false;
 		return getDisplayableName().equals(obj.toString());
 	}
 

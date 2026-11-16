@@ -3,27 +3,28 @@ package owenparker.gui.sidebar;
 import owenparker.engine.AgentFactory;
 import owenparker.engine.CursorPlaceable;
 import owenparker.engine.State;
-import owenparker.gui.AccessorComponent;
 import owenparker.gui.CursorMode;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SideBar extends AccessorComponent<JScrollPane> {
+public class SideBar extends JScrollPane {
 	private List<SideBarButton> buttons;
 
 	public void refreshSelection() {
 		this.buttons.forEach(SideBarButton::refreshSelection);
 	}
 
-	public SideBar(GlobalReference globalReference) {
-		super(globalReference, new JScrollPane());
+	public SideBar() {
+		super();
 
-		globalReference.newAutomatonEvent.add(this::refresh);
-		globalReference.newColorPaletteEvent.add(this::refresh);
+		Events.newAutomaton.add(this::refresh);
+		Events.newColorPalette.add(this::refresh);
 
 		refresh();
 	}
@@ -37,16 +38,16 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 
 		for (CursorMode cursorMode : CursorMode.values()) {
 			SideBarButton button = cursorMode.getButton(this);
-			innerPanel.add(button.getComponent());
+			innerPanel.add(button);
 			this.buttons.add(button);
 			innerPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		}
 
-		List<State> states = this.globalReference.getAutomaton().getSelectableCellStates();
+		List<State> states = SimulationContext.getAutomaton().getSelectableCellStates();
 		if (!states.isEmpty())
 			createButtonsForPlaceables(innerPanel, states, "Cells");
 
-		List<AgentFactory> agents = this.globalReference.getAutomaton().getSelectableAgentFactories();
+		List<AgentFactory> agents = SimulationContext.getAutomaton().getSelectableAgentFactories();
 		if (!agents.isEmpty())
 			createButtonsForPlaceables(innerPanel, agents, "Agents");
 
@@ -54,10 +55,10 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 		outerPanel.setLayout(new BorderLayout());
 		outerPanel.add(innerPanel, BorderLayout.NORTH);
 
-		getComponent().setViewportView(outerPanel);
-		getComponent().setPreferredSize(new Dimension(64, 0));
-		getComponent().getVerticalScrollBar().setUnitIncrement(16);
-		getComponent().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		setViewportView(outerPanel);
+		setPreferredSize(new Dimension(64, 0));
+		getVerticalScrollBar().setUnitIncrement(16);
+		setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		refreshSelection();
 	}
@@ -71,8 +72,8 @@ public class SideBar extends AccessorComponent<JScrollPane> {
 	}
 
 	private void createButtonFromPlaceable(JComponent target, CursorPlaceable placeable) {
-		PlaceableButton button = new PlaceableButton(this.globalReference, placeable, this);
-		target.add(button.getComponent());
+		PlaceableButton button = new PlaceableButton(placeable, this);
+		target.add(button);
 		this.buttons.add(button);
 		target.add(Box.createRigidArea(new Dimension(0, 5)));
 	}

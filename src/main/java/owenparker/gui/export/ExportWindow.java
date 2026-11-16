@@ -1,14 +1,15 @@
 package owenparker.gui.export;
 
 import owenparker.gui.ConfirmationWindow;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.SimulationContext;
 
 public class ExportWindow extends ConfirmationWindow<ExportConfig> {
 
-	public ExportWindow(GlobalReference globalReference) {
+	public ExportWindow() {
 		super(
-				new ExportConfig(globalReference),
-				c -> c.exporter.get().export(c, globalReference.getAutomaton()),
+				new ExportConfig(),
+				c -> c.exporter.get().export(c, SimulationContext.getAutomaton()),
 				"Export"
 		);
 	}

@@ -1,7 +1,6 @@
 package owenparker.gui.menu_bar;
 
 import owenparker.engine.HasDisplayableName;
-import owenparker.gui.AccessorComponent;
 import owenparker.gui.Launcher;
 import owenparker.plugins.Plugin;
 
@@ -27,10 +26,10 @@ public class PluginResourceMenuLister<T extends HasDisplayableName> {
 		this.buttonGetter = buttonGetter;
 	}
 
-	public void listResources(AccessorComponent<JMenu> menuToAddTo) {
+	public void listResources(JMenu menuToAddTo) {
 		Launcher.installedPlugins.forEach(plugin -> {
 			if (this.resourcesGetter.apply(plugin).isEmpty()) return;
-			menuToAddTo.getComponent().add(new MenuHeader(menuToAddTo.globalReference, plugin.getDisplayableName()).getComponent());
+			menuToAddTo.add(new MenuHeader(plugin.getDisplayableName()));
 			ResourceMenuLister<T> lister = new ResourceMenuLister<>(this.onClick, this.resourcesGetter.apply(plugin));
 			lister.setButtonGetter(this.buttonGetter);
 			lister.listResources(menuToAddTo);

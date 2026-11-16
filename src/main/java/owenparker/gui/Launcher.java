@@ -1,5 +1,6 @@
 package owenparker.gui;
 
+import owenparker.gui.preferences.Preferences;
 import owenparker.plugins.DefaultPlugin;
 import owenparker.plugins.Plugin;
 import owenparker.plugins.PluginLoader;

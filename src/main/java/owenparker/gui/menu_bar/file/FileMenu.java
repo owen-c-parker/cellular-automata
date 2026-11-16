@@ -1,20 +1,19 @@
 package owenparker.gui.menu_bar.file;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 
 import javax.swing.*;
 
-public class FileMenu extends AccessorComponent<JMenu> {
-    public FileMenu(GlobalReference globalReference) {
-        super(globalReference, new JMenu("File"));
+public class FileMenu extends JMenu {
+    public FileMenu() {
+        super("File");
 
-        add(new NewFileMenu(globalReference));
-        getComponent().add(new JSeparator());
-        add(new ExportMenu(globalReference));
-		add(new SaveMenu(globalReference));
-		add(new LoadMenu(globalReference));
-        getComponent().add(new JSeparator());
-        add(new PreferencesMenu(globalReference));
+        add(new NewFileMenu());
+        add(new JSeparator());
+        add(new ExportMenu());
+		add(new SaveMenu());
+		add(new LoadMenu());
+        add(new JSeparator());
+        add(new PreferencesMenu());
     }
 }

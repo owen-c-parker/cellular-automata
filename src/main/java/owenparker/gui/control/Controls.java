@@ -1,32 +1,29 @@
 package owenparker.gui.control;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
 
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Controls extends AccessorComponent<JPanel> {
-    public Controls(GlobalReference globalReference) {
-        super(globalReference);
-
-        setComponent(new JPanel());
-
-        refreshControls();
+public class Controls extends JPanel {
+    public Controls() {
+        super();
+		refreshControls();
         startTimer();
 
-        globalReference.newAutomatonEvent.add(this::refreshControls);
+        Events.newAutomaton.add(this::refreshControls);
     }
 
     private void refreshControls() {
-        getComponent().removeAll();
+        removeAll();
 
-        getComponent().add(new PauseButton(this.globalReference).getComponent());
-        getComponent().add(new StepButton(this.globalReference).getComponent());
-        getComponent().add(new SpeedController(this.globalReference).getComponent());
-		getComponent().add(new WarpButton(this.globalReference).getComponent());
+        add(new PauseButton());
+        add(new StepButton());
+        add(new SpeedController());
+		add(new WarpButton());
 
-        this.globalReference.speedChangeEvent.fire();
+        Events.speedChange.fire();
     }
 
 
@@ -34,13 +31,13 @@ public class Controls extends AccessorComponent<JPanel> {
         AtomicReference<Double> queuedTicks = new AtomicReference<>((double) 0);
 
         Timer timer = new Timer(1, _ -> {
-            if (!this.globalReference.currentlyPlaying)
+            if (!SimulationContext.currentlyPlaying)
                 return;
 
-            queuedTicks.updateAndGet(v -> v + this.globalReference.ticksPerMillisecond);
+            queuedTicks.updateAndGet(v -> v + SimulationContext.ticksPerMillisecond);
             while (queuedTicks.get() > 1) {
                 queuedTicks.updateAndGet(v -> v - 1);
-                this.globalReference.step();
+				SimulationContext.step();
             }
         });
 

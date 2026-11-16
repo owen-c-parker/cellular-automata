@@ -1,9 +1,12 @@
 package owenparker.gui;
 
 import owenparker.gui.automaton_config.AutomatonConfigPanelContainer;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
 import owenparker.gui.control.Controls;
 import owenparker.gui.grid.GridDisplay;
 import owenparker.gui.menu_bar.MenuBar;
+import owenparker.gui.preferences.Preferences;
 import owenparker.gui.sidebar.SideBar;
 import owenparker.gui.stats.StatsPanel;
 
@@ -13,38 +16,34 @@ import java.awt.*;
 public class MainWindow extends GenericWindow {
 
 	public MainWindow() {
-        GlobalReference globalReference = new GlobalReference();
+        Events.newColorPalette.add(() -> SwingUtilities.updateComponentTreeUI(this));
+		Events.newAutomaton.add(() -> setTitle(String.format("Cellular Automaton Simulator - %s", SimulationContext.getAutomaton().getDisplayableName())));
 
-
-        globalReference.newColorPaletteEvent.add(() -> SwingUtilities.updateComponentTreeUI(this));
-
-        globalReference.newAutomatonEvent.add(() -> setTitle(String.format("Cellular Automaton Simulator - %s", globalReference.getAutomaton().getDisplayableName())));
-
-		globalReference.buildAutomatonFromFactory(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst());
+		SimulationContext.buildAutomatonFromFactory(Launcher.installedPlugins.getFirst().getAutomatonFactories().getFirst());
 
         setContentPane(new JPanel(new BorderLayout()));
 
-        Controls controls = new Controls(globalReference);
-        controls.getComponent().setPreferredSize(new Dimension(0, 50));
-        getContentPane().add(controls.getComponent(), BorderLayout.SOUTH);
+        Controls controls = new Controls();
+        controls.setPreferredSize(new Dimension(0, 50));
+        getContentPane().add(controls, BorderLayout.SOUTH);
 
         JPanel topContainer = new JPanel(new BorderLayout());
-        topContainer.add(new GridDisplay(globalReference).getComponent(), BorderLayout.CENTER);
+        topContainer.add(new GridDisplay(), BorderLayout.CENTER);
 
         JPanel rightContainer = new JPanel(new BorderLayout());
-        rightContainer.add(new StatsPanel(globalReference).getComponent(), BorderLayout.SOUTH);
-        rightContainer.add(new AutomatonConfigPanelContainer(globalReference).getComponent(), BorderLayout.CENTER);
+        rightContainer.add(new StatsPanel(), BorderLayout.SOUTH);
+        rightContainer.add(new AutomatonConfigPanelContainer(), BorderLayout.CENTER);
 
         topContainer.add(rightContainer, BorderLayout.EAST);
 
         getContentPane().add(topContainer, BorderLayout.CENTER);
 
-		getContentPane().add(new SideBar(globalReference).getComponent(), BorderLayout.WEST);
+		getContentPane().add(new SideBar(), BorderLayout.WEST);
 
-        setJMenuBar(new MenuBar(globalReference).getComponent());
+        setJMenuBar(new MenuBar());
         setExtendedState(MAXIMIZED_BOTH);
 
-        globalReference.preferences.setEntriesBasedOnConfigFile(FileManagement.getConfigFile());
+        Preferences.getInstance().setEntriesBasedOnConfigFile(FileManagement.getConfigFile());
 
         setSize(800, 800);
         setLocationRelativeTo(null);

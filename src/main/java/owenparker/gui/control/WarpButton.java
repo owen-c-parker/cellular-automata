@@ -3,18 +3,18 @@ package owenparker.gui.control;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigInteger;
 import owenparker.engine.Automaton;
-import owenparker.gui.AccessorComponent;
 import owenparker.gui.ConfirmationWindow;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.SimulationContext;
 
 import javax.swing.*;
 
-public class WarpButton extends AccessorComponent<JButton> {
-	public WarpButton(GlobalReference globalReference) {
-		super(globalReference, new JButton("⏭"));
-		getComponent().setToolTipText("Jump forward a number of steps");
+public class WarpButton extends JButton {
+	public WarpButton() {
+		super("⏭");
+		setToolTipText("Jump forward a number of steps");
 
-		getComponent().addActionListener(_ -> this.click());
+		addActionListener(_ -> this.click());
 	}
 
 	private static class WarpConfig extends Configuration {
@@ -25,7 +25,7 @@ public class WarpButton extends AccessorComponent<JButton> {
 		new ConfirmationWindow<>(new WarpConfig(), c -> {
 			int stepCount = c.stepCount.get();
 
-			Automaton automaton = this.globalReference.getAutomaton();
+			Automaton automaton = SimulationContext.getAutomaton();
 			for (; stepCount > 0; stepCount--) {
 				automaton.step();
 			}

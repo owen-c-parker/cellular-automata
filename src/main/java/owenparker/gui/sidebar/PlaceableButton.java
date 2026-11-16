@@ -1,7 +1,7 @@
 package owenparker.gui.sidebar;
 
 import owenparker.engine.CursorPlaceable;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 
 import java.awt.*;
 
@@ -9,28 +9,28 @@ public class PlaceableButton extends SideBarButton {
 
 	private final CursorPlaceable cursorPlaceable;
 
-	public PlaceableButton(GlobalReference globalReference, CursorPlaceable cursorPlaceable, SideBar sideBar) {
+	public PlaceableButton(CursorPlaceable cursorPlaceable, SideBar sideBar) {
 		super(sideBar);
 
 		this.cursorPlaceable = cursorPlaceable;
 
-		getComponent().setToolTipText(cursorPlaceable.getDisplayableName());
+		setToolTipText(cursorPlaceable.getDisplayableName());
 
-		getComponent().addActionListener(_ -> {
-			globalReference.selectedForPlacement = cursorPlaceable;
+		addActionListener(_ -> {
+			DisplayContext.selectedForPlacement = cursorPlaceable;
 		});
 	}
 
 	@Override
 	public void refreshSelection() {
-		if (this.globalReference.selectedForPlacement.equals(this.cursorPlaceable))
-			getComponent().setBorder(getSelectedBorder(this.globalReference));
+		if (DisplayContext.selectedForPlacement.equals(this.cursorPlaceable))
+			setBorder(getSelectedBorder());
 		else
-			getComponent().setBorder(getDeelectedBorder(this.globalReference));
+			setBorder(getDeelectedBorder());
 	}
 
 	@Override
 	protected void draw(Graphics g) {
-		this.cursorPlaceable.draw(g, this.globalReference.getColorPalette());
+		this.cursorPlaceable.draw(g, DisplayContext.getColorPalette());
 	}
 }

@@ -1,15 +1,14 @@
 package owenparker.gui.menu_bar.file;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 import owenparker.gui.export.ExportWindow;
 
 import javax.swing.*;
 
-public class ExportMenu extends AccessorComponent<JMenuItem> {
-    public ExportMenu(GlobalReference globalReference) {
-        super(globalReference, new JMenuItem("Export"));
+public class ExportMenu extends JMenuItem {
+    public ExportMenu() {
+        super("Export");
 
-        getComponent().addActionListener(_ -> new ExportWindow(globalReference));
+        addActionListener(_ -> new ExportWindow());
     }
 }

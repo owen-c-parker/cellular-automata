@@ -1,17 +1,16 @@
 package owenparker.gui.menu_bar.tools;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 
 import javax.swing.*;
 
-public class ToolsMenu extends AccessorComponent<JMenu> {
-    public ToolsMenu(GlobalReference globalReference) {
-        super(globalReference, new JMenu("Tools"));
+public class ToolsMenu extends JMenu {
+    public ToolsMenu() {
+        super("Tools");
 
-        add(NoiseMenuItem::new);
-        add(ClearMenuItem::new);
-		add(ResetCameraMenuItem::new);
-		add(WarpCameraMenuItem::new);
+        add(new NoiseMenuItem());
+        add(new ClearMenuItem());
+		add(new ResetCameraMenuItem());
+		add(new WarpCameraMenuItem());
     }
 }

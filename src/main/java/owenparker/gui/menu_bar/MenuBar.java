@@ -1,20 +1,19 @@
 package owenparker.gui.menu_bar;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 import owenparker.gui.menu_bar.about.AboutMenu;
 import owenparker.gui.menu_bar.file.FileMenu;
 import owenparker.gui.menu_bar.tools.ToolsMenu;
 
 import javax.swing.*;
 
-public class MenuBar extends AccessorComponent<JMenuBar> {
+public class MenuBar extends JMenuBar {
 
-    public MenuBar(GlobalReference globalReference) {
-        super(globalReference, new JMenuBar());
+    public MenuBar() {
+        super();
 
-        getComponent().add(new FileMenu(globalReference).getComponent());
-        getComponent().add(new ToolsMenu(globalReference).getComponent());
-		getComponent().add(new AboutMenu(globalReference).getComponent());
+        add(new FileMenu());
+        add(new ToolsMenu());
+		add(new AboutMenu());
     }
 }

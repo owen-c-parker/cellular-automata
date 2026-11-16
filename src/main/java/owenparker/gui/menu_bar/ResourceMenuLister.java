@@ -1,7 +1,6 @@
 package owenparker.gui.menu_bar;
 
 import owenparker.engine.HasDisplayableName;
-import owenparker.gui.AccessorComponent;
 import owenparker.gui.Launcher;
 
 import javax.swing.*;
@@ -38,7 +37,7 @@ public class ResourceMenuLister<T extends HasDisplayableName> {
 		this.isSelected = isSelected;
 	}
 
-	public void listResources(AccessorComponent<JMenu> menuToAddTo) {
+	public void listResources(JMenu menuToAddTo) {
 		for (T resource : this.resources) {
 			try {
 				AbstractButton button = this.buttonGetter.call();
@@ -48,7 +47,7 @@ public class ResourceMenuLister<T extends HasDisplayableName> {
 				if (this.isSelected.apply(resource))
 					this.buttonGroup.setSelected(button.getModel(), true);
 				this.componentModifier.accept(button, resource);
-				menuToAddTo.getComponent().add(button);
+				menuToAddTo.add(button);
 			} catch (Exception e) {
 				Launcher.errorWindow(e);
 			}

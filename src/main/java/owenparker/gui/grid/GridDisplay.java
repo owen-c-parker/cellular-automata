@@ -1,12 +1,11 @@
 package owenparker.gui.grid;
 
-import owenparker.engine.BorderPolicy;
-import owenparker.engine.Bounds;
-import owenparker.engine.OrderedPair;
-import owenparker.engine.State;
+import owenparker.engine.*;
 import owenparker.engine.colors.ColorPalette;
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
+import owenparker.gui.preferences.Preferences;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -18,7 +17,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class GridDisplay extends AccessorComponent<JPanel> {
+public class GridDisplay extends JPanel {
     private static final double ZOOM_AMOUNT = .1;
     private static final double MIN_SCALE = 1;
     private static final double MAX_SCALE = 300;
@@ -44,7 +43,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
 	public void renderBounds(Bounds bounds) {
 		this.boundsToRender = bounds;
-		this.globalReference.repaintEvent.fire();
+		Events.repaint.fire();
 	}
 
 	public OrderedPair getCursorLocationInCellSpace() {
@@ -63,64 +62,47 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 		this.scrollY = this.scrollY.add(new BigDecimal(difference.y()));
 	}
 
-	private class GridDisplayPanel extends JPanel {
-        public GridDisplayPanel() {
-			resetCamera();
-
-			setBorder(new LineBorder(GridDisplay.this.globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
-
-            GridDisplay.this.globalReference.repaintEvent.add(() -> {
-                revalidate();
-                repaint();
-            });
-
-			GridDisplay.this.globalReference.cursorModeChangeEvent.add(this::refreshListeners);
-			GridDisplay.this.globalReference.cursorModeChangeEvent.add(GridDisplay.this.globalReference.repaintEvent::fire);
-			refreshListeners();
-        }
-
-		private void refreshListeners() {
-			for (MouseListener mouseListener : getMouseListeners()) {
-				removeMouseListener(mouseListener);
-			}
-			for (MouseMotionListener mouseMotionListener : getMouseMotionListeners()) {
-				removeMouseMotionListener(mouseMotionListener);
-			}
-			for (MouseWheelListener mouseWheelListener : getMouseWheelListeners()) {
-				removeMouseWheelListener(mouseWheelListener);
-			}
-			
-			CursorModeOperation operation = switch (GridDisplay.this.globalReference.getCurrentCursorMode()) {
-				case SELECT -> new SelectOperation(GridDisplay.this);
-				case PENCIL -> new PencilOperation(GridDisplay.this);
-				case RECTANGLE -> new FillRectangleOperation(GridDisplay.this);
-			};
-			
-			addMouseListener(operation);
-			addMouseMotionListener(operation);
-			addMouseWheelListener(operation);
-
-			addMouseMotionListener(new MouseInputAdapter() {
-				@Override
-				public void mouseMoved(MouseEvent e) {
-					super.mouseMoved(e);
-					GridDisplay.this.globalReference.mouseMoveEvent.fire();
-					GridDisplay.this.lastMouseEvent = e;
-				}
-			});
+	private void refreshListeners() {
+		for (MouseListener mouseListener : getMouseListeners()) {
+			removeMouseListener(mouseListener);
+		}
+		for (MouseMotionListener mouseMotionListener : getMouseMotionListeners()) {
+			removeMouseMotionListener(mouseMotionListener);
+		}
+		for (MouseWheelListener mouseWheelListener : getMouseWheelListeners()) {
+			removeMouseWheelListener(mouseWheelListener);
 		}
 
-		@Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            fillBackgroundWithDefaultCellColor(g);
-            drawAllCells(g);
-            drawAllAgents(g);
-            drawGridlinesIfApplicable(g);
-            drawBordersIfApplicable(g);
-			drawBounds(g);
-        }
-    }
+		CursorModeOperation operation = switch (DisplayContext.getCurrentCursorMode()) {
+			case SELECT -> new SelectOperation(GridDisplay.this);
+			case PENCIL -> new PencilOperation(GridDisplay.this);
+			case RECTANGLE -> new FillRectangleOperation(GridDisplay.this);
+		};
+
+		addMouseListener(operation);
+		addMouseMotionListener(operation);
+		addMouseWheelListener(operation);
+
+		addMouseMotionListener(new MouseInputAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				Events.mouseMove.fire();
+				GridDisplay.this.lastMouseEvent = e;
+			}
+		});
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		fillBackgroundWithDefaultCellColor(g);
+		drawAllCells(g);
+		drawAllAgents(g);
+		drawGridlinesIfApplicable(g);
+		drawBordersIfApplicable(g);
+		drawBounds(g);
+	}
 
 	private void drawBounds(Graphics g) {
 		if (this.boundsToRender == null)
@@ -130,7 +112,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
 		Graphics2D g2d = (Graphics2D) g;
 
-		g2d.setColor(this.globalReference.getColorPalette().getColor(ColorPalette.Slot.ACTIVE_2));
+		g2d.setColor(DisplayContext.getColorPalette().getColor(ColorPalette.Slot.ACTIVE_2));
 		g2d.setStroke(new BasicStroke(4));
 
 		BigInteger top    = bounds.getTopLeft().y();
@@ -147,15 +129,17 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 	}
 
 	private void drawBordersIfApplicable(Graphics g) {
-        if (!globalReference.getAutomaton().getConfig().borderPolicy.get().equals(BorderPolicy.FILL_WITH_DEFAULT))
+		AutomatonConfig config = SimulationContext.getAutomaton().getConfig();
+
+        if (!config.borderPolicy.get().equals(BorderPolicy.FILL_WITH_DEFAULT))
             return;
 
         OrderedPair topLeft = fromCellSpaceToScreenSpace(new OrderedPair(0, 0));
-        OrderedPair bottomRight = fromCellSpaceToScreenSpace(globalReference.getAutomaton().getConfig().getSize());
+        OrderedPair bottomRight = fromCellSpaceToScreenSpace(config.getSize());
 
-        OrderedPair screenSize = new OrderedPair(getComponent().getSize());
+        OrderedPair screenSize = new OrderedPair(getSize());
 
-        g.setColor(globalReference.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
+        g.setColor(DisplayContext.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES));
 
         g.fillRect(0, 0, screenSize.x().intValue(), topLeft.y().intValue()); // Top
         g.fillRect(0, bottomRight.y().intValue(), screenSize.x().intValue(), screenSize.y().subtract(bottomRight.y()).intValue()); // Bottom
@@ -163,12 +147,25 @@ public class GridDisplay extends AccessorComponent<JPanel> {
         g.fillRect(bottomRight.x().intValue(), 0, screenSize.x().subtract(bottomRight.x()).intValue(), screenSize.y().intValue()); // Right
     }
 
-    public GridDisplay(GlobalReference globalReference) {
-        super(globalReference);
-        setComponent(new GridDisplayPanel());
-        globalReference.gridDisplay = this;
-		globalReference.cursorModeChangeEvent.add(() -> this.boundsToRender = null);
-		globalReference.preferences.gridlineType.addSetListener(globalReference.repaintEvent::fire);
+    public GridDisplay() {
+		super();
+
+        resetCamera();
+
+		setBorder(new LineBorder(DisplayContext.getColorPalette().getColor(ColorPalette.Slot.GRIDLINES), 1, false));
+
+		Events.repaint.add(() -> {
+			revalidate();
+			repaint();
+		});
+
+		Events.cursorModeChange.add(this::refreshListeners);
+		Events.cursorModeChange.add(Events.repaint::fire);
+		refreshListeners();
+
+        DisplayContext.gridDisplay = this;
+		Events.cursorModeChange.add(() -> this.boundsToRender = null);
+		Preferences.getInstance().gridlineType.addSetListener(Events.repaint::fire);
     }
 
     public void performZoom(MouseWheelEvent event) {
@@ -185,8 +182,8 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
         OrderedPair mousePosOnScreen = new OrderedPair(location.x(), location.y());
 
-        int width = getComponent().getWidth();
-        int height = getComponent().getHeight();
+        int width = getWidth();
+        int height = getHeight();
 
 		this.scrollX = this.scrollX.multiply(modifier).subtract(new BigDecimal(mousePosOnScreen.x().doubleValue() / width * (width * modifier.doubleValue() - width)));
 		this.scrollY = this.scrollY.multiply(modifier).subtract(new BigDecimal(mousePosOnScreen.y().doubleValue() / height * (height * modifier.doubleValue() - height)));
@@ -195,15 +192,15 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private void drawGridlinesIfApplicable(Graphics g) {
-        if (GridDisplay.this.cellScale < this.globalReference.preferences.cellScaleToStopDrawingGridlines.get())
+        if (GridDisplay.this.cellScale < Preferences.getInstance().cellScaleToStopDrawingGridlines.get())
             return;
 
-		this.globalReference.preferences.gridlineType.get().draw(g, this);
+		Preferences.getInstance().gridlineType.get().draw(g, this);
     }
 
     private void drawAllAgents(Graphics g) {
 		for (OrderedPair location : getCellLocationsOnScreen()) {
-			this.globalReference.getAutomaton().findAgentsAt(location)
+			SimulationContext.getAutomaton().findAgentsAt(location)
 					.forEach(agent -> {
 						OrderedPair screenSpace = fromCellSpaceToScreenSpace(location);
 
@@ -223,15 +220,15 @@ public class GridDisplay extends AccessorComponent<JPanel> {
     }
 
     private void drawCellAt(Graphics g, OrderedPair location) {
-        State state = this.globalReference.getAutomaton().getCellAt(location);
+        State state = SimulationContext.getAutomaton().getCellAt(location);
         if (isDefaultState(state)) return;
-        g.setColor(state.getColorEvaluator().getColor(this.globalReference.getColorPalette()));
+        g.setColor(state.getColorEvaluator().getColor(DisplayContext.getColorPalette()));
         OrderedPair locationInScreenSpace = fromCellSpaceToScreenSpace(location);
         int cellSize = (int) this.cellScale + 1; // 1 is added to prevent gaps
         g.fillRect(locationInScreenSpace.x().intValue(), locationInScreenSpace.y().intValue(), cellSize, cellSize);
         state.customDraw(g.create(locationInScreenSpace.x().intValue(), locationInScreenSpace.y().intValue(), cellSize, cellSize));
 
-		if (this.globalReference.preferences.debug.get().drawUpdater.get() && this.globalReference.getAutomaton().isToBeUpdated(location)) {
+		if (Preferences.getInstance().debug.get().drawUpdater.get() && SimulationContext.getAutomaton().isToBeUpdated(location)) {
 			g.setColor(Color.YELLOW);
 			g.fillRect(locationInScreenSpace.x().intValue(), locationInScreenSpace.y().intValue(), cellSize / 2, cellSize / 2);
 		}
@@ -258,7 +255,7 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 	}
 
     private boolean isDefaultState(State state) {
-        return this.globalReference.getAutomaton().getDefaultState().equals(state);
+        return SimulationContext.getAutomaton().getDefaultState().equals(state);
     }
 
     public Collection<OrderedPair> getCellLocationsOnScreen() {
@@ -277,12 +274,12 @@ public class GridDisplay extends AccessorComponent<JPanel> {
 
     private void fillBackgroundWithDefaultCellColor(Graphics g) {
         OrderedPair screenSizeInPixels = getScreenSizeInPixels();
-        g.setColor(this.globalReference.getAutomaton().getDefaultState().getColorEvaluator().getColor(this.globalReference.getColorPalette()));
+        g.setColor(SimulationContext.getAutomaton().getDefaultState().getColorEvaluator().getColor(DisplayContext.getColorPalette()));
         g.fillRect(0, 0, screenSizeInPixels.x().intValue(), screenSizeInPixels.y().intValue());
     }
 
     public OrderedPair getScreenSizeInPixels() {
-        Dimension dimension = getComponent().getSize();
+        Dimension dimension = getSize();
         return new OrderedPair(dimension.width, dimension.height);
     }
 }

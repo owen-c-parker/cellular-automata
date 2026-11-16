@@ -1,12 +1,14 @@
 package owenparker.gui.menu_bar.tools;
 
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
 
 public class ClearMenuItem extends ToolMenuItem {
-    public ClearMenuItem(GlobalReference globalReference) {
-        super(globalReference, "Clear entire grid", () -> {
-            globalReference.getAutomaton().clear();
-            globalReference.repaintEvent.fire();
+    public ClearMenuItem() {
+        super("Clear entire grid", () -> {
+            SimulationContext.getAutomaton().clear();
+			Events.repaint.fire();
         });
     }
 }

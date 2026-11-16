@@ -2,7 +2,9 @@ package owenparker.gui.grid;
 
 import owenparker.engine.Automaton;
 import owenparker.engine.OrderedPair;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.Events;
+import owenparker.gui.context.SimulationContext;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -14,13 +16,8 @@ public abstract class CursorModeOperation implements MouseListener, MouseMotionL
 	OrderedPair lastMiddleClickDraggedLocation = OrderedPair.ORIGIN;
 	private boolean lastEventWasMiddleDrag = false;
 
-
-	protected GlobalReference getGlobalReference() {
-		return this.gridDisplay.globalReference;
-	}
-
 	protected Automaton getAutomaton() {
-		return this.gridDisplay.globalReference.getAutomaton();
+		return SimulationContext.getAutomaton();
 	}
 
 	public CursorModeOperation(GridDisplay gridDisplay) {
@@ -38,7 +35,7 @@ public abstract class CursorModeOperation implements MouseListener, MouseMotionL
 		if (SwingUtilities.isMiddleMouseButton(e))
 			this.lastMiddleClickedLocation = new OrderedPair(e);
 
-		getGlobalReference().repaintEvent.fire();
+		Events.repaint.fire();
 	}
 
 	@Override
@@ -55,7 +52,7 @@ public abstract class CursorModeOperation implements MouseListener, MouseMotionL
 
 			this.lastEventWasMiddleDrag = true;
 
-			getGlobalReference().repaintEvent.fire();
+			Events.repaint.fire();
 		}
 	}
 
@@ -63,13 +60,13 @@ public abstract class CursorModeOperation implements MouseListener, MouseMotionL
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		this.lastEventWasMiddleDrag = false;
 		this.gridDisplay.performZoom(e);
-		getGlobalReference().repaintEvent.fire();
+		Events.repaint.fire();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		this.lastEventWasMiddleDrag = false;
-		getGlobalReference().repaintEvent.fire();
+		Events.repaint.fire();
 	}
 
 	@Override

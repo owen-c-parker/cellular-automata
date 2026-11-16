@@ -1,6 +1,7 @@
 package owenparker.gui.sidebar;
 
 import owenparker.gui.CursorMode;
+import owenparker.gui.context.DisplayContext;
 
 import java.awt.*;
 
@@ -8,12 +9,12 @@ public abstract class CursorModeButton extends SideBarButton {
 	public CursorModeButton(SideBar sideBar) {
 		super(sideBar);
 
-		getComponent().addActionListener(_ -> {
-			this.globalReference.setCurrentCursorMode(getCursorMode());
+		addActionListener(_ -> {
+			DisplayContext.setCurrentCursorMode(getCursorMode());
 			refreshSelection();
 		});
 
-		getComponent().setToolTipText(getCursorMode().getTooltip());
+		setToolTipText(getCursorMode().getTooltip());
 	}
 
 	@Override
@@ -27,10 +28,10 @@ public abstract class CursorModeButton extends SideBarButton {
 
 	@Override
 	public void refreshSelection() {
-		getComponent().setBorder(
-				this.globalReference.getCurrentCursorMode().equals(getCursorMode()) ?
-						getSelectedBorder(this.globalReference) :
-						getDeelectedBorder(this.globalReference)
+		setBorder(
+				DisplayContext.getCurrentCursorMode().equals(getCursorMode()) ?
+						getSelectedBorder() :
+						getDeelectedBorder()
 		);
 	}
 }

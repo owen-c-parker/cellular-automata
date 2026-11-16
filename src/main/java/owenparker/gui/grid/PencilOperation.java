@@ -2,6 +2,8 @@ package owenparker.gui.grid;
 
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.Events;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -18,9 +20,9 @@ public class PencilOperation extends CursorModeOperation {
 		OrderedPair location = getGridDisplay().fromScreenSpaceToCellSpace(new OrderedPair(e));
 
 		if (SwingUtilities.isLeftMouseButton(e))
-			getAutomaton().place(location, getGlobalReference().selectedForPlacement);
+			getAutomaton().place(location, DisplayContext.selectedForPlacement);
 		if (SwingUtilities.isRightMouseButton(e))
-			getAutomaton().remove(location, getGlobalReference().selectedForPlacement);
+			getAutomaton().remove(location, DisplayContext.selectedForPlacement);
 	}
 
 	@Override
@@ -28,14 +30,14 @@ public class PencilOperation extends CursorModeOperation {
 		super.mouseDragged(e);
 
 		OrderedPair location = getGridDisplay().fromScreenSpaceToCellSpace(new OrderedPair(e));
-		if (getGlobalReference().selectedForPlacement instanceof State state) {
+		if (DisplayContext.selectedForPlacement instanceof State state) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
 				getAutomaton().place(location, state);
-				getGlobalReference().repaintEvent.fire();
+				Events.repaint.fire();
 			}
 			if (SwingUtilities.isRightMouseButton(e)) {
 				getAutomaton().remove(location, state);
-				getGlobalReference().repaintEvent.fire();
+				Events.repaint.fire();
 			}
 		}
 	}

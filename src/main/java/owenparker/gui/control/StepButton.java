@@ -1,14 +1,14 @@
 package owenparker.gui.control;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
+import owenparker.gui.context.SimulationContext;
 
 import javax.swing.*;
 
-public class StepButton extends AccessorComponent<JButton> {
-    public StepButton(GlobalReference globalReference) {
-        super(globalReference, new JButton("⏯"));
-        getComponent().addActionListener(_ -> globalReference.step());
-        getComponent().setToolTipText("Step once");
+public class StepButton extends JButton {
+    public StepButton() {
+        super("⏯");
+        addActionListener(_ -> SimulationContext.step());
+		setToolTipText("Step once");
     }
 }

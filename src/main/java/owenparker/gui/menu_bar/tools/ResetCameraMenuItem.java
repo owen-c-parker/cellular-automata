@@ -1,17 +1,16 @@
 package owenparker.gui.menu_bar.tools;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 
 import javax.swing.*;
 
-public class ResetCameraMenuItem extends AccessorComponent<JMenuItem> {
+public class ResetCameraMenuItem extends JMenuItem {
 
-	public ResetCameraMenuItem(GlobalReference globalReference) {
-		super(globalReference, new JMenuItem("Reset scroll to origin"));
+	public ResetCameraMenuItem() {
+		super("Reset scroll to origin");
 
-		getComponent().addActionListener(_ -> {
-			globalReference.resetCamera();
+		addActionListener(_ -> {
+			DisplayContext.resetCamera();
 		});
 	}
 }

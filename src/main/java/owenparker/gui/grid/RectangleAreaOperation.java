@@ -2,6 +2,7 @@ package owenparker.gui.grid;
 
 import owenparker.engine.Bounds;
 import owenparker.engine.OrderedPair;
+import owenparker.gui.context.Events;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -41,7 +42,7 @@ public abstract class RectangleAreaOperation extends CursorModeOperation {
 		this.bounds = new Bounds(this.bounds.a(), location);
 
 		getGridDisplay().renderBounds(this.bounds);
-		getGlobalReference().repaintEvent.fire();
+		Events.repaint.fire();
 	}
 
 	protected Collection<OrderedPair> getCellLocationsInBounds() {

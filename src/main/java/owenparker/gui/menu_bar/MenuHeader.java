@@ -1,13 +1,12 @@
 package owenparker.gui.menu_bar;
 
-import owenparker.gui.AccessorComponent;
-import owenparker.gui.GlobalReference;
+import owenparker.gui.context.DisplayContext;
 
 import javax.swing.*;
 
-public class MenuHeader extends AccessorComponent<JMenuItem> {
-	public MenuHeader(GlobalReference globalReference, String labelText) {
-		super(globalReference, new JMenuItem(labelText));
+public class MenuHeader extends JMenuItem {
+	public MenuHeader(String labelText) {
+		super(labelText);
 		getComponent().setEnabled(false);
 	}
 }
