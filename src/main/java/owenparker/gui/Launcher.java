@@ -26,6 +26,8 @@ public class Launcher {
 		errorWindow.setSize(screen.width / 2, screen.height / 2);
 		errorWindow.setLocationRelativeTo(null);
 		errorWindow.setVisible(true);
+
+		throw new RuntimeException(e);
 	}
 
     public static <T> Collection<T> getAllOfAResource(Function<Plugin, Collection<T>> resourceGetter) {

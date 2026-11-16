@@ -18,7 +18,10 @@ public class AutomatonConfigPanelContainer extends JPanel {
     private void refresh() {
         removeAll();
         Configuration config = SimulationContext.getAutomaton().getConfig();
-        add(config.getPanel());
-        config.getEntries().forEach(entry -> entry.addSetListener(Events.repaint::fire));
+
+		JPanel panel = config.getPanel();
+
+		add(panel);
+
     }
 }
