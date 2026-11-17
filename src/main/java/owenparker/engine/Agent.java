@@ -1,5 +1,7 @@
 package owenparker.engine;
 
+import owenparker.engine.board.Board;
+
 import java.awt.*;
 import java.io.Serializable;
 

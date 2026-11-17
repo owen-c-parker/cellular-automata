@@ -1,6 +1,6 @@
 package owenparker.plugins.default_content.automata.turmites;
 
-import owenparker.engine.Board;
+import owenparker.engine.board.Board;
 import owenparker.engine.OrderedPair;
 import owenparker.engine.State;
 import owenparker.engine.colors.ColorEvaluator;

@@ -1,6 +1,7 @@
 package owenparker.plugins.default_content.automata;
 
 import owenparker.engine.*;
+import owenparker.engine.board.Board;
 import owenparker.engine.colors.ColorPalette;
 
 import java.util.ArrayList;

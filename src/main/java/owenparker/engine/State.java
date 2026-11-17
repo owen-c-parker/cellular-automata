@@ -1,5 +1,6 @@
 package owenparker.engine;
 
+import owenparker.engine.board.Board;
 import owenparker.engine.colors.*;
 
 import java.awt.*;

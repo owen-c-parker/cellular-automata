@@ -1,4 +1,7 @@
-package owenparker.engine;
+package owenparker.engine.board;
+
+import owenparker.engine.*;
+import owenparker.gui.Launcher;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -12,7 +15,7 @@ import static owenparker.engine.BorderPolicy.LOOP;
  */
 public final class Board implements Serializable {
     private final AutomatonConfig config;
-    Map<OrderedPair, State> cells = new HashMap<>();
+    public Map<OrderedPair, State> cells = new HashMap<>();
     Set<OrderedPair> cellsThatMightMove = new HashSet<>();
 	private final State defaultState;
     private final Neighborhood wakeUpNeighborhood;
@@ -25,7 +28,7 @@ public final class Board implements Serializable {
         return this.config.getBorderPolicy();
     }
 
-	OrderedPair transformLocation(OrderedPair location) {
+	public OrderedPair transformLocation(OrderedPair location) {
 		if (getBorderPolicy().equals(LOOP))
 			return location.mod(this.getExtent());
 		if (getBorderPolicy().equals(FILL_WITH_DEFAULT) && !isInsideExtent(location))
@@ -54,7 +57,7 @@ public final class Board implements Serializable {
         this.wakeUpNeighborhood = wakeUpNeighborhood;
 	}
 
-	Board makeEmptyBoardWithSameProperties() {
+	public Board makeEmptyBoardWithSameProperties() {
 		return new Board(getDefaultState(), this.wakeUpNeighborhood, this.config);
 	}
 
@@ -77,7 +80,10 @@ public final class Board implements Serializable {
 		location = transformLocation(location);
 		if (location == null || state.equals(getDefaultState()) && getCellAt(location).equals(getDefaultState())) return;
         this.cellsThatMightMove.add(location);
-        this.cells.put(location, state);
+		if (!state.equals(getDefaultState()))
+        	this.cells.put(location, state);
+		else
+			this.cells.remove(location);
 	}
 
 	/**
@@ -87,41 +93,36 @@ public final class Board implements Serializable {
 	public Board getUpdatedBoard() {
 		Board updatedBoard = makeEmptyBoardWithSameProperties();
 
-		Set<OrderedPair> locationsToUpdate = new HashSet<>();
+		Set<CellUpdateTask> tasks = new HashSet<>();
 
 		for (OrderedPair orderedPair : this.cellsThatMightMove) {
-			locationsToUpdate.add(orderedPair);
-			locationsToUpdate.addAll(
+			tasks.add(new CellUpdateTask(orderedPair, this, updatedBoard));
+			tasks.addAll(
 					this.wakeUpNeighborhood
 							.getAll()
 							.stream()
 							.map(orderedPair::add)
 							.map(this::transformLocation)
                             .filter(Objects::nonNull)
+							.map(location -> new CellUpdateTask(location, this, updatedBoard))
 							.toList()
 			);
 		}
 
         updatedBoard.cells = new HashMap<>(this.cells);
 
-		for (OrderedPair locationToUpdate : locationsToUpdate) {
-			State state = getCellAt(locationToUpdate);
-            State newState = state.getNewState(this, locationToUpdate);
-            if (!newState.equals(state))
-                updatedBoard.setCellAt(locationToUpdate, newState);
+		try {
+			CellUpdateTask.executorService.invokeAll(tasks);
+		} catch (InterruptedException e) {
+			Launcher.errorWindow(e);
 		}
 
-        updatedBoard.pruneDefaults();
+		/*for (CellUpdateTask task : tasks) {
+			task.run();
+		}*/
 
 		return updatedBoard;
 	}
-
-    private void pruneDefaults() {
-        Set<OrderedPair> keySet = new HashSet<>(this.cells.keySet());
-        for (OrderedPair location : keySet)
-            if (this.cells.get(location).equals(getDefaultState()))
-                this.cells.remove(location);
-    }
 
 	/**
 	 * Gets the neighbors of the current cell

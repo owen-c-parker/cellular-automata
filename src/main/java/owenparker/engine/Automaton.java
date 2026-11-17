@@ -1,5 +1,7 @@
 package owenparker.engine;
 
+import owenparker.engine.board.Board;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.*;
@@ -10,11 +12,11 @@ public abstract class Automaton implements HasDisplayableName, Serializable {
     private int totalSteps = 0;
 
     protected Automaton() {
-        board = new Board(getDefaultState(), getWakeUpNeighborhood(), config);
+		this.board = new Board(getDefaultState(), getWakeUpNeighborhood(), this.config);
     }
 
     public AutomatonConfig getConfig() {
-        return config;
+        return this.config;
     }
 
 	Set<Agent> agents = new HashSet<>();

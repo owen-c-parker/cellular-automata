@@ -3,6 +3,7 @@ package owenparker.engine;
 import owenparker.config.Configuration;
 import owenparker.config.configuration_entries.ConfigEnum;
 import owenparker.config.configuration_entries.ConfigInteger;
+import owenparker.engine.board.Board;
 
 /**
  * Configuration for an actively running automaton

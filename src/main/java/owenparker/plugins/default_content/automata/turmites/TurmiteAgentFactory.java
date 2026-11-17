@@ -1,6 +1,7 @@
 package owenparker.plugins.default_content.automata.turmites;
 
 import owenparker.engine.*;
+import owenparker.engine.board.Board;
 
 import java.awt.*;
 import java.util.List;
