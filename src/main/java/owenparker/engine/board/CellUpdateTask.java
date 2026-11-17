@@ -9,11 +9,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CellUpdateTask implements Callable<State> {
-	public static final ExecutorService executorService = Executors.newFixedThreadPool(32);
+	public static ExecutorService executorService;
 
 	private final OrderedPair location;
 	private final Board source;
 	private final Board destination;
+
+	static {
+		updateExecutorService();
+		Preferences.getInstance().threadCount.addSetListener(CellUpdateTask::updateExecutorService);
+	}
+
+	private static void updateExecutorService() {
+		executorService = Executors.newFixedThreadPool(Preferences.getInstance().threadCount.get());
+	}
 
 	public CellUpdateTask(OrderedPair location, Board source, Board destination) {
 		this.location = location;

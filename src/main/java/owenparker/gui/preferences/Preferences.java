@@ -37,6 +37,7 @@ public class Preferences extends Configuration {
 			new SolidGridlines(),
 			new DotsGridlines()
 	});
+	public final ConfigInteger threadCount = new ConfigInteger("Thread count", 32, 1, Integer.MAX_VALUE);
 
 	public final ConfigNested<Debug> debug = new ConfigNested<>("Debug", new Debug());
 
